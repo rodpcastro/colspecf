@@ -13,19 +13,58 @@ module numerror
 
   implicit none
   private
-  public :: eps32, eps64, isclose
+  public :: eps32, eps64, isclose, ismall
 
   real(real32), parameter :: eps32 = epsilon(1.0)    ! eps32 = 1.19209290E-07
   real(real64), parameter :: eps64 = epsilon(1.0d0)  ! eps64 = 2.2204460492503131E-016
 
   interface isclose
+    ! Evaluates the closeness between two real or complex numbers.
+
     module procedure isclose_real, isclose_complex
   end interface isclose
 
 contains
 
+  pure logical function ismall(x, ref, tol)
+    ! Evaluates the smallness of x compared to a reference value.
+    !
+    ! Parameters
+    ! ----------
+    ! x : real(real64)
+    !   Real number.
+    ! ref : real(real64), default=1.0_real64
+    !   Reference real number.
+    ! tol : real(real64), default=eps64
+    !   Relative tolerance.
+    !    
+    ! Returns
+    ! -------
+    ! ismall: logical
+    !   .true. if x is small compared to ref according to a tolerance, and
+    !   .false. otherwise.
+
+    real(real64), intent(in) :: x
+    real(real64), intent(in), optional :: ref, tol
+    real(real64) :: ref_, tol_
+
+    if (present(ref)) then
+      ref_ = ref
+    else
+      ref_ = 1.0_real64
+    end if
+
+    if (present(tol)) then
+      tol_ = tol
+    else
+      tol_ = eps64
+    end if
+
+    ismall = abs(x) <= tol_ * abs(ref_)
+  end function ismall
+
   pure logical function isclose_real(a, b, rel_tol, abs_tol) 
-    ! Evalutes the closeness between two real numbers.
+    ! Evaluates the closeness between two real numbers.
     !
     ! Parameters
     ! ----------
@@ -41,7 +80,7 @@ contains
     ! Returns
     ! -------
     ! isclose : logical
-    !   .true. if a and b are close to each other according to tolerance, and
+    !   .true. if a and b are close to each other according to a tolerance, and
     !   .false. otherwise.
     !
     ! References
@@ -69,7 +108,7 @@ contains
   end function isclose_real
 
   pure logical function isclose_complex(a, b, rel_tol, abs_tol) 
-    ! Evalutes the closeness between two complex numbers.
+    ! Evaluates the closeness between two complex numbers.
     !
     ! Parameters
     ! ----------
@@ -85,7 +124,7 @@ contains
     ! Returns
     ! -------
     ! isclose : logical
-    !   .true. if a and b are close to each other according to tolerance, and
+    !   .true. if a and b are close to each other according to a tolerance, and
     !   .false. otherwise.
     !
     ! References
