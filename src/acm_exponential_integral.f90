@@ -47,24 +47,6 @@ contains
     ei = dei(x)
   end function ei
 
-  ! real(real64) function ei(x)
-  !   ! Exponential integral Ei(x).
-  !   !
-  !   ! Parameters
-  !   ! ----------
-  !   ! x : real(real64)
-  !   !   Real number.
-  !   !    
-  !   ! Returns
-  !   ! -------
-  !   ! ei : real(real64) 
-  !   !   Exponential integral Ei(x).
-  !
-  !   real(real64), intent(in) :: x
-  !
-  !   ei = -e1x(-x)
-  ! end function ei
-
   real(real64) function e1x(x)
     ! Exponential integral E1(x).
     !
