@@ -20,9 +20,52 @@ module acm_exponential_integral
 
   implicit none
   private
-  public :: e1z, enz
+  public :: ei, e1, e1x, e1z, enz
+
+  interface e1
+    module procedure e1x, e1z
+  end interface e1
 
 contains
+
+  real(real64) function ei(x)
+    ! Exponential integral Ei(x).
+    !
+    ! Parameters
+    ! ----------
+    ! x : real(real64)
+    !   Real number.
+    !    
+    ! Returns
+    ! -------
+    ! ei : real(real64) 
+    !   Exponential integral Ei(x).
+
+    real(real64), intent(in) :: x
+    
+    ei = -e1x(-x)
+  end function ei
+
+  real(real64) function e1x(x)
+    ! Exponential integral E1(x).
+    !
+    ! Parameters
+    ! ----------
+    ! x : real(real64)
+    !   Real number.
+    !    
+    ! Returns
+    ! -------
+    ! e1x : real(real64) 
+    !   Exponential integral E1(x).
+
+    real(real64), intent(in) :: x
+    complex(real64) :: z, e1z
+    
+    z = cmplx(x, 0.0d0)
+    e1z = enz(1, z)
+    e1x = e1z%re
+  end function e1x
 
   complex(real64) function e1z(z)
     ! Exponential integral E1(z).
