@@ -17,6 +17,7 @@ module acm_exponential_integral
   use, intrinsic :: iso_fortran_env, only: int32, real64
   use numerror, only: eps64
   use calgo_683, only: cexint
+  ! use calgo_556, only: expint
 
   implicit none
   private
@@ -42,9 +43,52 @@ contains
     !   Exponential integral Ei(x).
 
     real(real64), intent(in) :: x
-    
+
     ei = -e1x(-x)
   end function ei
+
+
+  ! real(real64) function ei(x)
+  !   ! Exponential integral Ei(x).
+  !   !
+  !   ! Parameters
+  !   ! ----------
+  !   ! x : real(real64)
+  !   !   Real number.
+  !   !    
+  !   ! Returns
+  !   ! -------
+  !   ! ei : real(real64) 
+  !   !   Exponential integral Ei(x).
+  !
+  !   real(real64), intent(in) :: x
+  !
+  !   ei = -e1x(-x)
+  ! end function ei
+
+  ! This function uses CALGO 556
+  ! real(real64) function e1(x)
+  !   ! Exponential integral E1(x).
+  !   !
+  !   ! Parameters
+  !   ! ----------
+  !   ! x : real(real64)
+  !   !   Real number ≥ 0.
+  !   !    
+  !   ! Returns
+  !   ! -------
+  !   ! e1x : real(real64) 
+  !   !   Exponential integral E1(x).
+  !
+  !   real(real64), intent(in) :: x
+  !   real(real64), parameter :: tol = eps64
+  !   integer(int32), parameter :: n = 1, m = 1, kode = 1
+  !   real(real64) :: en(m)
+  !   integer(int32) :: ierr
+  !
+  !   call expint(x,n,kode,m,tol,en,ierr)  ! TODO: Write error messages for each ierr value.
+  !   e1x = en(1)
+  ! end function e1x
 
   real(real64) function e1x(x)
     ! Exponential integral E1(x).
@@ -52,7 +96,7 @@ contains
     ! Parameters
     ! ----------
     ! x : real(real64)
-    !   Real number.
+    !   Real number ≥ 0.
     !    
     ! Returns
     ! -------
@@ -61,7 +105,7 @@ contains
 
     real(real64), intent(in) :: x
     complex(real64) :: z, e1z
-    
+
     z = cmplx(x, 0.0d0)
     e1z = enz(1, z)
     e1x = e1z%re
