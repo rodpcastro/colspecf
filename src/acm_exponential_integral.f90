@@ -17,6 +17,7 @@ module acm_exponential_integral
   use, intrinsic :: iso_fortran_env, only: int32, real64
   use numerror, only: eps64
   use calgo_683, only: cexint
+  use calgo_385, only: dei
 
   implicit none
   private
@@ -43,9 +44,8 @@ contains
 
     real(real64), intent(in) :: x
 
-    ei = -e1x(-x)
+    ei = dei(x)
   end function ei
-
 
   ! real(real64) function ei(x)
   !   ! Exponential integral Ei(x).
