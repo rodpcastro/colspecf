@@ -1,4 +1,27 @@
 module calgo_385
+! Exponential integral Ei(x).
+!
+! Author
+! ------
+! Kathleen Paciorek
+!
+! History
+! -------
+! 01-07-1970 - Kathleen Paciorek
+! 04-10-2006 - Kathleen Paciorek
+!   F77 code distributed by ACM: https://calgo.acm.org/385.zip
+! 26-05-2025 - Rodrigo Castro (GitHub: rodpcastro)
+!   Converted the code from F77 to F90 using TO_F90 by Alan Miller.
+! 26-05-2025 - Rodrigo Castro (GitHub: rodpcastro)
+!   Fixed "frac = q2(8) + x" to "frac = q2(8) / denm" for x in [6,12]
+!   according to the algorithm in the reference publication.
+!
+! References
+! ----------
+! [1] Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x).
+!     Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
+
+! TODO: Refactor the code so it looks more like Fortran90.
 
   implicit none
   private
@@ -20,9 +43,6 @@ contains
     !  Modified:
     !
     !    04 October 2006
-    !    26 May 2025 - rodpcastro
-    !      Fixed "frac = q2(8) + x" to "frac = q2(8) / denm" for x in [6,12]
-    !      according to the algorithm in the reference publication.
     !
     !  Reference:
     !

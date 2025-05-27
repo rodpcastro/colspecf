@@ -1,8 +1,26 @@
 MODULE calgo_683
+! Exponential integral En(z).
+!
+! Author
+! ------
+! Donald E. Amos
+!
+! History
+! -------
+! 01-06-1990 - Donald E. Amos - Original Code
+! 28-12-1999 - Donald E. Amos
+!   F77 code distributed by ACM: https://calgo.acm.org/683.zip
+! ??-??-???? - Alan Miller
+!   F90 code adaptation by Alan Miller: https://jblevins.org/mirror/amiller/toms683.f90
+!
+! References
+! ----------
+! [1] Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
+!     exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
+!     2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
 
-!   ALGORITHM 683, COLLECTED ALGORITHMS FROM ACM.
-!   THIS WORK PUBLISHED IN TRANSACTIONS ON MATHEMATICAL SOFTWARE,
-!   VOL. 16, NO. 2, PP. 178-182.
+! TODO: Remove functions that are useless for the computation of cexint,
+!       or transfer them to another module, if they are useful for something else.
 
 IMPLICIT NONE
 INTEGER, PARAMETER  :: dp = SELECTED_REAL_KIND(12, 60)
@@ -11,7 +29,7 @@ INTEGER, PARAMETER  :: dp = SELECTED_REAL_KIND(12, 60)
 REAL (dp), SAVE  :: fnm, gln, x, y
 INTEGER, SAVE    :: iflag
 PRIVATE
-PUBLIC  :: cexint, cexqad
+PUBLIC  :: cexint
 
 CONTAINS
 

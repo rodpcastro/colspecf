@@ -7,7 +7,7 @@ module numerror
 !
 ! History
 ! -------
-! 22-05-2025 - Rodrigo Castro - Original code
+! 25-05-2025 - Rodrigo Castro - Original code
 
   use, intrinsic :: iso_fortran_env, only: real32, real64
 
