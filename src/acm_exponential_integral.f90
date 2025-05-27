@@ -23,7 +23,6 @@ module acm_exponential_integral
                                            ieee_negative_inf
   use numerror, only: eps64
   use calgo_385, only: dei
-  use calgo_556, only: expint
   use calgo_683, only: cexint
 
   implicit none
