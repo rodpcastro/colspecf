@@ -1,6 +1,6 @@
-name = "acm-specfun"
+name = "ColSpecF"
 version = "0.1.0"
-license = "license"
+license = "LICENSE"
 author = "Rodrigo Castro"
 maintainer = "rodpcastro18@gmail.com"
 copyright = "Copyright 2025, Rodrigo Castro"

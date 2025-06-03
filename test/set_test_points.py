@@ -1,6 +1,10 @@
 from pathlib import Path
 import numpy as np
 import mpmath
+import os
+
+os.makedirs('test/test_points', exist_ok=True)
+os.makedirs('test/test_specfun', exist_ok=True)
 
 mpmath.mp.dps = 16
 test_points_dir = Path(__file__).parent / 'test_points/'

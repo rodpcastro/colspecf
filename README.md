@@ -1,4 +1,4 @@
-# ACM-Specfun
+# ColSpecF
 This repository contains [Collected Algorithms][calgo] from [ACM], retrieved from the following sources:
 
 * [ACM Collected Algorithms][calgo]
@@ -6,7 +6,7 @@ This repository contains [Collected Algorithms][calgo] from [ACM], retrieved fro
 * [Software from Alan J. Miller][csiro]
 
 ## License
-ACM-Specfun is a Fortran library distributed under two licenses based on code origin:
+ColSpecF is distributed under two licenses based on code origin:
 
 - Code comprising original contributions by Rodrigo Castro is licensed under the MIT License.
 - Code adapted from Collected Algorithms (CALGO), published by the Association for Computing Machinery (ACM), is subject to the [ACM Software License Agreement][acmlic].
@@ -15,7 +15,7 @@ Users must comply with the applicable license for each portion of the code. See 
 
 <!-- links -->
 <!-- Badges -->
-[License File]: https://github.com/rodpcastro/acm-specfun/blob/main/LICENSE
+[License File]: https://github.com/rodpcastro/colspecfun/blob/main/LICENSE
 [License Badge]: https://img.shields.io/badge/License-green
 <!-- Introduction -->
 [acm]: https://www.acm.org/

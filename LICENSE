@@ -1,4 +1,4 @@
-ACM-Specfun is a Fortran library distributed under two licenses based on code
+ColSpecF is a Fortran library distributed under two licenses based on code
 origin:
 
 - Code comprising original contributions by Rodrigo Castro is licensed under the
@@ -11,7 +11,7 @@ Users must comply with the applicable license for each portion of the code.
 See Notes below for additional guidance.
 
 Notes:
-- Individual source files in ACM-Specfun contain comments indicating whether
+- Individual source files in ColSpecF contain comments indicating whether
   they are governed by the MIT License or the ACM Software License Agreement.
 - The MIT License applies only to Rodrigo Castro’s original contributions and
   permits broader use, including commercial use, subject to its terms.

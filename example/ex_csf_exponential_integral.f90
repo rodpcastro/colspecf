@@ -1,4 +1,4 @@
-program example_acm_exponential_integral
+program example_csf_exponential_integral
 ! Simple test exponential integrals Ei and E1.
 !
 ! Author
@@ -51,4 +51,4 @@ program example_acm_exponential_integral
   print fmt, '-e1x(1.5)  = ', -e1(1.5d0)
   print fmt, 'ei(root) = ', ei(ei_root)
 
-end program example_acm_exponential_integral
+end program example_csf_exponential_integral

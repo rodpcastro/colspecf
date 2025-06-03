@@ -1,4 +1,4 @@
-module acm_exponential_integral
+module csf_exponential_integral
 ! Exponential integrals Ei, E1 and En.
 !
 ! Author
@@ -130,4 +130,4 @@ contains
     enz = cy(1)
   end function enz
 
-end module acm_exponential_integral
+end module csf_exponential_integral
