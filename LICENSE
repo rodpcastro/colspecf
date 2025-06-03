@@ -1,11 +1,14 @@
-ACM-Specfun is a Fortran library that is distributed under two separate
-licenses, depending on the origin of the code. Users must comply with the
-applicable license for each portion of the code.
+ACM-Specfun is a Fortran library distributed under two licenses based on code
+origin:
 
-- Original contributions by Rodrigo Castro, licensed under the MIT License.
+- Code comprising original contributions by Rodrigo Castro is licensed under the
+  MIT License.
 - Code adapted from Collected Algorithms (CALGO), published by the Association
-  for Computing Machinery (ACM), subject to the ACM Software Copyright and
-  License Agreement.
+  for Computing Machinery (ACM), is subject to the ACM Software License
+  Agreement.
+
+Users must comply with the applicable license for each portion of the code.
+See Notes below for additional guidance.
 
 Notes:
 - Individual source files in ACM-Specfun contain comments indicating whether
