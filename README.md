@@ -41,8 +41,8 @@ Fortran code for evaluating special functions is sourced from the following webs
 
 ACM publications presenting the original algorithms are listed below:
 
-1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
-2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
+1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun. ACM 13, 7 (July 1970), 446–447. <https://doi.org/10.1145/362686.362696>
+2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 
 ## License
 ColSpecF is distributed under two licenses based on code origin:
@@ -56,12 +56,12 @@ Users must comply with the applicable license for each portion of the code. See 
 <!-- Badges -->
 [Fortran Website]: https://fortran-lang.org/
 [Fortran Badge]: https://img.shields.io/badge/Fortran-734f96?logo=fortran&style=flat
-[Docs Website]: https://wildf.readthedocs.io/
-[Docs Badge]: https://img.shields.io/readthedocs/wildf?color=blue
-[Test Workflow]: https://github.com/rodpcastro/wildf/actions/workflows/CI.yml
-[Test Badge]: https://github.com/rodpcastro/wildf/actions/workflows/CI.yml/badge.svg
-[Coverage Website]: https://app.codecov.io/gh/rodpcastro/wildf
-[Coverage Badge]: https://codecov.io/github/rodpcastro/wildf/badge.svg
+[Docs Website]: https://colspecf.readthedocs.io/
+[Docs Badge]: https://img.shields.io/readthedocs/colspecf?color=blue
+[Test Workflow]: https://github.com/rodpcastro/colspecf/actions/workflows/CI.yml
+[Test Badge]: https://github.com/rodpcastro/colspecf/actions/workflows/CI.yml/badge.svg
+[Coverage Website]: https://app.codecov.io/gh/rodpcastro/colspecf
+[Coverage Badge]: https://codecov.io/github/rodpcastro/colspecf/badge.svg
 [License File]: https://github.com/rodpcastro/colspecf/blob/main/LICENSE
 [License Badge]: https://img.shields.io/badge/License-orange
 <!-- Introduction -->
