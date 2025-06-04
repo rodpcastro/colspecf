@@ -1,33 +1,20 @@
-module csf_exponential_integral
-! Exponential integrals Ei, E1 and En.
-!
-! Author
-! ------
-! Rodrigo Castro (GitHub: rodpcastro)
-!
-! History
-! -------
-! 27-05-2025 - Rodrigo Castro - Original code
-!
-! References
-! ----------
-! [1] Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x).
-!     Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
-! [2] Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
-!     exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
-!     2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
+!  ┏┓┏┓┏┓  Licensed under the MIT License
+!  ┃ ┗┓┣   Copyright (c) 2025 Rodrigo Castro 
+!  ┗┛┗┛┻   https://github.com/rodpcastro/colspecf
 
-  use, intrinsic :: iso_fortran_env, only: int32, real64
-  use, intrinsic :: ieee_arithmetic, only: ieee_value, &
-                                           ieee_positive_inf, &
-                                           ieee_negative_inf
-  use numerror, only: eps64
+module csf_exponential_integral
+!* Exponential integrals Ei, E1 and En.
+
+  use, intrinsic :: iso_fortran_env, only: stderr => error_unit
+  use csf_kinds, only: i4, wp
+  use csf_constants, only: pi, ninf, pinf
+  use csf_numerror, only: eps_wp
   use calgo_385, only: dei
   use calgo_683, only: cexint
 
   implicit none
   private
-  public :: ei, e1, e1x, e1z, enz
+  public :: ei, e1
 
   interface e1
     module procedure e1x, e1z
@@ -35,99 +22,124 @@ module csf_exponential_integral
 
 contains
 
-  real(real64) function ei(x)
-    ! Exponential integral Ei(x).
+  real(wp) function ei(x)
+    !! Exponential integral Ei(x).
     !
-    ! Parameters
-    ! ----------
-    ! x : real(real64)
-    !   Real number.
-    !    
-    ! Returns
-    ! -------
-    ! ei : real(real64) 
-    !   Exponential integral Ei(x).
+    ! {x ∈ ℝ | x ≠ 0}
 
-    real(real64), intent(in) :: x
+    real(wp), intent(in) :: x
 
-    if (x == 0.0d0) then
-      ei = ieee_value(1.0_real64, ieee_negative_inf)
-    else
+    if (x == 0.0_wp) then
+      ei = ninf()
+    else if (x < 0.0_wp) then
+      ei = -e1x(-x)
+    else if (x < 710.0_wp) then
       ei = dei(x)
+    else
+      ei = pinf()
     end if
   end function ei
 
-  real(real64) function e1x(x)
-    ! Exponential integral E1(x).
+  real(wp) function e1x(x)
+    !! Exponential integral E1(x).
     !
-    ! Parameters
-    ! ----------
-    ! x : real(real64)
-    !   Real number ≥ 0.
-    !    
-    ! Returns
-    ! -------
-    ! e1x : real(real64) 
-    !   Exponential integral E1(x).
+    ! {x ∈ ℝ | x ≠ 0}
 
-    real(real64), intent(in) :: x
-    complex(real64) :: z, e1z
+    real(wp), intent(in) :: x
+    complex(wp) :: z, e1z
 
-    if (x == 0.0d0) then
-      e1x = ieee_value(1.0_real64, ieee_positive_inf)
-    else
-      z = cmplx(x, 0.0d0)
+    if (x == 0.0_wp) then
+      e1x = pinf()
+    else if (x < 739.0_wp) then
+      z = cmplx(x, 0.0_wp, kind=wp)
       e1z = enz(1, z)
       e1x = e1z%re
+    else
+      e1x = 0.0_wp
     end if
   end function e1x
 
-  complex(real64) function e1z(z)
-    ! Exponential integral E1(z).
+  complex(wp) function e1z(z)
+    !! Exponential integral E1(z).
     !
-    ! Parameters
-    ! ----------
-    ! z : complex(real64)
-    !   Complex number.
-    !    
-    ! Returns
-    ! -------
-    ! e1z : complex(real64) 
-    !   Exponential integral E1(z).
+    ! z ∈ ℂ \ ({z ∈ ℂ | Re(z) < 0, |Im(z)| < 1e-6} ∪ {0})
 
-    complex(real64), intent(in) :: z
-    
-    if (abs(z) == 0.0d0) then
-      e1z = cmplx(ieee_value(1.0_real64, ieee_positive_inf), 0.0_real64)
+    complex(wp), intent(in) :: z
+    real(wp) :: zabs
+
+    zabs = abs(z)
+
+    if (zabs == 0.0_wp) then
+      e1z = cmplx(pinf(), -pi, kind=wp)
+    else if (z%im == 0.0_wp) then
+      if (z%re < -700.0_wp) then
+        e1z = cmplx(ninf(), 0.0_wp, kind=wp) 
+      else if (z%re >= 739.0_wp) then
+        e1z = (0.0_wp, 0.0_wp)
+      else
+        e1z = enz(1, z)
+      end if
+      if (z%re < 0) e1z = cmplx(e1z%re, -pi, kind=wp)
+    else if (z%re >= 0.0_wp .and. zabs > 1.0e15_wp) then
+      e1z = (0.0_wp, 0.0_wp)
     else
       e1z = enz(1, z)
     end if
   end function e1z
 
-  complex(real64) function enz(n, z)
-    ! Exponential integral En(z).
-    !
-    ! Parameters
-    ! ----------
-    ! n : integer(int32)
-    !   Exponential integral order.
-    ! z : complex(real64)
-    !   Complex number.
-    !    
-    ! Returns
-    ! -------
-    ! enz : complex(real64) 
-    !   Exponential integral En(z).
+  complex(wp) function enz(n, z)
+    !! Exponential integral En(z), n ≥ 1, z ∈ ℂ, |arg(z)| < π.
 
-    integer(int32), intent(in) :: n
-    complex(real64), intent(in) :: z
-    real(real64), parameter :: tol = eps64
-    integer(int32), parameter :: m = 1, kode = 1
-    complex(real64) :: cy(m)
-    integer(int32) :: ierr
+    integer(i4), intent(in) :: n
+    complex(wp), intent(in) :: z
+    real(wp), parameter :: tol = eps_wp
+    integer(i4), parameter :: m = 1
+    complex(wp) :: cy(m)
+    integer(i4) :: ierr
     
-    call cexint(z, n, kode, tol, m, cy, ierr)  ! TODO: Write error messages for each ierr value.
+    ! Computing En(z) with no scaling (KODE = 1).
+    call cexint(z, n, 1, tol, m, cy, ierr)
     enz = cy(1)
+
+    select case (ierr)
+      case (1)
+        error stop 'CALGO_683 IERR = 1: An input error. No computation.'
+      case (2)
+        if (n == 1) then
+          ! Original behavior has been overwritten for E1(z).
+          ! Computing E1(z) with scaling (KODE = 2).
+          call cexint(z, n, 2, tol, m, cy, ierr)
+          enz = exp(-z) * cy(1)
+        else
+          write(stderr, '(a)') 'CALGO_683 IERR = 2: Underflow. ' // &
+                               'En(z) = (0.0, 0.0). Real(z) > 0.0 ' // &
+                               'too large on KODE = 1.'
+        end if
+      case (3)
+        error stop 'CALGO_683 IERR = 3: Overflow. No computation. ' // &
+                   'Real(z) < 0.0 too small on KODE = 1.'
+      case (4)
+        write(stderr, '(a)') 'CALGO_683 IERR = 4: |z| or n large. '  // &
+                             'Computation done but losses of significance by ' // &
+                             'argument reduction may exceed half precision.'
+      case (5)
+        if (n == 1) then
+          ! Original behavior has been overwritten for E1(z).
+          write(stderr, '(a)') 'CALGO_683 IERR = 5: |z| large. All loss of ' // &
+                               'significance by argument reduction has ' // &
+                               'occurred. Returning E1(z) = (0.0, 0.0).'
+          enz = (0.0_wp, 0.0_wp)
+        else
+          error stop 'CALGO_683 IERR = 5: |z| or n large. No computation. ' // &
+                     'All loss of significance by argument reduction has occurred.'
+        end if
+      case (6)
+        error stop 'CALGO_683 IERR = 6: Convergence error. No computation. ' // &
+                   'Algorithm termination condition not met'
+      case (7)
+        error stop 'CALGO_683 IERR = 7: Discrimination error. No computation. ' // &
+                   'This condition should never occur.'
+    end select
   end function enz
 
 end module csf_exponential_integral

@@ -1,5 +1,9 @@
+! Licensed under the ACM Software License Agreement
+! Copyright © 1970–2012 Association for Computing Machinery (ACM).
+! https://www.acm.org/publications/policies/software-copyright-notice
+
 MODULE calgo_683
-! Exponential integral En(z).
+!* Exponential integral En(z).
 !
 ! Author
 ! ------
@@ -7,17 +11,17 @@ MODULE calgo_683
 !
 ! History
 ! -------
-! 01-06-1990 - Donald E. Amos - Original Code
-! 28-12-1999 - Donald E. Amos
+! 1987-05-15 - Donald E. Amos - Original Code
+! 1999-12-28 - Donald E. Amos
 !   F77 code distributed by ACM: https://calgo.acm.org/683.zip
-! ??-??-???? - Alan Miller
+! YYYY-mm-dd - Alan Miller
 !   F90 code adaptation by Alan Miller: https://jblevins.org/mirror/amiller/toms683.f90
 !
 ! References
 ! ----------
 ! [1] Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
 !     exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
-!     2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
+!*    2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
 
 ! TODO: Remove functions that are useless for the computation of cexint,
 !       or transfer them to another module, if they are useful for something else.
@@ -357,15 +361,8 @@ END SUBROUTINE gaus8
 
 
 SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
-!***BEGIN PROLOGUE  CEXINT
-!***DATE WRITTEN   870515   (YYMMDD)
-!***REVISION DATE  870515   (YYMMDD)
-!***CATEGORY NO.  B5E
-!***KEYWORDS  EXPONENTIAL INTEGRALS, SINE INTEGRAL, COSINE INTEGRAL
-!***AUTHOR  AMOS, DONALD E., SANDIA NATIONAL LABORATORIES
-!***PURPOSE  TO COMPUTE EXPONENTIAL INTEGRALS OF A COMPLEX (dp) ARGUMENT
-!***DESCRIPTION
-
+!! Exponential integral En(z), n ≥ 1, z ∈ ℂ, |arg(z)| < π.
+! 
 !   ON KODE=1, CEXINT COMPUTES AN M MEMBER SEQUENCE OF COMPLEX (dp)
 !   EXPONENTIAL INTEGRALS CY(J)=E(N+J-1,Z), J=1,...,M, FOR
 !   POSITIVE ORDERS N,...,N+M-1 AND COMPLEX (dp) Z IN THE CUT PLANE

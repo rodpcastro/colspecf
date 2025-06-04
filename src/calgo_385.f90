@@ -1,5 +1,9 @@
+! Licensed under the ACM Software License Agreement
+! Copyright © 1970–2012 Association for Computing Machinery (ACM).
+! https://www.acm.org/publications/policies/software-copyright-notice
+
 module calgo_385
-! Exponential integral Ei(x).
+!* Exponential integral Ei(x).
 !
 ! Author
 ! ------
@@ -7,21 +11,21 @@ module calgo_385
 !
 ! History
 ! -------
-! 01-07-1970 - Kathleen Paciorek
-! 04-10-2006 - Kathleen Paciorek
+! 1970-07-01 - Kathleen Paciorek
+! 2006-10-04 - Kathleen Paciorek
 !   F77 code distributed by ACM: https://calgo.acm.org/385.zip
-! 26-05-2025 - Rodrigo Castro (GitHub: rodpcastro)
+! 2025-05-26 - Rodrigo Castro (GitHub: rodpcastro)
 !   Converted the code from F77 to F90 using TO_F90 by Alan Miller.
-! 26-05-2025 - Rodrigo Castro (GitHub: rodpcastro)
+! 2025-05-26 - Rodrigo Castro (GitHub: rodpcastro)
 !   Fixed "frac = q2(8) + x" to "frac = q2(8) / denm" for x in [6,12]
 !   according to the algorithm in the reference publication.
 !
 ! References
 ! ----------
-! [1] Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x).
-!     Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
+! [1] Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun.
+!*    ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
 
-! TODO: Refactor the code so it looks more like Fortran90.
+! TODO: Refactor the code to Modern Fortran.
 
   implicit none
   private
@@ -30,29 +34,9 @@ module calgo_385
 contains
 
   function dei(x1)
-    ! Code converted using TO_F90 by Alan Miller
-    ! Date: 2025-05-26  Time: 03:46:12
-    !
-    !  AN EXPONENTIAL INTEGRAL ROUTINE.
-    !  FOR X GREATER THAN 0, THE EXPONENTIAL INTEGRAL, EI, IS DEFINED BY
-    !  EI(X) = INTEGRAL ( EXP ( T ) / T DT ), FROM T = -INFINITY TO T = X
-    !  WHERE THE INTEGRAL IS TO BE INTERPRETED AS THE CAUCHY PRINCIPAL
-    !  VALUE.  FOR X LESS THAN 0, EI(X) = -E1(-X), WHERE
-    !  E1(Z) = INTEGRAL ( EXP ( -T ) / T DT ) FROM T = Z TO T = INFINITY.
-    !
-    !  Modified:
-    !
-    !    04 October 2006
-    !
-    !  Reference:
-    !
-    !    Kathleen Paciorek,
-    !    Algorithm 385:
-    !    Exponential Integral Ei(x),
-    !    Communications of the ACM,
-    !    Volume 13, Number 7, July 1970, pages 446-447.
+    !! Exponential integral Ei(x), x ∈ ℝ, x ≠ 0.
 
-    DOUBLE PRECISION, INTENT(IN) :: x1
+    DOUBLE PRECISION, INTENT(IN) :: x1  !! x1 ≠ 0
     DOUBLE PRECISION :: a(6)
     DOUBLE PRECISION :: b(6)
     DOUBLE PRECISION :: c(8)
