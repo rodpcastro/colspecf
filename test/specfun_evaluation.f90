@@ -1,17 +1,9 @@
 module specfun_evaluation
-! Evaluation of special function for test points.
-!
-! Author
-! ------
-! Rodrigo Castro (GitHub: rodpcastro)
-!
-! History
-! -------
-! 25-05-2025 - Rodrigo Castro - Original code
+! Evaluation of special functions for test points.
 
-  use, intrinsic :: iso_fortran_env, only: real64
+  use csf_kinds, only: wp
+  use csf_numerror, only: isclose
   use readwrite, only: read_test_points, write_test_points
-  use numerror, only: isclose
 
   implicit none
   private
@@ -19,38 +11,36 @@ module specfun_evaluation
 
   abstract interface
     ! Dummy function of single real variable.
-
     function specfunx(x) result(y)
-      import :: real64
-      real(real64), intent(in) :: x
-      real(real64) :: y
+      import :: wp
+      real(wp), intent(in) :: x
+      real(wp) :: y
     end function specfunx
   end interface
 
   abstract interface
     ! Dummy function of single complex variable.
-
     function specfunz(z) result(w)
-      import :: real64
-      complex(real64), intent(in) :: z
-      complex(real64) :: w
+      import :: wp
+      complex(wp), intent(in) :: z
+      complex(wp) :: w
     end function specfunz
   end interface
 
   interface eval_write
-    ! Evaluates special function for test points and write results.
-    ! Works with both real and complex data.
-
+    ! Evaluates real or complex function for test points and write results.
     module procedure evalx_write, evalz_write
   end interface eval_write
 
 contains
 
   subroutine evalx_write(fx, file, specfun_ic)
+    ! Evaluates real function for test points and write results.
+
     procedure(specfunx) :: fx
     character(*), intent(in) :: file
     logical, intent(out), allocatable :: specfun_ic(:)
-    real(real64), allocatable :: ref_x(:), ref_y(:), specfun_y(:)
+    real(wp), allocatable :: ref_x(:), ref_y(:), specfun_y(:)
     integer :: npts, fileunit, i
     character(len=100) :: filename
 
@@ -69,10 +59,12 @@ contains
   end subroutine evalx_write
 
   subroutine evalz_write(fz, file, specfun_ic)
+    ! Evaluates complex function for test points and write results.
+
     procedure(specfunz) :: fz
     character(*), intent(in) :: file
     logical, intent(out), allocatable :: specfun_ic(:)
-    complex(real64), allocatable :: ref_x(:), ref_y(:), specfun_y(:)
+    complex(wp), allocatable :: ref_x(:), ref_y(:), specfun_y(:)
     integer :: npts, fileunit, i
     character(len=100) :: filename
 

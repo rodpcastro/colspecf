@@ -1,6 +1,7 @@
 module readwrite
+! Read and write test points data.
 
-  use, intrinsic :: iso_fortran_env, only: real64
+  use csf_kinds, only: wp
 
   implicit none
   private
@@ -35,7 +36,7 @@ contains
     ! Reads real test points from file.
 
     character(len=*), intent(in) :: filename
-    real(real64), intent(in out), allocatable :: x(:), y(:)
+    real(wp), intent(in out), allocatable :: x(:), y(:)
     integer :: fileunit, npts, i
 
     npts = number_of_lines(filename)
@@ -53,8 +54,8 @@ contains
     ! Reads complex test points from file.
 
     character(len=*), intent(in) :: filename
-    complex(real64), intent(in out), allocatable :: x(:), y(:)
-    real(real64) :: xreal, ximag, yreal, yimag
+    complex(wp), intent(in out), allocatable :: x(:), y(:)
+    real(wp) :: xreal, ximag, yreal, yimag
     integer :: fileunit, npts, i
 
     npts = number_of_lines(filename)
@@ -64,17 +65,17 @@ contains
     open(newunit=fileunit, file=filename)
     do i = 1, npts
       read(fileunit, fmt=*, end=1) xreal, ximag, yreal, yimag
-      x(i) = cmplx(xreal, ximag, kind=real64)
-      y(i) = cmplx(yreal, yimag, kind=real64)
+      x(i) = cmplx(xreal, ximag, kind=wp)
+      y(i) = cmplx(yreal, yimag, kind=wp)
     end do
     1 close(fileunit)
   end subroutine read_complex_test_points
 
   subroutine write_real_test_points(filename, x, y, z, ic)
-    ! Write real test points, specfun and isclose values.
+    ! Write real test points data.
 
     character(len=*), intent(in) :: filename
-    real(real64), intent(in), allocatable :: x(:), y(:), z(:)
+    real(wp), intent(in), allocatable :: x(:), y(:), z(:)
     logical, intent(in), allocatable :: ic(:)
     character(len=:), allocatable :: outfmt
     integer :: fileunit, i
@@ -88,10 +89,10 @@ contains
   end subroutine write_real_test_points
 
   subroutine write_complex_test_points(filename, x, y, z, ic)
-    ! Write complex test points, specfun and isclose values.
+    ! Write complex test points data.
 
     character(len=*), intent(in) :: filename
-    complex(real64), intent(in), allocatable :: x(:), y(:), z(:)
+    complex(wp), intent(in), allocatable :: x(:), y(:), z(:)
     logical, intent(in), allocatable :: ic(:)
     character(len=:), allocatable :: outfmt
     integer :: fileunit, i
