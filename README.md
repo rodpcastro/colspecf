@@ -5,7 +5,7 @@
 [![Coverage][Coverage Badge]][Coverage Website]
 [![License][License Badge]][License File]
 
-ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions]. It's built around [Collected Algorithms][calgo] from [ACM], 
+ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions]. It's built around adaptations of [Collected Algorithms][calgo] from [ACM] to Modern Fortran.
 
 ## Functions
 The following list describes the implemented functions, each validated to at least 8 digits of precision within the specified domains. Outside these domains, the same precision is not guaranteed.
@@ -33,11 +33,16 @@ Testing routines are built using [test-drive], a standard Fortran unit testing f
 The [API documentation][Docs Website] for this library is generated using [FORD] and is deployed and hosted on [ReadTheDocs].
 
 ## References
-retrieved from the following sources:
+Fortran code for evaluating special functions is sourced from the following websites:
 
 * [ACM Collected Algorithms][calgo]
 * [Alan Miller's Fortran Software][jblevins]
 * [Software from Alan J. Miller][csiro]
+
+ACM publications presenting the original algorithms:
+
+1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
+2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
 
 ## License
 ColSpecF is distributed under two licenses based on code origin:
@@ -58,7 +63,7 @@ Users must comply with the applicable license for each portion of the code. See 
 [Coverage Website]: https://app.codecov.io/gh/rodpcastro/wildf
 [Coverage Badge]: https://codecov.io/github/rodpcastro/wildf/badge.svg
 [License File]: https://github.com/rodpcastro/colspecf/blob/main/LICENSE
-[License Badge]: https://img.shields.io/badge/License-green
+[License Badge]: https://img.shields.io/badge/License-orange
 <!-- Introduction -->
 [Special Functions]: https://www.britannica.com/science/special-function
 <!-- Tests -->
