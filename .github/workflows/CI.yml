@@ -48,17 +48,17 @@ jobs:
       - name: Test
         run: fpm test --flag -coverage
 
-      - name: Create coverage report
-        env:
-          COV_DIR: build/coverage
-          RAW_COV: build/coverage/raw_coverage.info
-          COV: build/coverage/coverage.info
-        run: |
-          mkdir ${{ env.COV_DIR }}
-          mv ./build/gfortran_*/*/* ${{ env.COV_DIR }}
-          lcov --capture --base-directory . --directory ${{ env.COV_DIR }} --output-file ${{ env.COV }}
-
-      - name: Upload coverage report
-        uses: codecov/codecov-action@v5
-        with:
-          files: build/coverage/coverage.info
+      # - name: Create coverage report
+      #   env:
+      #     COV_DIR: build/coverage
+      #     RAW_COV: build/coverage/raw_coverage.info
+      #     COV: build/coverage/coverage.info
+      #   run: |
+      #     mkdir ${{ env.COV_DIR }}
+      #     mv ./build/gfortran_*/*/* ${{ env.COV_DIR }}
+      #     lcov --capture --base-directory . --directory ${{ env.COV_DIR }} --output-file ${{ env.COV }}
+      #
+      # - name: Upload coverage report
+      #   uses: codecov/codecov-action@v5
+      #   with:
+      #     files: build/coverage/coverage.info
