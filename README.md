@@ -15,7 +15,7 @@ Users must comply with the applicable license for each portion of the code. See 
 
 <!-- links -->
 <!-- Badges -->
-[License File]: https://github.com/rodpcastro/colspecfun/blob/main/LICENSE
+[License File]: https://github.com/rodpcastro/colspecf/blob/main/LICENSE
 [License Badge]: https://img.shields.io/badge/License-green
 <!-- Introduction -->
 [acm]: https://www.acm.org/
