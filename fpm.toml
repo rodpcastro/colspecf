@@ -11,3 +11,29 @@ library = true
 
 [dependencies]
 test-drive = {git = "https://github.com/fortran-lang/test-drive.git" }
+
+[extra.ford]
+author = "Rodrigo Castro"
+github = "https://github.com/rodpcastro/"
+website = "https://rodpcastro.github.io/"
+
+project = "ColSpecF"
+summary = "ColSpecF is a Fortran library for evaluating mathematical Special Functions."
+license = "mit"
+project_github = "https://github.com/rodpcastro/colspecf/"
+project_download = "https://github.com/rodpcastro/colspecf/archive/refs/heads/main.zip"
+
+src_dir = "./src"
+output_dir = "./docs"
+extensions = ["f90"]
+exclude = ["src/csf_template.f90"]
+display = ["public"]
+print_creation_date = true
+creation_date = "%Y-%m-%d %H:%M %z" 
+source = true
+graph = true
+coloured_edges = true
+
+[extra.ford.extra_mods]
+iso_fortran_env = "https://fortranwiki.org/fortran/show/iso_fortran_env"
+ieee_arithmetic = "https://fortranwiki.org/fortran/show/ieee_arithmetic"

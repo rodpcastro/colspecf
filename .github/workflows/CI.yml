@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+  
+jobs:
+  test_cov:
+    name: Test and Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up gfortran
+        uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: 13
+
+      - name: Set up lcov
+        run: sudo apt-get install lcov
+
+      - name: Set up fpm
+        uses: fortran-lang/setup-fpm@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fpm-version: 'latest'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Install Numpy and mpmath
+        run: pip install numpy mpmath
+
+      - name: Set test points
+        run: python3 test/set_test_points.py
+
+      - name: Test
+        run: fpm test --flag -coverage
+
+      - name: Create coverage report
+        env:
+          COV_DIR: build/coverage
+          RAW_COV: build/coverage/raw_coverage.info
+          COV: build/coverage/coverage.info
+        run: |
+          mkdir ${{ env.COV_DIR }}
+          mv ./build/gfortran_*/*/* ${{ env.COV_DIR }}
+          lcov --capture --base-directory . --directory ${{ env.COV_DIR }} --output-file ${{ env.COV }}
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v5
+        with:
+          files: build/coverage/coverage.info

@@ -1,0 +1,5 @@
+ignore:
+  - "test"
+  - "build"
+  - "example"
+  - "src/wildf_template.f90"
