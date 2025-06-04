@@ -5,7 +5,7 @@
 [![Coverage][Coverage Badge]][Coverage Website]
 [![License][License Badge]][License File]
 
-ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions]. It's built around adaptations of [Collected Algorithms][calgo] from [ACM] to Modern Fortran.
+ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions], built around adaptations of [Collected Algorithms][calgo] from [ACM] to modern Fortran.
 
 ## Functions
 The following list describes the implemented functions, each validated to at least 8 digits of precision within the specified domains. Outside these domains, the same precision is not guaranteed.
@@ -39,7 +39,7 @@ Fortran code for evaluating special functions is sourced from the following webs
 * [Alan Miller's Fortran Software][jblevins]
 * [Software from Alan J. Miller][csiro]
 
-ACM publications presenting the original algorithms:
+ACM publications presenting the original algorithms are listed below:
 
 1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun. ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
 2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
