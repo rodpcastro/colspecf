@@ -3,7 +3,17 @@
 !  ┗┛┗┛┻   https://github.com/rodpcastro/colspecf
 
 module csf_exponential_integral
-!* Exponential integrals Ei, E1 and En.
+!* Exponential integrals Ei and E1.
+!
+! En(z) is kept private as it is not tested for n ≠ 1.
+!
+! References
+! ----------
+! [1] Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun.
+!     ACM 13, 7 (July 1970), 446–447. https://doi.org/10.1145/362686.362696
+! [2] Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
+!     exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
+!*    2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
 
   use, intrinsic :: iso_fortran_env, only: stderr => error_unit
   use csf_kinds, only: i4, wp
