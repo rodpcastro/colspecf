@@ -7,8 +7,8 @@ module csf_constants
 !
 ! References
 ! ----------
-! [1] N. J. A. Sloane. 1964. The Online Encyclopedia
-!*    of Integer Sequences. https://oeis.org/.
+! 1. N. J. A. Sloane. 1964. The Online Encyclopedia
+!*   of Integer Sequences. <https://oeis.org/>
 
   use csf_kinds, only: wp
   use, intrinsic :: ieee_arithmetic, only: ieee_value, &
@@ -19,18 +19,20 @@ module csf_constants
   private
   public :: pi, gm, ninf, pinf
   
-  real(wp), parameter :: pi = 3.14159265358979323846264338327950288e+0_wp  !! π
-  real(wp), parameter :: gm = 5.77215664901532860606512090082402431e-1_wp  !! Euler's constant γ
+  !> \(\pi\)
+  real(wp), parameter :: pi = 3.14159265358979323846264338327950288e+0_wp
+  !> Euler's constant \(\gamma\)
+  real(wp), parameter :: gm = 5.77215664901532860606512090082402431e-1_wp
 
 contains
 
   pure real(wp) function ninf()
-    !! negative infinity (-∞)
+    !! negative infinity \((-\infty)\)
     ninf = ieee_value(1.0_wp, ieee_negative_inf)
   end function ninf
 
   pure real(wp) function pinf()
-    !! positive infinity (+∞)
+    !! positive infinity \((+\infty)\)
     pinf = ieee_value(1.0_wp, ieee_positive_inf)
   end function pinf
 

@@ -7,8 +7,8 @@ module csf_numerror
 !
 ! References
 ! ----------
-! [1] Christopher Barker. 2015. PEP 485 – A Function for testing
-!*    approximate equality. https://peps.python.org/pep-0485/.
+! 1. Christopher Barker. 2015. PEP 485 – A Function for testing
+!*   approximate equality. <https://peps.python.org/pep-0485/>
 
   use csf_kinds, only: wp
 

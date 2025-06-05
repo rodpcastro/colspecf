@@ -16,7 +16,8 @@ module csf_template
   private
   public :: phi, fibonacci
 
-  real(wp), parameter :: phi = 1.61803398874989484820458683436563811e+0_wp  !! Golden ratio φ
+  !> Golden ratio φ
+  real(wp), parameter :: phi = 1.61803398874989484820458683436563811e+0_wp
 
 contains
 

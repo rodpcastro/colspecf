@@ -3,7 +3,7 @@
 ! https://www.acm.org/publications/policies/software-copyright-notice
 
 MODULE calgo_683
-!* Exponential integral En(z).
+!* CALGO 683: Exponential integral \(\mathrm{E}_n(z)\).
 !
 ! Author
 ! ------
@@ -11,32 +11,33 @@ MODULE calgo_683
 !
 ! History
 ! -------
-! 1987-05-15 - Donald E. Amos - Original Code
-! 1999-12-28 - Donald E. Amos
-!   F77 code distributed by ACM: https://calgo.acm.org/683.zip
-! YYYY-mm-dd - Alan Miller
-!   F90 code adaptation by Alan Miller: https://jblevins.org/mirror/amiller/toms683.f90
+! - 1987-05-15 - Donald E. Amos
+!     - Original code.
+! - 1999-12-28 - Donald E. Amos
+!     - F77 code distributed by ACM: <https://calgo.acm.org/683.zip>
+! - YYYY-mm-dd - Alan Miller
+!     - F90 code adaptation by Alan Miller:
+!       <https://jblevins.org/mirror/amiller/toms683.f90>
 !
 ! References
 ! ----------
-! [1] Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
-!     exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
-!*    2 (June 1990), 178–182. https://doi.org/10.1145/78928.78934
+! 1. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
+!    exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
+!*   2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 
 ! TODO: Remove functions that are useless for the computation of cexint,
 !       or transfer them to another module, if they are useful for something else.
 
 IMPLICIT NONE
-INTEGER, PARAMETER  :: dp = SELECTED_REAL_KIND(12, 60)
-
-! COMMON /qad/ fnm, gln, x, y, iflag
-REAL (dp), SAVE  :: fnm, gln, x, y
-INTEGER, SAVE    :: iflag
 PRIVATE
 PUBLIC  :: cexint
 
-CONTAINS
+INTEGER, PARAMETER  :: dp = SELECTED_REAL_KIND(12, 60)
+! COMMON /qad/ fnm, gln, x, y, iflag
+REAL (dp), SAVE  :: fnm, gln, x, y
+INTEGER, SAVE    :: iflag
 
+CONTAINS
 
 SUBROUTINE cexqad(z, n, kode, tol, cw, kerr)
 
@@ -358,10 +359,11 @@ IF (ERR < 0.0_dp) ERR = ce
 RETURN
 END SUBROUTINE gaus8
 
-
-
 SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
-!! Exponential integral En(z), n ≥ 1, z ∈ ℂ, |arg(z)| < π.
+!! CALGO 683: Exponential integral \(\mathrm{E}_n(z)\).
+!
+!! \(n \geq 1,\thinspace
+!! \lbrace z \in \mathbb{C} \mid |\arg(z)| \lt \pi \rbrace \)
 ! 
 !   ON KODE=1, CEXINT COMPUTES AN M MEMBER SEQUENCE OF COMPLEX (dp)
 !   EXPONENTIAL INTEGRALS CY(J)=E(N+J-1,Z), J=1,...,M, FOR
@@ -414,9 +416,9 @@ SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
 !                      SEE LONG DESCRIPTION ABOUT PARAMETER ICMAX.
 !              IERR=7, ERROR         - NO COMPUTATION,
 !                      DISCRIMINATION ERROR.  THIS CONDITION SHOULD NEVER OCCUR.
-
-!***LONG DESCRIPTION
-
+!
+!   LONG DESCRIPTION
+!
 !   CEXINT USES A COMBINATION OF POWER SERIES AND BACKWARD RECURRENCE
 !   DESCRIBED IN REF. 2 FOR THE COMPLEX (dp) Z PLANE EXCEPT FOR A STRIP
 !   2*YB WIDE ABOUT THE NEGATIVE REAL AXIS, WHERE ANALYTIC CONTINUATION IS
@@ -508,7 +510,7 @@ SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
 
 !   WHERE M=+1 OR M=-1 AND I**2=-1.
 
-!***REFERENCES  HANDBOOK OF MATHEMATICAL FUNCTIONS BY M. ABRAMOWITZ AND
+!   REFERENCES  HANDBOOK OF MATHEMATICAL FUNCTIONS BY M. ABRAMOWITZ AND
 !           I. A. STEGUN, NBS AMS SERIES 55, U.S. DEPT. OF COMMERCE, 1955.
 
 !         COMPUTATION OF EXPONENTIAL INTEGRALS OF COMPLEX (dp) ARGUMENT
@@ -528,8 +530,8 @@ SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
 !           ALGORITHM 609, A PORTABLE FORTRAN SUBROUTINE FOR BICKLEY
 !           FUNCTIONS KI(N,X), PP. 480-493.
 
-!***ROUTINES CALLED  CACEXI,CEXENZ,I1MACH,R1MACH
-!***END PROLOGUE  CEXINT
+!   ROUTINES CALLED  CACEXI,CEXENZ,I1MACH,R1MACH
+!   END PROLOGUE  CEXINT
 
 COMPLEX (dp), INTENT(IN)   :: z
 INTEGER, INTENT(IN)        :: n
