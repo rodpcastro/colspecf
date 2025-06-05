@@ -3,3 +3,5 @@
 *.exe
 *.csv
 /build
+/docs
+project.md
