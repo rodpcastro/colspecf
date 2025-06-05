@@ -19,7 +19,6 @@ website = "https://rodpcastro.github.io/"
 
 project = "ColSpecF"
 summary = "ColSpecF is a Fortran library for evaluating mathematical Special Functions."
-license = "mit"
 project_github = "https://github.com/rodpcastro/colspecf/"
 project_download = "https://github.com/rodpcastro/colspecf/archive/refs/heads/main.zip"
 
