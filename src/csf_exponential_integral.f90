@@ -45,8 +45,8 @@ contains
 
     if (x == 0.0_wp) then
       ei = ninf()
-    else if (x < 0.0_wp) then
-      ei = -e1x(-x)
+    else if (x <= -739.0_wp) then
+      ei = 0.0_wp
     else if (x < 710.0_wp) then
       ei = dei(x)
     else
