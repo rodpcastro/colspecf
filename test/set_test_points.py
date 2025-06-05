@@ -51,7 +51,7 @@ def set_test_points_exponential_integral_e1z():
     z1_mask = ~np.logical_and(z1.real == 0, z1.imag == 0)
     z1 = z1[z1_mask]
 
-    # {z ∈ ℂ | Re(z) < 0, |Im(z)| ≥ 1e-6}
+    # {z ∈ ℂ | Re(z) < 0, |Im(z)| ≥ 1e-6, Im(z) = 0}
     x2c = np.logspace(-100, -1, 25, dtype=np.float64)
     x2f = np.linspace(1.0, 700.0, 25, dtype=np.float64)
     x2 = -np.concatenate((x2c, x2f))[::-1]

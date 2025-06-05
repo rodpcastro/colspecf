@@ -25,8 +25,7 @@ MODULE calgo_683
 !    exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
 !*   2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 
-! TODO: Remove functions that are useless for the computation of cexint,
-!       or transfer them to another module, if they are useful for something else.
+! TODO: Write brief description of other useful functions contained in this module.
 
 IMPLICIT NONE
 PRIVATE
@@ -363,7 +362,7 @@ SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
 !! CALGO 683: Exponential integral \(\mathrm{E}_n(z)\).
 !
 !! \(n \geq 1,\thinspace
-!! \lbrace z \in \mathbb{C} \mid |\arg(z)| \lt \pi \rbrace \)
+!! \lbrace z \in \mathbb{C} \mid -\pi \lt \arg(z) \leq \pi \rbrace \)
 ! 
 !   ON KODE=1, CEXINT COMPUTES AN M MEMBER SEQUENCE OF COMPLEX (dp)
 !   EXPONENTIAL INTEGRALS CY(J)=E(N+J-1,Z), J=1,...,M, FOR

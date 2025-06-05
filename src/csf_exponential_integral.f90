@@ -8,7 +8,7 @@ module csf_exponential_integral
 !
 ! Notes:
 !
-! - `enz` is kept private as it is not tested for \(n \neq 1\).
+! - The function `enz` is kept private as it is not tested for \(n \neq 1\).
 !
 ! References
 ! ----------
@@ -77,7 +77,7 @@ contains
     !! Exponential integral \(\mathrm{E}_1(z)\).
     !
     !! \(z \in \mathbb{C} \setminus \left( \lbrace z \in \mathbb{C} \mid \Re(z) \lt 0,
-    !! \thinspace |\Im(z)| \lt 10^{-6} \rbrace \cup \lbrace 0 \rbrace \right)\)
+    !! \thinspace 0 \lt |\Im(z)| \lt 10^{-6} \rbrace \cup \lbrace 0 \rbrace \right)\)
 
     complex(wp), intent(in) :: z
     real(wp) :: zabs
@@ -105,7 +105,7 @@ contains
   complex(wp) function enz(n, z)
     !! Exponential integral \(\mathrm{E}_n(z)\).
     ! 
-    !! \(n \geq 1,\thinspace z \in \mathbb{C},\thinspace |\arg(z)| \lt \pi \)
+    !! \(n \geq 1,\thinspace z \in \mathbb{C},\thinspace -\pi \lt \arg(z) \leq \pi \)
 
     integer(i4), intent(in) :: n
     complex(wp), intent(in) :: z

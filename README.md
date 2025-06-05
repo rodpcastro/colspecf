@@ -15,7 +15,7 @@ The following list describes the implemented functions, each validated to at lea
 * Exponential integral $\mathrm{E}_1(x)$
     * $\lbrace x \in \mathbb{R} \mid x \neq 0 \rbrace$
 * Exponential integral $\mathrm{E}_1(z)$
-    * $z \in \mathbb{C} \setminus \left( \lbrace z \in \mathbb{C} \mid \Re(z) \lt 0,\thinspace |\Im(z)| \lt 10^{-6} \rbrace \cup \lbrace 0 \rbrace \right)$
+    * $z \in \mathbb{C} \setminus \left( \lbrace z \in \mathbb{C} \mid \Re(z) \lt 0,\thinspace 0 \lt |\Im(z)| \lt 10^{-6} \rbrace \cup \lbrace 0 \rbrace \right)$
 
 The list above will be updated as new functions are added and tested. Next in line are:
 

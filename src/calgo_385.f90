@@ -26,7 +26,7 @@ module calgo_385
 ! 1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun.
 !*   ACM 13, 7 (July 1970), 446–447. <https://doi.org/10.1145/362686.362696>
 
-! TODO: Refactor the code to Modern Fortran.
+! TODO: Refactor the code to modern Fortran.
 
   implicit none
   private
@@ -36,7 +36,7 @@ contains
 
   function dei(x1)
     !! CALGO 385: Exponential integral \(\mathrm{Ei}(x)\)
-    !!
+    !
     !! \(\lbrace x \in \mathbb{R} \mid x \neq 0 \rbrace\)
 
     DOUBLE PRECISION, INTENT(IN) :: x1  !! x1 ≠ 0
