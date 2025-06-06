@@ -210,7 +210,7 @@ CONTAINS
       
     ! COMPUTE REFINED ESTIMATES, ESTIMATE THE ERROR, ETC.
       
-      10   gl = g8(fun, aa(l)+hh(l), hh(l))
+  10  gl = g8(fun, aa(l)+hh(l), hh(l))
       gr(l) = g8(fun, aa(l)+3.0_wp*hh(l), hh(l))
       k = k + 16
       area = area + (ABS(gl) + ABS(gr(l)) - ABS(est))
@@ -223,8 +223,8 @@ CONTAINS
       ELSE
         GO TO 30
       END IF
-      20 mxl = 1
-      30 ce = ce + (est-glr)
+  20  mxl = 1
+  30  ce = ce + (est-glr)
       IF (lr(l) > 0) THEN
         GO TO 70
       ELSE
@@ -233,7 +233,7 @@ CONTAINS
       
     ! CONSIDER THE LEFT HALF OF THIS LEVEL
       
-      40 IF (k > kmx) lmx = kml
+  40  IF (k > kmx) lmx = kml
       IF (l >= lmx) GO TO 20
       l = l + 1
       eps = eps * 0.5_wp
@@ -246,19 +246,19 @@ CONTAINS
       
     ! PROCEED TO RIGHT HALF AT THIS LEVEL
       
-      50 vl(l) = glr
-      60 est = gr(l-1)
+  50  vl(l) = glr
+  60  est = gr(l-1)
       lr(l) = 1
       aa(l) = aa(l) + 4.0_wp * hh(l)
       GO TO 10
       
     ! RETURN ONE LEVEL
       
-      70 vr = glr
-      80 IF (l > 1) THEN
-        l = l - 1
-        eps = eps * 2.0_wp
-        ef = ef * sq2
+  70    vr = glr
+  80    IF (l > 1) THEN
+          l = l - 1
+          eps = eps * 2.0_wp
+          ef = ef * sq2
         IF (lr(l) <= 0) THEN
           vl(l) = vl(l+1) + vr
           GO TO 60
@@ -275,12 +275,12 @@ CONTAINS
       WRITE(*, *) 'GAUS8- ANS IS PROBABLY INSUFFICIENTLY ACCURATE.'
       GO TO 100
 
-      90 ierr = -1
+  90  ierr = -1
       WRITE(*, *) 'GAUS8- THE FOLLOWING TEMPORARY DIAGNOSTIC WILL APPEAR ONLY ONCE.'
       WRITE(*, *) 'A AND B ARE TOO NEARLY EQUAL TO ALLOW NORMAL INTEGRATION.'
       WRITE(*, *) 'ANS IS SET TO ZERO, AND IERR=-1.'
     END IF
-    100 icall = 0
+  100 icall = 0
     IF (ERR < 0.0_wp) ERR = ce
     RETURN
   END SUBROUTINE gaus8
@@ -558,7 +558,7 @@ CONTAINS
     END DO
     RETURN
 
-    20 ierr = 5
+  20 ierr = 5
     RETURN
   END SUBROUTINE cexint
 
@@ -714,22 +714,22 @@ CONTAINS
     ierr = 7
     RETURN
 
-    30 ierr = 2
+  30 ierr = 2
     cy(1:m) = czero
     RETURN
 
-    50 icase = 1
+  50 icase = 1
     ks = kn
     ml = m - 1
     mu = -1
     ind = m
     IF (kn > 1) GO TO 90
 
-    60 ks = 2
+  60 ks = 2
     icase = 3
     GO TO 90
 
-    70 icase = 2
+  70 icase = 2
     ind = 1
     ks = n
     mu = m - 1
@@ -737,13 +737,13 @@ CONTAINS
     IF (kn == 1) GO TO 60
     iz = 2
 
-    80 icase = 1
+  80 icase = 1
     ks = iz
     ml = iz - n
     ind = ml + 1
     mu = kn - iz
 
-    90 ik = ks / 2
+  90 ik = ks / 2
     ah = ik
     jset = 1 + ks - 2 * ik
     !-----------------------------------------------------------------------
@@ -774,7 +774,7 @@ CONTAINS
     cp1 = czero
     cp2 = cone
 
-    100 ic = ic + 1
+  100 ic = ic + 1
     IF (ic <= icdim) THEN
       ak = ak + 1.0_wp
       ck = ck + 1.0_wp
@@ -800,7 +800,7 @@ CONTAINS
     !-----------------------------------------------------------------------
       ic = ic - 1
 
-      110 ic = ic + 1
+  110 ic = ic + 1
       IF (ic > icmax) GO TO 190
       ak = ak + 1.0_wp
       ck = ck + 1.0_wp
@@ -835,7 +835,7 @@ CONTAINS
     !-----------------------------------------------------------------------
       bt = aa + x
 
-      120 ak = ah + fc
+  120 ak = ah + fc
       bk = ak + 1.0_wp
       ck = aam + fc
       dk = bt + fc + fc
@@ -887,7 +887,7 @@ CONTAINS
     cy(1) = ct * rscle
     RETURN
 
-    140 caa = ak
+  140 caa = ak
     tz = cone / z
     k = ind - 1
     DO i = 1, ml
@@ -899,7 +899,7 @@ CONTAINS
     IF (mu <= 0) RETURN
     ak = ks
 
-    160 k = ind
+  160 k = ind
     DO i = 1, mu
       cs = (emz - z*cs) / ak
       cy(k+1) = cs * rscle
@@ -908,10 +908,10 @@ CONTAINS
     END DO
     RETURN
 
-    180 ierr = 3
+  180 ierr = 3
     RETURN
 
-    190 ierr = 6
+  190 ierr = 6
     RETURN
   END SUBROUTINE cexenz
 
@@ -979,7 +979,7 @@ CONTAINS
     kl = n
     GO TO 30
 
-    10 nub = nu + n - 1
+  10 nub = nu + n - 1
     nb = 0
     nflg = 2
     is = 2
@@ -990,12 +990,12 @@ CONTAINS
     !     SET PARAMETERS FOR ANALYTIC CONTINUATION FROM Y=YB INTO THE REGION
     !     0 <= ZID < YB.
     !-----------------------------------------------------------------------
-    20 yb = yb + 0.5_wp
+  20 yb = yb + 0.5_wp
     kyb = kyb + 1
     IF (kyb > 10) RETURN
     ierr = 0
 
-    30 del = yb - zid
+  30 del = yb - zid
     !-----------------------------------------------------------------------
     !     MAKE DEL LARGE ENOUGH TO AVOID UNDERFLOW IN GENERATION OF POWERS
     !-----------------------------------------------------------------------
@@ -1041,7 +1041,7 @@ CONTAINS
     END DO
     k = 64
 
-    50 kmax = k
+  50 kmax = k
     sum = sum * cezt
     IF (iy /= 0) THEN
       DO i = 1, iy
@@ -1073,8 +1073,7 @@ CONTAINS
               fj = fj - 1.0_wp
             END DO
             k = 64
-
-            80 kmax = k
+  80        kmax = k
           END IF
         END IF
         sum = sum * cezt
@@ -1131,7 +1130,7 @@ CONTAINS
     END DO
     RETURN
 
-    130 ierr = 3
+  130 ierr = 3
     RETURN
   END SUBROUTINE cacexi
 
