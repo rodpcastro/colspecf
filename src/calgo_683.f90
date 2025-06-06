@@ -10,11 +10,11 @@ MODULE calgo_683
 !
 ! - `cexint`: Exponential integral \(\mathrm{E}_n(z)\)
 !
-! Untested procedures kept private:  
+! Untested procedures:  
 !
 ! - `g8`: Gauss-Legendre quadrature with 8 points
 ! - `gaus8`: Adaptive Gauss-Legendre quadrature with 8 points
-! - `psixn`: digamma function \(\displaystyle{\psi(n) = \frac{d}{dn} \ln \Gamma (n)}\)
+! - `psixn`: Digamma function \(\psi_0(n)\) for a positive integer \(n\)
 !
 ! ## Author
 ! Donald E. Amos
@@ -30,36 +30,50 @@ MODULE calgo_683
 ! - 2025-06-05 - Rodrigo Castro (GitHub: rodpcastro)
 !     - Removed procedures `cexqad` and `fqcex`, which were originally used for
 !       testing.
+! - 2025-06-06 - Rodrigo Castro (GitHub: rodpcastro)
+!     - Created abstract interface for single-variable function used by `g8` and
+!       `gaus8`.
 !
 ! ## References
 ! 1. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
 !    exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
 !*   2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 
+  use csf_kinds, only: dp!, wp
+
   IMPLICIT NONE
   PRIVATE
-  PUBLIC :: cexint
+  PUBLIC :: cexint, g8, gaus8, psixn
 
-  INTEGER, PARAMETER :: dp = SELECTED_REAL_KIND(12, 60)
-  REAL(dp), SAVE     :: fnm, gln, x, y
-  INTEGER, SAVE      :: iflag
+  REAL(dp), SAVE :: fnm, gln, x, y
+  INTEGER, SAVE  :: iflag
+
+  ! Signature of single-variable function.
+  abstract interface
+    function funx(x) result(y)
+      import :: dp
+      real(dp), intent(in) :: x
+      real(dp) :: y
+    end function funx
+  end interface
 
 CONTAINS
 
   FUNCTION g8(fun, x, h) RESULT(fn_val)
-    ! Replaces the statement function g8 which was part of GAUS8
+    !! CALGO 683 Gauss-Legendre quadrature with 8 points.
+    !
+    ! Reference: https://en.wikipedia.org/wiki/Gaussian_quadrature#Change_of_interval
+    !
+    !* To evaluate \(\int_{a}^{b} f(x) dx\), the user must provide:
+    !
+    ! - `fun`: Single-variable function \(f(x)\)
+    ! - `x = (a + b) / 2.0_wp`
+    ! - `h = (b - a) / 2.0_wp`
+    !*
 
+    procedure(funx) :: fun
     REAL(dp), INTENT(IN) :: x, h
     REAL(dp)             :: fn_val
-
-    INTERFACE
-      FUNCTION fun(x) RESULT(fn_val)
-        IMPLICIT NONE
-        INTEGER, PARAMETER   :: dp = SELECTED_REAL_KIND(12, 60)
-        REAL(dp), INTENT(IN) :: x
-        REAL(dp)             :: fn_val
-      END FUNCTION fun
-    END INTERFACE
 
     REAL(dp), PARAMETER :: x1 = 1.83434642495649805D-01, &
                            x2 = 5.25532409916328986D-01, &
@@ -70,75 +84,74 @@ CONTAINS
                            w3 = 2.22381034453374471D-01, &
                            w4 = 1.01228536290376259D-01
 
-    fn_val = h * ((w1*(fun(x-x1*h) + fun(x+x1*h)) + w2*(fun(x-x2*h) +  &
-             fun(x+x2*h))) + (w3*(fun(x-x3*h) + fun(x+x3*h)) + w4*(fun(x-x4*h) + &
-             fun(x+x4*h))))
+    fn_val = h * ( &
+        w1*(fun(x-x1*h) + fun(x+x1*h)) &
+      + w2*(fun(x-x2*h) + fun(x+x2*h)) &
+      + w3*(fun(x-x3*h) + fun(x+x3*h)) &
+      + w4*(fun(x-x4*h) + fun(x+x4*h)) &
+    )
     RETURN
   END FUNCTION g8
 
   SUBROUTINE gaus8(fun, a, b, ERR, ans, ierr)
-    !  WRITTEN BY R.E. JONES
+    !! CALGO 683 Adaptive Gauss-Legendre quadrature with 8 points.
     !
-    !  ABSTRACT
-    !     GAUS8 INTEGRATES REAL FUNCTIONS OF ONE VARIABLE OVER FINITE INTERVALS
-    !     USING AN ADAPTIVE 8-POINT LEGENDRE-GAUSS ALGORITHM.
-    !     GAUS8 IS INTENDED PRIMARILY FOR HIGH ACCURACY INTEGRATION OR
-    !     INTEGRATION OF SMOOTH FUNCTIONS.
+    !! The description of all parameters and outputs can be found in the source code
+    !! docstring.
     !
-    !  DESCRIPTION OF ARGUMENTS
+    ! WRITTEN BY R.E. JONES
     !
-    !     INPUT--
-    !     FUN - NAME OF EXTERNAL FUNCTION TO BE INTEGRATED.  THIS NAME MUST BE
-    !           IN AN EXTERNAL STATEMENT IN THE CALLING PROGRAM.
-    !           FUN MUST BE A FUNCTION OF ONE REAL ARGUMENT.  THE VALUE OF THE
-    !           ARGUMENT TO FUN IS THE VARIABLE OF INTEGRATION WHICH RANGES
-    !           FROM A TO B.
-    !     A   - LOWER LIMIT OF INTEGRAL
-    !     B   - UPPER LIMIT OF INTEGRAL (MAY BE LESS THAN A)
-    !     ERR - IS A REQUESTED PSEUDORELATIVE ERROR TOLERANCE.  NORMALLY PICK A
-    !           VALUE OF ABS(ERR) SO THAT STOL < ABS(ERR) <= 1.0E-3 WHERE STOL
-    !           IS THE DOUBLE PRECISION UNIT ROUNDOFF = EPSILON(0.0_dp).
-    !           ANS WILL NORMALLY HAVE NO MORE ERROR THAN ABS(ERR) TIMES THE
-    !           INTEGRAL OF THE ABSOLUTE VALUE OF FUN(X).
-    !           USUALLY, SMALLER VALUES FOR ERR YIELD MORE ACCURACY AND
-    !           REQUIRE MORE FUNCTION EVALUATIONS.
+    ! ABSTRACT
+    !    GAUS8 INTEGRATES REAL FUNCTIONS OF ONE VARIABLE OVER FINITE INTERVALS
+    !    USING AN ADAPTIVE 8-POINT LEGENDRE-GAUSS ALGORITHM.
+    !    GAUS8 IS INTENDED PRIMARILY FOR HIGH ACCURACY INTEGRATION OR
+    !    INTEGRATION OF SMOOTH FUNCTIONS.
     !
-    !           A NEGATIVE VALUE FOR ERR CAUSES AN ESTIMATE OF THE
-    !           ABSOLUTE ERROR IN ANS TO BE RETURNED IN ERR.  NOTE THAT
-    !           ERR MUST BE A VARIABLE (NOT A CONSTANT) IN THIS CASE.
-    !           NOTE ALSO THAT THE USER MUST RESET THE VALUE OF ERR
-    !           BEFORE MAKING ANY MORE CALLS THAT USE THE VARIABLE ERR.
+    ! DESCRIPTION OF ARGUMENTS
     !
-    !     OUTPUT--
-    !     ERR - WILL BE AN ESTIMATE OF THE ABSOLUTE ERROR IN ANS IF THE
-    !           INPUT VALUE OF ERR WAS NEGATIVE.  (ERR IS UNCHANGED IF
-    !           THE INPUT VALUE OF ERR WAS NONNEGATIVE.)  THE ESTIMATED
-    !           ERROR IS SOLELY FOR INFORMATION TO THE USER AND SHOULD
-    !           NOT BE USED AS A CORRECTION TO THE COMPUTED INTEGRAL.
-    !     ANS - COMPUTED VALUE OF INTEGRAL
-    !     IERR- A STATUS CODE
-    !         --NORMAL CODES
-    !            1 ANS MOST LIKELY MEETS REQUESTED ERROR TOLERANCE, OR A=B.
-    !           -1 A AND B ARE TOO NEARLY EQUAL TO ALLOW NORMAL INTEGRATION.
-    !              ANS IS SET TO ZERO.
-    !         --ABNORMAL CODE
-    !            2 ANS PROBABLY DOES NOT MEET REQUESTED ERROR TOLERANCE.
+    !    INPUT--
+    !    FUN - NAME OF EXTERNAL FUNCTION TO BE INTEGRATED.  THIS NAME MUST BE
+    !          IN AN EXTERNAL STATEMENT IN THE CALLING PROGRAM.
+    !          FUN MUST BE A FUNCTION OF ONE REAL ARGUMENT.  THE VALUE OF THE
+    !          ARGUMENT TO FUN IS THE VARIABLE OF INTEGRATION WHICH RANGES
+    !          FROM A TO B.
+    !    A   - LOWER LIMIT OF INTEGRAL
+    !    B   - UPPER LIMIT OF INTEGRAL (MAY BE LESS THAN A)
+    !    ERR - IS A REQUESTED PSEUDORELATIVE ERROR TOLERANCE.  NORMALLY PICK A
+    !          VALUE OF ABS(ERR) SO THAT STOL < ABS(ERR) <= 1.0E-3 WHERE STOL
+    !          IS THE DOUBLE PRECISION UNIT ROUNDOFF = EPSILON(0.0_dp).
+    !          ANS WILL NORMALLY HAVE NO MORE ERROR THAN ABS(ERR) TIMES THE
+    !          INTEGRAL OF THE ABSOLUTE VALUE OF FUN(X).
+    !          USUALLY, SMALLER VALUES FOR ERR YIELD MORE ACCURACY AND
+    !          REQUIRE MORE FUNCTION EVALUATIONS.
+    !   
+    !          A NEGATIVE VALUE FOR ERR CAUSES AN ESTIMATE OF THE
+    !          ABSOLUTE ERROR IN ANS TO BE RETURNED IN ERR.  NOTE THAT
+    !          ERR MUST BE A VARIABLE (NOT A CONSTANT) IN THIS CASE.
+    !          NOTE ALSO THAT THE USER MUST RESET THE VALUE OF ERR
+    !          BEFORE MAKING ANY MORE CALLS THAT USE THE VARIABLE ERR.
+    !
+    !    OUTPUT--
+    !    ERR - WILL BE AN ESTIMATE OF THE ABSOLUTE ERROR IN ANS IF THE
+    !          INPUT VALUE OF ERR WAS NEGATIVE.  (ERR IS UNCHANGED IF
+    !          THE INPUT VALUE OF ERR WAS NONNEGATIVE.)  THE ESTIMATED
+    !          ERROR IS SOLELY FOR INFORMATION TO THE USER AND SHOULD
+    !          NOT BE USED AS A CORRECTION TO THE COMPUTED INTEGRAL.
+    !    ANS - COMPUTED VALUE OF INTEGRAL
+    !    IERR- A STATUS CODE
+    !        --NORMAL CODES
+    !           1 ANS MOST LIKELY MEETS REQUESTED ERROR TOLERANCE, OR A=B.
+    !          -1 A AND B ARE TOO NEARLY EQUAL TO ALLOW NORMAL INTEGRATION.
+    !             ANS IS SET TO ZERO.
+    !        --ABNORMAL CODE
+    !           2 ANS PROBABLY DOES NOT MEET REQUESTED ERROR TOLERANCE.
 
+    procedure(funx) :: fun
     REAL(dp), INTENT(IN)     :: a
     REAL(dp), INTENT(IN)     :: b
     REAL(dp), INTENT(IN OUT) :: ERR
     REAL(dp), INTENT(OUT)    :: ans
     INTEGER, INTENT(OUT)     :: ierr
-
-    ! EXTERNAL fun
-    INTERFACE
-      FUNCTION fun(x) RESULT(fn_val)
-        IMPLICIT NONE
-        INTEGER, PARAMETER   :: dp = SELECTED_REAL_KIND(12, 60)
-        REAL(dp), INTENT(IN) :: x
-        REAL(dp)             :: fn_val
-      END FUNCTION fun
-    END INTERFACE
 
     INTEGER  :: k, l, lmn, lmx, lr(30), mxl, nbits, nib, nlmx
     REAL(dp) :: aa(30), ae, anib, area, c, ce, ee, ef, eps, &
@@ -1119,6 +1132,10 @@ CONTAINS
   END SUBROUTINE cacexi
 
   FUNCTION psixn(n) RESULT(fn_val)
+    !! CALGO 683 Digamma function \(\psi_0(n)\).
+    !
+    !! \(\lbrace n \in \mathbb{Z} \mid n \geq 1 \rbrace\)
+    !
     ! REFER TO CEXENZ
     !
     ! THIS SUBROUTINE RETURNS VALUES OF PSI(X)=DERIVATIVE OF LOG GAMMA(X),
