@@ -1,12 +1,11 @@
 program tester
 ! Test of ColSpecF results against mpmath, assuring at least 8 digits of precision.
 !
-! References
-! ----------
-! [1] The Fortran Programming Language. 2024. test-drive: The simple 
-!     testing framework. https://github.com/fortran-lang/test-drive
-! [2] The mpmath development team. 2023. mpmath: a Python library for
-!     arbitrary-precision floating-point arithmetic. https://mpmath.org/
+! ## References
+! 1. The Fortran Programming Language. 2024. test-drive: The simple 
+!    testing framework. <https://github.com/fortran-lang/test-drive>
+! 2. The mpmath development team. 2023. mpmath: a Python library for
+!    arbitrary-precision floating-point arithmetic. <https://mpmath.org/>
 
   use, intrinsic :: iso_fortran_env, only : error_unit
   use testdrive, only : run_testsuite, new_testsuite, testsuite_type

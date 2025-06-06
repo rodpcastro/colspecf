@@ -33,6 +33,8 @@ contains
     print '(a, sp, g0)', 'ei(709.0) = ', ei(709.0_wp)
     print '(a, sp, g0)', 'ei(710.0) = ', ei(710.0_wp)
     print '(a, sp, g0)', 'ei(-Inf) = ', ei(ninf())
+    print '(a, es22.15)', 'ei(-738.0) = ', ei(-738.0_wp)
+    print '(a, es22.15)', 'ei(-739.0) = ', ei(-739.0_wp)
   end subroutine example_ei
 
   subroutine example_e1x()

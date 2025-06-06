@@ -3,10 +3,20 @@
 !  ┗┛┗┛┻   https://github.com/rodpcastro/colspecf
 
 module csf_numerror
-!* Numerical error handling.
+!* # Numerical error
+! Numerical error handling.
 !
-! References
-! ----------
+! Constants:
+!
+! - `eps_wp`: Working precision machine epsilon
+! - `tol_wp`: Tolerance for approximations
+!
+! Procedures:
+!
+! - `ismall`: Evaluates the smallness of a variable compared to a reference value.
+! - `isclose`: Evaluates the closeness between two real or complex variables.
+!
+! ## References
 ! 1. Christopher Barker. 2015. PEP 485 – A Function for testing
 !*   approximate equality. <https://peps.python.org/pep-0485/>
 
@@ -16,14 +26,15 @@ module csf_numerror
   private
   public :: eps_wp, tol_wp, isclose, ismall
 
-  real(wp), parameter :: eps_wp = epsilon(1.0_wp)  !! working precision machine epsilon
-  real(wp), parameter :: tol_wp = 1.0e-8_wp  !! tolerance for approximations
+  real(wp), parameter :: eps_wp = epsilon(1.0_wp)  !! Working precision machine epsilon
+  real(wp), parameter :: tol_wp = 1.0e-8_wp  !! Tolerance for approximations
 
+  ! For reference:
   ! eps_sp = 1.19209290E-07
   ! eps_dp = 2.2204460492503131E-016
 
   interface isclose
-    !! Evaluates the closeness between two real or complex numbers.
+    !! Evaluates the closeness between two real or complex variables.
     module procedure isclose_real, isclose_complex
   end interface isclose
 
@@ -36,7 +47,7 @@ contains
     ! .false. otherwise.
 
     real(wp), intent(in) :: x
-    real(wp), intent(in), optional :: ref  !! reference value, default=1.0
+    real(wp), intent(in), optional :: ref  !! Reference value, default=1.0
 
     real(wp) :: ref_
 
@@ -56,8 +67,8 @@ contains
     ! .false. otherwise.
 
     real(wp), intent(in) :: a, b
-    real(wp), intent(in), optional :: rel_tol  !! relative tolerance, default=tol_wp
-    real(wp), intent(in), optional :: abs_tol  !! absolute tolerace, default=tol_wp
+    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
+    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerace, default=tol_wp
 
     real(wp) :: rel_tol_, abs_tol_
 
@@ -83,8 +94,8 @@ contains
     ! .false. otherwise.
 
     complex(wp), intent(in) :: a, b
-    real(wp), intent(in), optional :: rel_tol  !! relative tolerance, default=tol_wp
-    real(wp), intent(in), optional :: abs_tol  !! absolute tolerance, default=tol_wp
+    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
+    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerance, default=tol_wp
 
     real(wp) :: are, aim, bre, bim
     real(wp) :: rel_tol_, abs_tol_

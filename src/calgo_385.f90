@@ -3,14 +3,17 @@
 ! https://www.acm.org/publications/policies/software-copyright-notice
 
 module calgo_385
-!* CALGO 385: Exponential integral \(\mathrm{Ei}(x)\).
+!* # CALGO 385
+! Algorithm 385.
 !
-! Author
-! ------
+! Procedures:
+!
+! - `dei`: Exponential integral \(\mathrm{Ei}(x)\)
+!
+! ## Author
 ! Kathleen Paciorek
 !
-! History
-! -------
+! ## History
 ! - 1970-07-01 - Kathleen Paciorek
 !     - Original code.
 ! - 2006-10-04 - Kathleen Paciorek
@@ -21,8 +24,7 @@ module calgo_385
 !     - Fixed `frac = q2(8) + x` to `frac = q2(8) / denm` for x in the interval
 !       [6,12] according to the algorithm in the reference publication.
 !
-! References
-! ----------
+! ## References
 ! 1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun.
 !*   ACM 13, 7 (July 1970), 446–447. <https://doi.org/10.1145/362686.362696>
 

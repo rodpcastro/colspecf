@@ -3,10 +3,20 @@
 !  ┗┛┗┛┻   https://github.com/rodpcastro/colspecf
 
 module csf_constants
-!* Mathematical constants.
+!* # Constants
+! Mathematical constants.
 !
-! References
-! ----------
+! Constants:
+!
+! - `pi`: \(\pi\)
+! - `gm`: Euler's constant \(\gamma\) 
+!
+! Procedures:
+!
+! - `ninf`: Negative infinity \(-\infty\)
+! - `pinf`: Positive infinity \(+\infty\)
+!
+! ## References
 ! 1. N. J. A. Sloane. 1964. The Online Encyclopedia
 !*   of Integer Sequences. <https://oeis.org/>
 
@@ -27,12 +37,12 @@ module csf_constants
 contains
 
   pure real(wp) function ninf()
-    !! negative infinity \((-\infty)\)
+    !! Negative infinity \(-\infty\)
     ninf = ieee_value(1.0_wp, ieee_negative_inf)
   end function ninf
 
   pure real(wp) function pinf()
-    !! positive infinity \((+\infty)\)
+    !! Positive infinity \(+\infty\)
     pinf = ieee_value(1.0_wp, ieee_positive_inf)
   end function pinf
 
