@@ -41,7 +41,7 @@ module csf_numerror
 contains
 
   pure logical function ismall(x, ref)
-    !! Evaluates the smallness of x compared to a reference value.
+    !! Evaluates the smallness of a variable compared to a reference value.
     !
     ! .true. if x is small compared to ref according to eps_wp, and
     ! .false. otherwise.

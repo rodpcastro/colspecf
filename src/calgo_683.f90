@@ -269,7 +269,7 @@ CONTAINS
   END SUBROUTINE gaus8
 
   SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
-    !! CALGO 683: Exponential integral \(\mathrm{E}_n(z)\).
+    !! CALGO 683 Exponential integral \(\mathrm{E}_n(z)\).
     !
     !! \(n \geq 1,\thinspace
     !! \lbrace z \in \mathbb{C} \mid -\pi \lt \arg(z) \leq \pi \rbrace \)

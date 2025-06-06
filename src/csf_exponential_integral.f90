@@ -34,7 +34,7 @@ module csf_exponential_integral
   public :: ei, e1
 
   interface e1
-    !! Exponential integral \(\mathrm{E}_1\) for real or complex arguments.
+    !! Exponential integral \(\mathrm{E}_1(x)\) or \(\mathrm{E}_1(z)\).
     module procedure e1x, e1z
   end interface e1
 

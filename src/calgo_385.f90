@@ -37,7 +37,7 @@ module calgo_385
 contains
 
   function dei(x1)
-    !! CALGO 385: Exponential integral \(\mathrm{Ei}(x)\)
+    !! CALGO 385 Exponential integral \(\mathrm{Ei}(x)\).
     !
     !! \(\lbrace x \in \mathbb{R} \mid x \neq 0 \rbrace\)
 
