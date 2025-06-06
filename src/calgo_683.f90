@@ -31,29 +31,33 @@ MODULE calgo_683
 !     - Removed procedures `cexqad` and `fqcex`, which were originally used for
 !       testing.
 ! - 2025-06-06 - Rodrigo Castro (GitHub: rodpcastro)
-!     - Created abstract interface for single-variable function used by `g8` and
-!       `gaus8`.
+!     - Created abstract interface for single-variable function, which is used by `g8`
+!       and `gaus8`.
+!     - Replaced `dp` (double precision) by `wp` (working precision)
+!     - Fixed typo at `gaus8`:
+!         - `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30102000_wp`
+!         - to `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp`
 !
 ! ## References
 ! 1. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
 !    exponential integrals of a complex argument. ACM Trans. Math. Softw. 16,
 !*   2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 
-  use csf_kinds, only: dp!, wp
+  use csf_kinds, only: wp
 
   IMPLICIT NONE
   PRIVATE
   PUBLIC :: cexint, g8, gaus8, psixn
 
-  REAL(dp), SAVE :: fnm, gln, x, y
+  REAL(wp), SAVE :: fnm, gln, x, y
   INTEGER, SAVE  :: iflag
 
   ! Signature of single-variable function.
   abstract interface
     function funx(x) result(y)
-      import :: dp
-      real(dp), intent(in) :: x
-      real(dp) :: y
+      import :: wp
+      real(wp), intent(in) :: x
+      real(wp) :: y
     end function funx
   end interface
 
@@ -71,18 +75,18 @@ CONTAINS
     ! - `h = (b - a) / 2.0_wp`
     !*
 
-    procedure(funx) :: fun
-    REAL(dp), INTENT(IN) :: x, h
-    REAL(dp)             :: fn_val
+    procedure(funx)      :: fun
+    REAL(wp), INTENT(IN) :: x, h
+    REAL(wp)             :: fn_val
 
-    REAL(dp), PARAMETER :: x1 = 1.83434642495649805D-01, &
-                           x2 = 5.25532409916328986D-01, &
-                           x3 = 7.96666477413626740D-01, &
-                           x4 = 9.60289856497536232D-01
-    REAL(dp), PARAMETER :: w1 = 3.62683783378361983D-01, &
-                           w2 = 3.13706645877887287D-01, &
-                           w3 = 2.22381034453374471D-01, &
-                           w4 = 1.01228536290376259D-01
+    REAL(wp), PARAMETER :: x1 = 1.83434642495649805e-1_wp, &
+                           x2 = 5.25532409916328986e-1_wp, &
+                           x3 = 7.96666477413626740e-1_wp, &
+                           x4 = 9.60289856497536232e-1_wp
+    REAL(wp), PARAMETER :: w1 = 3.62683783378361983e-1_wp, &
+                           w2 = 3.13706645877887287e-1_wp, &
+                           w3 = 2.22381034453374471e-1_wp, &
+                           w4 = 1.01228536290376259e-1_wp
 
     fn_val = h * ( &
         w1*(fun(x-x1*h) + fun(x+x1*h)) &
@@ -119,7 +123,7 @@ CONTAINS
     !    B   - UPPER LIMIT OF INTEGRAL (MAY BE LESS THAN A)
     !    ERR - IS A REQUESTED PSEUDORELATIVE ERROR TOLERANCE.  NORMALLY PICK A
     !          VALUE OF ABS(ERR) SO THAT STOL < ABS(ERR) <= 1.0E-3 WHERE STOL
-    !          IS THE DOUBLE PRECISION UNIT ROUNDOFF = EPSILON(0.0_dp).
+    !          IS THE DOUBLE PRECISION UNIT ROUNDOFF = EPSILON(0.0_wp).
     !          ANS WILL NORMALLY HAVE NO MORE ERROR THAN ABS(ERR) TIMES THE
     !          INTEGRAL OF THE ABSOLUTE VALUE OF FUN(X).
     !          USUALLY, SMALLER VALUES FOR ERR YIELD MORE ACCURACY AND
@@ -146,19 +150,19 @@ CONTAINS
     !        --ABNORMAL CODE
     !           2 ANS PROBABLY DOES NOT MEET REQUESTED ERROR TOLERANCE.
 
-    procedure(funx) :: fun
-    REAL(dp), INTENT(IN)     :: a
-    REAL(dp), INTENT(IN)     :: b
-    REAL(dp), INTENT(IN OUT) :: ERR
-    REAL(dp), INTENT(OUT)    :: ans
+    procedure(funx)          :: fun
+    REAL(wp), INTENT(IN)     :: a
+    REAL(wp), INTENT(IN)     :: b
+    REAL(wp), INTENT(IN OUT) :: ERR
+    REAL(wp), INTENT(OUT)    :: ans
     INTEGER, INTENT(OUT)     :: ierr
 
     INTEGER  :: k, l, lmn, lmx, lr(30), mxl, nbits, nib, nlmx
-    REAL(dp) :: aa(30), ae, anib, area, c, ce, ee, ef, eps, &
+    REAL(wp) :: aa(30), ae, anib, area, c, ce, ee, ef, eps, &
                 est, gl, glr, gr(30), hh(30), tol, vl(30), vr
     INTEGER, PARAMETER  :: nlmn = 1, kmx = 5000, kml = 6
     INTEGER, SAVE       :: icall = 0
-    REAL(dp), PARAMETER :: sq2 = 1.41421356_dp
+    real(wp), parameter :: sq2 = 1.41421356_wp
 
     ! INITIALIZE
 
@@ -168,22 +172,22 @@ CONTAINS
     END IF
 
     icall = 1
-    k = DIGITS(0.0_dp)
-    anib = LOG10(DBLE(RADIX(0.0_dp))) * k / 0.30102000_dp
+    k = DIGITS(0.0_wp)
+    anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp
     nbits = INT(anib)
     nlmx = (nbits*5) / 8
-    ans = 0.0_dp
+    ans = 0.0_wp
     ierr = 1
-    ce = 0.0_dp
+    ce = 0.0_wp
     IF (a /= b) THEN
       lmx = nlmx
       lmn = nlmn
-      IF (b /= 0.0_dp) THEN
-        IF (SIGN(1.0_dp,b)*a > 0.0_dp) THEN
-          c = ABS(1.0_dp-a/b)
-          IF (c <= 0.1_dp) THEN
-            IF (c <= 0.0_dp) GO TO 100
-            anib = 0.5_dp - LOG(c) / 0.69314718_dp
+      IF (b /= 0.0_wp) THEN
+        IF (SIGN(1.0_wp,b)*a > 0.0_wp) THEN
+          c = ABS(1.0_wp-a/b)
+          IF (c <= 0.1_wp) THEN
+            IF (c <= 0.0_wp) GO TO 100
+            anib = 0.5_wp - LOG(c) / 0.69314718_wp
             nib = anib
             lmx = MIN(nlmx, nbits-nib-7)
             IF (lmx < 1) GO TO 90
@@ -191,23 +195,23 @@ CONTAINS
           END IF
         END IF
       END IF
-      tol = MAX(ABS(ERR), 2.0_dp**(5-nbits)) / 2.0_dp
-      IF (ERR == 0.0_dp) tol = SQRT(EPSILON(0.0_dp))
+      tol = MAX(ABS(ERR), 2.0_wp**(5-nbits)) / 2.0_wp
+      IF (ERR == 0.0_wp) tol = SQRT(EPSILON(0.0_wp))
       eps = tol
-      hh(1) = (b-a) / 4.0_dp
+      hh(1) = (b-a) / 4.0_wp
       aa(1) = a
       lr(1) = 1
       l = 1
-      est = g8(fun, aa(l)+2.0_dp*hh(l), 2.0_dp*hh(l))
+      est = g8(fun, aa(l)+2.0_wp*hh(l), 2.0_wp*hh(l))
       k = 8
       area = ABS(est)
-      ef = 0.5_dp
+      ef = 0.5_wp
       mxl = 0
       
     ! COMPUTE REFINED ESTIMATES, ESTIMATE THE ERROR, ETC.
       
       10   gl = g8(fun, aa(l)+hh(l), hh(l))
-      gr(l) = g8(fun, aa(l)+3.0_dp*hh(l), hh(l))
+      gr(l) = g8(fun, aa(l)+3.0_wp*hh(l), hh(l))
       k = k + 16
       area = area + (ABS(gl) + ABS(gr(l)) - ABS(est))
     ! IF (L < LMN) GO TO 11
@@ -232,9 +236,9 @@ CONTAINS
       40 IF (k > kmx) lmx = kml
       IF (l >= lmx) GO TO 20
       l = l + 1
-      eps = eps * 0.5_dp
+      eps = eps * 0.5_wp
       ef = ef / sq2
-      hh(l) = hh(l-1) * 0.5_dp
+      hh(l) = hh(l-1) * 0.5_wp
       lr(l) = -1
       aa(l) = aa(l-1)
       est = gl
@@ -245,7 +249,7 @@ CONTAINS
       50 vl(l) = glr
       60 est = gr(l-1)
       lr(l) = 1
-      aa(l) = aa(l) + 4.0_dp * hh(l)
+      aa(l) = aa(l) + 4.0_wp * hh(l)
       GO TO 10
       
     ! RETURN ONE LEVEL
@@ -253,7 +257,7 @@ CONTAINS
       70 vr = glr
       80 IF (l > 1) THEN
         l = l - 1
-        eps = eps * 2.0_dp
+        eps = eps * 2.0_wp
         ef = ef * sq2
         IF (lr(l) <= 0) THEN
           vl(l) = vl(l+1) + vr
@@ -266,7 +270,7 @@ CONTAINS
     ! EXIT
       
       ans = vr
-      IF (mxl == 0 .OR. ABS(ce) <= 2.0_dp*tol*area) GO TO 100
+      IF (mxl == 0 .OR. ABS(ce) <= 2.0_wp*tol*area) GO TO 100
       ierr = 2
       WRITE(*, *) 'GAUS8- ANS IS PROBABLY INSUFFICIENTLY ACCURATE.'
       GO TO 100
@@ -277,7 +281,7 @@ CONTAINS
       WRITE(*, *) 'ANS IS SET TO ZERO, AND IERR=-1.'
     END IF
     100 icall = 0
-    IF (ERR < 0.0_dp) ERR = ce
+    IF (ERR < 0.0_wp) ERR = ce
     RETURN
   END SUBROUTINE gaus8
 
@@ -290,9 +294,9 @@ CONTAINS
     !! The description of all parameters and outputs can be found in the source code
     !! docstring.
     !
-    ! ON KODE=1, CEXINT COMPUTES AN M MEMBER SEQUENCE OF COMPLEX(dp)
+    ! ON KODE=1, CEXINT COMPUTES AN M MEMBER SEQUENCE OF COMPLEX(wp)
     ! EXPONENTIAL INTEGRALS CY(J)=E(N+J-1,Z), J=1,...,M, FOR
-    ! POSITIVE ORDERS N,...,N+M-1 AND COMPLEX(dp) Z IN THE CUT PLANE
+    ! POSITIVE ORDERS N,...,N+M-1 AND COMPLEX(wp) Z IN THE CUT PLANE
     ! -PI < ARG(Z) <= PI (N=1 AND Z=CMPLX(0.0,0.0) CANNOT HOLD AT
     ! THE SAME TIME).  ON KODE=2, CEXINT COMPUTES SCALED FUNCTIONS
     !
@@ -314,11 +318,11 @@ CONTAINS
     !   TOL    - PRECISION (ACCURACY) DESIRED FOR THE SEQUENCE,
     !            URND <= TOL <= 1.0E-3, WHERE URND IS LIMITED BY
     !            URND = MAX(UNIT ROUNDOFF,1.0E-18) AND UNIT
-    !            ROUNDOFF = EPSILON(0.0_dp)
+    !            ROUNDOFF = EPSILON(0.0_wp)
     !   M      - NUMBER OF E FUNCTIONS IN THE SEQUENCE, M >= 1
     !
     ! OUTPUT
-    !   CY     - A COMPLEX(dp) VECTOR WHOSE FIRST M COMPONENTS CONTAIN
+    !   CY     - A COMPLEX(wp) VECTOR WHOSE FIRST M COMPONENTS CONTAIN
     !            VALUES FOR THE SEQUENCE
     !            CY(J)=E(N+J-1,Z)  OR
     !            CY(J)=E(N+J-1,Z)*CEXP(Z), J=1,...,M
@@ -345,13 +349,13 @@ CONTAINS
     ! LONG DESCRIPTION
     !
     ! CEXINT USES A COMBINATION OF POWER SERIES AND BACKWARD RECURRENCE
-    ! DESCRIBED IN REF. 2 FOR THE COMPLEX(dp) Z PLANE EXCEPT FOR A STRIP
+    ! DESCRIBED IN REF. 2 FOR THE COMPLEX(wp) Z PLANE EXCEPT FOR A STRIP
     ! 2*YB WIDE ABOUT THE NEGATIVE REAL AXIS, WHERE ANALYTIC CONTINUATION IS
     ! CARRIED OUT BY LIMITED USE OF TAYLOR SERIES.
     ! THE SWITCH FROM BACKWARD RECURRENCE TO TAYLOR SERIES IS NECESSARY BECAUSE
     ! BACKWARD RECURRENCE IS SLOWLY CONVERGENT NEAR THE NEGATIVE REAL AXIS.
     ! THE BOUNDARIES Y=-YB AND Y=YB WERE DETERMINED SO THAT BACKWARD RECURRENCE
-    ! WOULD CONVERGE EASILY WITH N AS LARGE AS 100 AND TOL AS SMALL AS 1.0D-18.
+    ! WOULD CONVERGE EASILY WITH N AS LARGE AS 100 AND TOL AS SMALL AS 1.0e-18.
     ! SUBROUTINE CEXENZ DOES THE BACKWARD RECURRENCE AND SUBROUTINE CACEXI DOES
     ! THE ANALYTIC CONTINUATION.  TO START THE CONTINUATION, CACEXI CALLS CEXENZ
     ! WITH ZB=CMPLX(X,YB).
@@ -368,7 +372,7 @@ CONTAINS
     ! THE TERMINATION CONDITION IS MET OR THE LIMIT ICMAX=2000 IS EXCEEDED.
     ! THE PURPOSE OF STORAGE IS TO MAKE THE ALGORITHM MORE EFFICIENT.
     ! THE TERMINATION CONDITION IS MET IN LESS THAN 250 STEPS OVER MOST OF
-    ! THE COMPLEX(dp) PLANE EXCLUDING THE STRIP ABS(Y) < YB, X < 0.
+    ! THE COMPLEX(wp) PLANE EXCLUDING THE STRIP ABS(Y) < YB, X < 0.
     ! EXCEPTIONS TO THIS RULE ARE GENERATED NEAR STRIP BOUNDARIES WHEN N+M-1
     ! AND ABS(Z) ARE LARGE AND NEARLY EQUAL.  IN THESE CASES, THE CONVERGENCE
     ! IS VERY SLOW AND ADDITIONAL RECURRENCE (UP TO ICMAX) MUST BE USED.
@@ -438,7 +442,7 @@ CONTAINS
     ! REFERENCES  HANDBOOK OF MATHEMATICAL FUNCTIONS BY M. ABRAMOWITZ AND
     !         I. A. STEGUN, NBS AMS SERIES 55, U.S. DEPT. OF COMMERCE, 1955.
     !
-    !       COMPUTATION OF EXPONENTIAL INTEGRALS OF COMPLEX(dp) ARGUMENT
+    !       COMPUTATION OF EXPONENTIAL INTEGRALS OF COMPLEX(wp) ARGUMENT
     !         BY D. E. AMOS, ACM TRANS. MATH. SOFTWARE
     !
     !       COMPUTATION OF EXPONENTIAL INTEGRALS BY D. E. AMOS, ACM TRANS.
@@ -457,18 +461,18 @@ CONTAINS
     !
     ! ROUTINES CALLED CACEXI, CEXENZ
 
-    COMPLEX(dp), INTENT(IN)  :: z
+    COMPLEX(wp), INTENT(IN)  :: z
     INTEGER, INTENT(IN)      :: n
     INTEGER, INTENT(IN)      :: kode
-    REAL(dp), INTENT(IN)     :: tol
+    REAL(wp), INTENT(IN)     :: tol
     INTEGER, INTENT(IN)      :: m
-    COMPLEX(dp), INTENT(OUT) :: cy(m)
+    COMPLEX(wp), INTENT(OUT) :: cy(m)
     INTEGER, INTENT(OUT)     :: ierr
 
     INTEGER     :: i, k, k1, k2
-    REAL(dp)    :: aa, alim, az, bb, ca(250), d, elim, &
+    REAL(wp)    :: aa, alim, az, bb, ca(250), d, elim, &
                    fn, rbry, r1m5, urnd, x, y, yb, htol
-    COMPLEX(dp) :: cb(250)
+    COMPLEX(wp) :: cb(250)
     !-----------------------------------------------------------------------
     ! DIMENSION CA(ICDIM),CB(ICDIM)
     !-----------------------------------------------------------------------
@@ -476,16 +480,16 @@ CONTAINS
 
     ! FIRST EXECUTABLE STATEMENT  CEXINT
     ierr = 0
-    x = REAL(z, KIND=dp)
+    x = REAL(z, KIND=wp)
     y = AIMAG(z)
-    IF (x == 0.0_dp .AND. y == 0.0_dp .AND. n == 1) ierr = 1
+    IF (x == 0.0_wp .AND. y == 0.0_wp .AND. n == 1) ierr = 1
     IF (n < 1) ierr = 1
     IF (kode < 1 .OR. kode > 2) ierr = 1
     IF (m < 1) ierr = 1
-    urnd = MAX(EPSILON(0.0_dp), 1.0E-18)
-    IF (tol < urnd .OR. tol > 1.0E-3) ierr = 1
+    urnd = MAX(EPSILON(0.0_wp), 1.0E-18_wp)
+    IF (tol < urnd .OR. tol > 1.0E-3_wp) ierr = 1
     IF (ierr /= 0) RETURN
-    IF (x /= 0.0_dp .OR. y /= 0.0_dp .OR. n <= 1) THEN
+    IF (x /= 0.0_wp .OR. y /= 0.0_wp .OR. n <= 1) THEN
     !-----------------------------------------------------------------------
     ! SET PARAMETERS RELATED TO MACHINE CONSTANTS.
     ! URND IS THE APPROXIMATE UNIT ROUNDOFF LIMITED TO 1.0E-18.
@@ -494,32 +498,32 @@ CONTAINS
     ! EXP(ELIM) > EXP(ALIM)=EXP(ELIM)*URND       ARE INTERVALS NEAR
     ! UNDERFLOW AND OVERFLOW LIMITS WHERE SCALED ARITHMETIC IS DONE.
     !-----------------------------------------------------------------------
-      k1 = MINEXPONENT(0.0_dp)
-      k2 = MAXEXPONENT(0.0_dp)
-      r1m5 = LOG10(DBLE(RADIX(0.0_dp)))
+      k1 = MINEXPONENT(0.0_wp)
+      k2 = MAXEXPONENT(0.0_wp)
+      r1m5 = LOG10(DBLE(RADIX(0.0_wp)))
       k = MIN(ABS(k1),ABS(k2))
-      elim = 2.303_dp * (k*r1m5 - 3.0_dp)
-      k1 = DIGITS(0.0_dp) - 1
+      elim = 2.303_wp * (k*r1m5 - 3.0_wp)
+      k1 = DIGITS(0.0_wp) - 1
       aa = r1m5 * k1
       aa = aa * 2.303
-      alim = elim + MAX(-aa, -41.45_dp)
+      alim = elim + MAX(-aa, -41.45_wp)
       rbry = 2.0
-      IF (urnd > 1.0E-8) rbry = 1.0_dp
+      IF (urnd > 1.0E-8_wp) rbry = 1.0_wp
     !-----------------------------------------------------------------------
     ! TEST VARIABLES FOR RANGE. ABS(Z) CANNOT BE LARGER THAN THE ARGUMENT
     ! OF THE INT( ) FUNCTION.
     !-----------------------------------------------------------------------
       az = ABS(z)
       fn = n+m-1
-      aa = 0.5_dp / urnd
-      bb = HUGE(0.0_dp) * 0.5_dp
+      aa = 0.5_wp / urnd
+      bb = HUGE(0.0_wp) * 0.5_wp
       aa = MIN(aa,bb)
       IF (az > aa) GO TO 20
       IF (fn > aa) GO TO 20
       aa = SQRT(aa)
       IF (az > aa) ierr = 4
       IF (fn > aa) ierr = 4
-      IF (x >= 0.0_dp) THEN
+      IF (x >= 0.0_wp) THEN
     !-----------------------------------------------------------------------
     ! BACKWARD RECURRENCE FOR THE RIGHT HALF PLANE, X >= 0.0E0
     !-----------------------------------------------------------------------
@@ -533,13 +537,13 @@ CONTAINS
         CALL cexenz(z, n, kode, m, cy, ierr, rbry, tol, elim, alim, icdim, ca, cb)
         RETURN
       END IF
-      d = -0.4342945_dp * LOG(tol)
-      yb = 10.5_dp - 0.538460_dp * (18.0_dp-d)
+      d = -0.4342945_wp * LOG(tol)
+      yb = 10.5_wp - 0.538460_wp * (18.0_wp-d)
       IF (ABS(y) >= yb) THEN
     !-----------------------------------------------------------------------
     ! BACKWARD RECURRENCE EXTERIOR TO THE STRIP ABS(Y) < YB, X < 0.0
     !-----------------------------------------------------------------------
-        htol = 0.125_dp * tol
+        htol = 0.125_wp * tol
         CALL cexenz(z, n, kode, m, cy, ierr, rbry, htol, elim, alim, icdim, ca, cb)
         RETURN
       END IF
@@ -550,7 +554,7 @@ CONTAINS
       RETURN
     END IF
     DO i = 1, m
-      cy(i) = 1.0_dp / (n+i-2)
+      cy(i) = 1.0_wp / (n+i-2)
     END DO
     RETURN
 
@@ -567,42 +571,42 @@ CONTAINS
     !
     ! ROUTINES CALLED PSIXN
 
-    COMPLEX(dp), INTENT(IN)  :: z
+    COMPLEX(wp), INTENT(IN)  :: z
     INTEGER, INTENT(IN)      :: n
     INTEGER, INTENT(IN)      :: kode
     INTEGER, INTENT(IN)      :: m
-    COMPLEX(dp), INTENT(OUT) :: cy(m)
+    COMPLEX(wp), INTENT(OUT) :: cy(m)
     INTEGER, INTENT(OUT)     :: ierr
-    REAL(dp), INTENT(IN)     :: rbry
-    REAL(dp), INTENT(IN)     :: tol
-    REAL(dp), INTENT(IN)     :: elim
-    REAL(dp), INTENT(IN)     :: alim
+    REAL(wp), INTENT(IN)     :: rbry
+    REAL(wp), INTENT(IN)     :: tol
+    REAL(wp), INTENT(IN)     :: elim
+    REAL(wp), INTENT(IN)     :: alim
     INTEGER, INTENT(IN)      :: icdim
-    REAL(dp), INTENT(OUT)    :: ca(icdim)
-    COMPLEX(dp), INTENT(OUT) :: cb(icdim)
+    REAL(wp), INTENT(OUT)    :: ca(icdim)
+    COMPLEX(wp), INTENT(OUT) :: cb(icdim)
 
     INTEGER     :: i, ic, icase, ict, ik, ind, iz, jset, &
                    k, kflag, kn, ks, ml, mu, nd, nm
-    REAL(dp)    :: aa, aam, aams, aem, ah, ak, ap1, at, az, bk, bt, &
+    REAL(wp)    :: aa, aam, aams, aem, ah, ak, ap1, at, az, bk, bt, &
                    dk, ERR, fc, fnm, rtola, tola, x, xtol, y, ck
-    COMPLEX(dp) :: cp1, cp2, cpt, cat, cbt, cy1, cy2, cyy(2), cnorm, &
+    COMPLEX(wp) :: cp1, cp2, cpt, cat, cbt, cy1, cy2, cyy(2), cnorm, &
                    cs, cak, emz, caa, tz, fz, ct, scle, rscle
 
-    REAL(dp), PARAMETER    :: euler = -5.77215664901532861D-01
-    COMPLEX(dp), PARAMETER :: czero = (0.0_dp, 0.0_dp), cone = (1.0_dp, 0.0_dp)
+    REAL(wp), PARAMETER    :: euler = -5.77215664901532861e-1_wp
+    COMPLEX(wp), PARAMETER :: czero = (0.0_wp, 0.0_wp), cone = (1.0_wp, 0.0_wp)
     INTEGER, PARAMETER     :: icmax = 2000
 
     ierr = 0
     scle = cone
     rscle = cone
-    x = REAL(z, KIND=dp)
+    x = REAL(z, KIND=wp)
     y = AIMAG(z)
     az = ABS(z)
     IF (az <= rbry) THEN
     !-----------------------------------------------------------------------
     ! SERIES FOR E(N,Z) FOR ABS(Z) <= RBRY
     !-----------------------------------------------------------------------
-      iz = az + 0.5_dp
+      iz = az + 0.5_wp
     !-----------------------------------------------------------------------
     ! ICASE=1 MEANS INTEGER CLOSEST TO ABS(Z) IS 2 AND N=1
     ! ICASE=2 MEANS INTEGER CLOSEST TO ABS(Z) IS 0,1, OR 2 AND N >= 2
@@ -617,22 +621,22 @@ CONTAINS
       ks = nd
       fnm = nm
       cs = czero
-      xtol = 0.3333_dp * tol
-      aam = 1.0_dp
+      xtol = 0.3333_wp * tol
+      aam = 1.0_wp
       IF (nd /= 1) THEN
-        aam = 1.0_dp / fnm
+        aam = 1.0_wp / fnm
         cs = aam
       END IF
       caa = cone
-      aa = 1.0_dp
-      ak = 1.0_dp
+      aa = 1.0_wp
+      ak = 1.0_wp
     !-----------------------------------------------------------------------
     ! LIMIT INDEX I TO IK TO PREVENT UNDERFLOW ON SMALL VALUES OF Z
     !-----------------------------------------------------------------------
       ik = 35
       IF (az < xtol*aam) ik = 1
       DO i = 1, ik
-        at = 1.0_dp / ak
+        at = 1.0_wp / ak
         caa = -caa * z * at
         aa = aa * az * at
         IF (i /= nm) THEN
@@ -641,7 +645,7 @@ CONTAINS
           cs = cs + caa * (-LOG(z) + psixn(nd))
         END IF
         IF (aa <= xtol*ABS(cs)) EXIT
-        ak = ak + 1.0_dp
+        ak = ak + 1.0_wp
       END DO
 
       IF (nd == 1) cs = cs + (-LOG(z) + euler)
@@ -676,9 +680,9 @@ CONTAINS
     !-----------------------------------------------------------------------
     ! SCALE NEAR EXPONENT EXTREMES ON KODE=1
     !-----------------------------------------------------------------------
-      IF (x >= 0.0_dp) THEN
+      IF (x >= 0.0_wp) THEN
         at = x + (n+m-1)
-        ct = CMPLX(at, y, KIND=dp)
+        ct = CMPLX(at, y, KIND=wp)
         aa = ABS(ct)
         at = x + LOG(aa)
         IF (at > elim) GO TO 30
@@ -690,7 +694,7 @@ CONTAINS
       END IF
       IF (ABS(at) >= alim) THEN
         tola = EXP(alim-elim)
-        rtola = 1.0_dp / tola
+        rtola = 1.0_wp / tola
         IF (kflag /= 2) THEN
           scle  = rtola
           rscle = tola
@@ -702,7 +706,7 @@ CONTAINS
       END IF
       emz = emz * EXP(-z)
     END IF
-    iz = az + 0.5_dp
+    iz = az + 0.5_wp
     kn = n + m - 1
     IF (kn <= iz) GO TO 50
     IF (n < iz .AND. iz < kn) GO TO 80
@@ -751,7 +755,7 @@ CONTAINS
     ic = 0
     aa = ah + ah
     caa = aa
-    aam = aa - 1.0_dp
+    aam = aa - 1.0_wp
     aams = aam * aam
     tz = z + z
     fz = tz + tz
@@ -759,7 +763,7 @@ CONTAINS
     xtol = tol
     ct = aams + fz * ah
     cak = z + caa
-    aem = (ak+1.0_dp) / xtol
+    aem = (ak+1.0_wp) / xtol
     aem = aem / ABS(cak)
     bk = aa
     ck = ah * ah
@@ -772,13 +776,13 @@ CONTAINS
 
     100 ic = ic + 1
     IF (ic <= icdim) THEN
-      ak = ak + 1.0_dp
-      ck = ck + 1.0_dp
+      ak = ak + 1.0_wp
+      ck = ck + 1.0_wp
       at = bk / (bk+ak+ck)
       bk = bk + ak + ak
       cat = at
       ca(ic) = at
-      bt = 1.0_dp / (ak + 1.0_dp)
+      bt = 1.0_wp / (ak + 1.0_wp)
       cbt = (ak + ak + z) * bt
       cb(ic) = cbt
       cpt = cp2
@@ -789,7 +793,7 @@ CONTAINS
       bt = ABS(ct)
       ERR = aem / SQRT(bt)
       ap1 = ABS(cp1)
-      IF (ERR*(ak+1.0_dp)/ap1 > ap1) GO TO 100
+      IF (ERR*(ak+1.0_wp)/ap1 > ap1) GO TO 100
     ELSE
     !-----------------------------------------------------------------------
     ! CONTINUE FORWARD RECURRENCE UNINDEXED WHEN IC EXCEEDS ICDIM
@@ -798,12 +802,12 @@ CONTAINS
 
       110 ic = ic + 1
       IF (ic > icmax) GO TO 190
-      ak = ak + 1.0_dp
-      ck = ck + 1.0_dp
+      ak = ak + 1.0_wp
+      ck = ck + 1.0_wp
       at = bk / (bk+ak+ck)
       bk = bk + ak + ak
       cat = at
-      bt = 1.0_dp / (ak+1.0_dp)
+      bt = 1.0_wp / (ak+1.0_wp)
       cbt = (ak+ak + z) * bt
       cpt = cp2
       cp2 = cbt * cp2 - cat * cp1
@@ -813,10 +817,10 @@ CONTAINS
       bt = ABS(ct)
       ERR = aem / SQRT(bt)
       ap1 = ABS(cp1)
-      IF (ERR*(ak+1.0_dp)/ap1 > ap1) GO TO 110
+      IF (ERR*(ak+1.0_wp)/ap1 > ap1) GO TO 110
     END IF
     fc = ic
-    at = ((fc+1.0_dp)/(ak+1.0_dp)) * ((ak+ah)/(ak+1.0_dp))
+    at = ((fc+1.0_wp)/(ak+1.0_wp)) * ((ak+ah)/(ak+1.0_wp))
     cat = at * SQRT(ct/(ct+fz))
     cy2 = cat * (cp1/cp2)
     cy1 = cone
@@ -832,21 +836,21 @@ CONTAINS
       bt = aa + x
 
       120 ak = ah + fc
-      bk = ak + 1.0_dp
+      bk = ak + 1.0_wp
       ck = aam + fc
       dk = bt + fc + fc
       at = (ak/fc) * (bk/ck)
-      cbt = CMPLX(dk/bk, y/bk, KIND=dp)
+      cbt = CMPLX(dk/bk, y/bk, KIND=wp)
       cpt = cy1
       cy1 = (cbt*cy1 - cy2) * at
       cy2 = cpt
-      fc = fc - 1.0_dp
+      fc = fc - 1.0_wp
       ic = ic - 1
       IF (ic > icdim) GO TO 120
     END IF
     ict = ic
     DO k = 1, ict
-      at = 1.0_dp / ca(ic)
+      at = 1.0_wp / ca(ic)
       cpt = cy1
       cy1 = (cb(ic)*cy1 - cy2) * at
       cy2 = cpt
@@ -860,7 +864,7 @@ CONTAINS
     ! Z IS INCORPORATED INTO THE NORMALIZING RELATION FOR CNORM.
     !-----------------------------------------------------------------------
     cpt = cy2 / cy1
-    cnorm = cone - cpt * (ah + 1.0_dp) / aa
+    cnorm = cone - cpt * (ah + 1.0_wp) / aa
     cyy(1) = cone / (cnorm*caa+z)
     cyy(2) = cnorm * cyy(1)
     IF (icase /= 3) THEN
@@ -899,7 +903,7 @@ CONTAINS
     DO i = 1, mu
       cs = (emz - z*cs) / ak
       cy(k+1) = cs * rscle
-      ak = ak + 1.0_dp
+      ak = ak + 1.0_wp
       k = k + 1
     END DO
     RETURN
@@ -921,36 +925,36 @@ CONTAINS
     !
     ! ROUTINES CALLED  CEXENZ
 
-    COMPLEX(dp), INTENT(IN)     :: z
+    COMPLEX(wp), INTENT(IN)     :: z
     INTEGER, INTENT(IN)         :: nu
     INTEGER, INTENT(IN)         :: kode
     INTEGER, INTENT(IN)         :: n
-    COMPLEX(dp), INTENT(OUT)    :: y(n)
+    COMPLEX(wp), INTENT(OUT)    :: y(n)
     INTEGER, INTENT(OUT)        :: ierr
-    REAL(dp), INTENT(IN OUT)    :: yb
-    REAL(dp), INTENT(IN OUT)    :: rbry
-    REAL(dp), INTENT(IN)        :: tol
-    REAL(dp), INTENT(IN)        :: elim
-    REAL(dp), INTENT(IN)        :: alim
+    REAL(wp), INTENT(IN OUT)    :: yb
+    REAL(wp), INTENT(IN OUT)    :: rbry
+    REAL(wp), INTENT(IN)        :: tol
+    REAL(wp), INTENT(IN)        :: elim
+    REAL(wp), INTENT(IN)        :: alim
     INTEGER, INTENT(IN)         :: icdim
-    REAL(dp), INTENT(IN OUT)    :: ca(icdim)
-    COMPLEX(dp), INTENT(IN OUT) :: cb(icdim)
+    REAL(wp), INTENT(IN OUT)    :: ca(icdim)
+    COMPLEX(wp), INTENT(IN OUT) :: cb(icdim)
 
     INTEGER     :: i, iaz, il, is, iy, k, kb, kl, kmax, ks, kyb, nb, nflg, nub
-    REAL(dp)    :: az, del, fk, rtola, tola, yt, zi, zid, zr, &
+    REAL(wp)    :: az, del, fk, rtola, tola, yt, zi, zid, zr, &
                    xtol, rzi, atrm, fj, rw, rq(64), asum, htol
-    COMPLEX(dp) :: yy(1), cex, sum, trm, zz, zp(64), zt, scle, rscle, trms, zw, cezt
-    COMPLEX(dp), PARAMETER :: cone = (1.0_dp, 0.0_dp)
+    COMPLEX(wp) :: yy(1), cex, sum, trm, zz, zp(64), zt, scle, rscle, trms, zw, cezt
+    COMPLEX(wp), PARAMETER :: cone = (1.0_wp, 0.0_wp)
 
     scle = cone
     rscle = cone
-    zr = REAL(z, KIND=dp)
+    zr = REAL(z, KIND=wp)
     zi = AIMAG(z)
     zid = zi
     kyb = 0
-    IF (zi < 0.0_dp) zid = -zid
+    IF (zi < 0.0_wp) zid = -zid
     az = ABS(z)
-    iaz = az + 0.5_dp
+    iaz = az + 0.5_wp
     !-----------------------------------------------------------------------
     !     SET ORDER NUB=MIN(N+M-1,INT(ABS(Z)+0.5)), GENERATE REMAINDER
     !     OF THE SEQUENCE AFTER THE COMPUTATION OF E(NUB,Z)
@@ -986,7 +990,7 @@ CONTAINS
     !     SET PARAMETERS FOR ANALYTIC CONTINUATION FROM Y=YB INTO THE REGION
     !     0 <= ZID < YB.
     !-----------------------------------------------------------------------
-    20 yb = yb + 0.5_dp
+    20 yb = yb + 0.5_wp
     kyb = kyb + 1
     IF (kyb > 10) RETURN
     ierr = 0
@@ -995,12 +999,12 @@ CONTAINS
     !-----------------------------------------------------------------------
     !     MAKE DEL LARGE ENOUGH TO AVOID UNDERFLOW IN GENERATION OF POWERS
     !-----------------------------------------------------------------------
-    IF (ABS(del) <= 1.0E-4) THEN
-      yb = yb + 1.0E-4
+    IF (ABS(del) <= 1.0E-4_wp) THEN
+      yb = yb + 1.0E-4_wp
       del = yb - zid
     END IF
-    htol = 0.125_dp * tol
-    zz = CMPLX(zr, yb, KIND=dp)
+    htol = 0.125_wp * tol
+    zz = CMPLX(zr, yb, KIND=wp)
     CALL cexenz(zz, nub, 2, 1, yy, ierr, rbry, htol, elim, alim, icdim, ca, cb)
     IF (ierr == 6) GO TO 20
     !-----------------------------------------------------------------------
@@ -1009,12 +1013,12 @@ CONTAINS
     iy = del + del
     yt = del / (iy+1)
     sum = yy(1)
-    htol = 0.25_dp * tol
+    htol = 0.25_wp * tol
     trm = sum
-    cezt = CMPLX(COS(yt), -SIN(yt), KIND=dp)
+    cezt = CMPLX(COS(yt), -SIN(yt), KIND=wp)
     zw = cone
     zp(1) = cone
-    fk = 1.0_dp
+    fk = 1.0_wp
     fj = nub - 1
     zt = cone / zz
     !-----------------------------------------------------------------------
@@ -1023,17 +1027,17 @@ CONTAINS
     !-----------------------------------------------------------------------
     DO k = 2, 64
       rw = yt / fk
-      zw = zw * CMPLX(0.0_dp, rw, KIND=dp)
+      zw = zw * CMPLX(0.0_wp, rw, KIND=wp)
       rw = fj * rw
-      trm = (zw - CMPLX(0.0_dp, rw, KIND=dp)*trm) * zt
+      trm = (zw - CMPLX(0.0_wp, rw, KIND=wp)*trm) * zt
       sum = sum + trm
       zp(k) = zw
       rq(k) = rw
       asum = ABS(sum)
       atrm = ABS(trm)
       IF (atrm < htol*asum) GO TO 50
-      fk = fk + 1.0_dp
-      fj = fj - 1.0_dp
+      fk = fk + 1.0_wp
+      fj = fj - 1.0_wp
     END DO
     k = 64
 
@@ -1042,11 +1046,11 @@ CONTAINS
     IF (iy /= 0) THEN
       DO i = 1, iy
         rzi = (iy-i+1) * yt + zid
-        zz = CMPLX(zr, rzi, KIND=dp)
+        zz = CMPLX(zr, rzi, KIND=wp)
         zt = cone / zz
         trm = sum
         DO k = 2, kmax
-          trm = (zp(k) - CMPLX(0.0_dp, rq(k), KIND=dp)*trm) * zt
+          trm = (zp(k) - CMPLX(0.0_wp, rq(k), KIND=wp)*trm) * zt
           sum = sum + trm
         END DO
         atrm = ABS(trm)
@@ -1057,16 +1061,16 @@ CONTAINS
             kmax = kmax + 1
             DO k = kmax, 64
               rw = yt / fk
-              zw = zw * CMPLX(0.0_dp, rw, KIND=dp)
+              zw = zw * CMPLX(0.0_wp, rw, KIND=wp)
               rw = fj * rw
-              trm = (zw - CMPLX(0.0_dp, rw, KIND=dp)*trm) * zt
+              trm = (zw - CMPLX(0.0_wp, rw, KIND=wp)*trm) * zt
               sum = sum + trm
               zp(k) = zw
               rq(k) = rw
               atrm = ABS(trm)
               IF (atrm < xtol) GO TO 80
-              fk = fk + 1.0_dp
-              fj = fj - 1.0_dp
+              fk = fk + 1.0_wp
+              fj = fj - 1.0_wp
             END DO
             k = 64
 
@@ -1079,7 +1083,7 @@ CONTAINS
     !-----------------------------------------------------------------------
     !     FORM SEQUENCE UP OR DOWN FROM ORDER NUB
     !-----------------------------------------------------------------------
-    IF (zi < 0.0_dp) sum = CONJG(sum)
+    IF (zi < 0.0_wp) sum = CONJG(sum)
     cex = cone
     !-----------------------------------------------------------------------
     !     SCALE NEAR OVERFLOW LIMIT ON KODE=1
@@ -1088,7 +1092,7 @@ CONTAINS
       IF (ABS(zr) >= alim) THEN
         IF (ABS(zr) > elim) GO TO 130
         tola = EXP(alim-elim)
-        rtola = 1.0_dp / tola
+        rtola = 1.0_wp / tola
         scle = tola
         rscle = rtola
       END IF
@@ -1103,7 +1107,7 @@ CONTAINS
       IF (nflg == 1 .AND. nb /= 0) THEN
         DO k = 1, nb
           trm = (cex - z*trm) / fk
-          fk = fk + 1.0_dp
+          fk = fk + 1.0_wp
         END DO
       END IF
       y(kb) = trm * rscle
@@ -1112,7 +1116,7 @@ CONTAINS
       DO k = ks, kl
         trm = (cex - z*trm) / fk
         y(k) = trm * rscle
-        fk = fk + 1.0_dp
+        fk = fk + 1.0_wp
       END DO
       IF (nflg == 1) RETURN
     END IF
@@ -1123,7 +1127,7 @@ CONTAINS
       trms = (cex - fk*trms) * zt
       y(k) = trms * rscle
       k = k - 1
-      fk = fk - 1.0_dp
+      fk = fk - 1.0_wp
     END DO
     RETURN
 
@@ -1143,64 +1147,66 @@ CONTAINS
     ! AND THE ASYMPTOTIC EXPANSION IS EVALUATED FOR N > 100.
 
     INTEGER, INTENT(IN) :: n
-    REAL(dp)            :: fn_val
+    REAL(wp)            :: fn_val
 
     INTEGER  :: k
-    REAL(dp) :: ax, fn, rfn2, trm, s, wdtol
+    REAL(wp) :: ax, fn, rfn2, trm, s, wdtol
     !-----------------------------------------------------------------------
     ! PSIXN(N), N = 1,100
     !-----------------------------------------------------------------------
-    REAL(dp), PARAMETER  :: c(100) = (/ -5.77215664901532861D-01,  &
-      4.22784335098467139D-01, 9.22784335098467139D-01, 1.25611766843180047_dp, &
-      1.50611766843180047_dp, 1.70611766843180047_dp, 1.87278433509846714_dp,  &
-      2.01564147795561000_dp, 2.14064147795561000_dp, 2.25175258906672111_dp,  &
-      2.35175258906672111_dp, 2.44266167997581202_dp, 2.52599501330914535_dp,  &
-      2.60291809023222227_dp, 2.67434666166079370_dp, 2.74101332832746037_dp,  &
-      2.80351332832746037_dp, 2.86233685773922507_dp, 2.91789241329478063_dp,  &
-      2.97052399224214905_dp, 3.02052399224214905_dp, 3.06814303986119667_dp,  &
-      3.11359758531574212_dp, 3.15707584618530734_dp, 3.19874251285197401_dp,  &
-      3.23874251285197401_dp, 3.27720405131351247_dp, 3.31424108835054951_dp,  &
-      3.34995537406483522_dp, 3.38443813268552488_dp, 3.41777146601885821_dp,  &
-      3.45002953053498724_dp, 3.48127953053498724_dp, 3.51158256083801755_dp,  &
-      3.54099432554389990_dp, 3.56956575411532847_dp, 3.59734353189310625_dp,  &
-      3.62437055892013327_dp, 3.65068634839381748_dp, 3.67632737403484313_dp,  &
-      3.70132737403484313_dp, 3.72571761793728215_dp, 3.74952714174680596_dp,  &
-      3.77278295570029433_dp, 3.79551022842756706_dp, 3.81773245064978928_dp,  &
-      3.83947158108457189_dp, 3.86074817682925274_dp, 3.88158151016258607_dp,  &
-      3.90198967342789220_dp, 3.92198967342789220_dp, 3.94159751656514710_dp,  &
-      3.96082828579591633_dp, 3.97969621032421822_dp, 3.99821472884273674_dp,  &
-      4.01639654702455492_dp, 4.03425368988169777_dp, 4.05179754953082058_dp,  &
-      4.06903892884116541_dp, 4.08598808138353829_dp, 4.10265474805020496_dp,  &
-      4.11904819067315578_dp, 4.13517722293122029_dp, 4.15105023880423617_dp,  &
-      4.16667523880423617_dp, 4.18205985418885155_dp, 4.19721136934036670_dp,  &
-      4.21213674247469506_dp, 4.22684262482763624_dp, 4.24133537845082464_dp,  &
-      4.25562109273653893_dp, 4.26970559977879245_dp, 4.28359448866768134_dp,  &
-      4.29729311880466764_dp, 4.31080663231818115_dp, 4.32413996565151449_dp,  &
-      4.33729786038835659_dp, 4.35028487337536958_dp, 4.36310538619588240_dp,  &
-      4.37576361404398366_dp, 4.38826361404398366_dp, 4.40060929305632934_dp,  &
-      4.41280441500754886_dp, 4.42485260777863319_dp, 4.43675736968339510_dp,  &
-      4.44852207556574804_dp, 4.46014998254249223_dp, 4.47164423541605544_dp,  &
-      4.48300787177969181_dp, 4.49424382683587158_dp, 4.50535493794698269_dp,  &
-      4.51634394893599368_dp, 4.52721351415338499_dp, 4.53796620232542800_dp,  &
-      4.54860450019776842_dp, 4.55913081598724211_dp, 4.56954748265390877_dp,  &
-      4.57985676100442424_dp, 4.59006084263707730_dp, 4.60016185273808740_dp /)
+    REAL(wp), PARAMETER  :: c(100) = (/ -5.77215664901532861e-1_wp,  &
+      4.22784335098467139e-1_wp, 9.22784335098467139e-1_wp, 1.25611766843180047_wp, &
+      1.50611766843180047_wp, 1.70611766843180047_wp, 1.87278433509846714_wp,  &
+      2.01564147795561000_wp, 2.14064147795561000_wp, 2.25175258906672111_wp,  &
+      2.35175258906672111_wp, 2.44266167997581202_wp, 2.52599501330914535_wp,  &
+      2.60291809023222227_wp, 2.67434666166079370_wp, 2.74101332832746037_wp,  &
+      2.80351332832746037_wp, 2.86233685773922507_wp, 2.91789241329478063_wp,  &
+      2.97052399224214905_wp, 3.02052399224214905_wp, 3.06814303986119667_wp,  &
+      3.11359758531574212_wp, 3.15707584618530734_wp, 3.19874251285197401_wp,  &
+      3.23874251285197401_wp, 3.27720405131351247_wp, 3.31424108835054951_wp,  &
+      3.34995537406483522_wp, 3.38443813268552488_wp, 3.41777146601885821_wp,  &
+      3.45002953053498724_wp, 3.48127953053498724_wp, 3.51158256083801755_wp,  &
+      3.54099432554389990_wp, 3.56956575411532847_wp, 3.59734353189310625_wp,  &
+      3.62437055892013327_wp, 3.65068634839381748_wp, 3.67632737403484313_wp,  &
+      3.70132737403484313_wp, 3.72571761793728215_wp, 3.74952714174680596_wp,  &
+      3.77278295570029433_wp, 3.79551022842756706_wp, 3.81773245064978928_wp,  &
+      3.83947158108457189_wp, 3.86074817682925274_wp, 3.88158151016258607_wp,  &
+      3.90198967342789220_wp, 3.92198967342789220_wp, 3.94159751656514710_wp,  &
+      3.96082828579591633_wp, 3.97969621032421822_wp, 3.99821472884273674_wp,  &
+      4.01639654702455492_wp, 4.03425368988169777_wp, 4.05179754953082058_wp,  &
+      4.06903892884116541_wp, 4.08598808138353829_wp, 4.10265474805020496_wp,  &
+      4.11904819067315578_wp, 4.13517722293122029_wp, 4.15105023880423617_wp,  &
+      4.16667523880423617_wp, 4.18205985418885155_wp, 4.19721136934036670_wp,  &
+      4.21213674247469506_wp, 4.22684262482763624_wp, 4.24133537845082464_wp,  &
+      4.25562109273653893_wp, 4.26970559977879245_wp, 4.28359448866768134_wp,  &
+      4.29729311880466764_wp, 4.31080663231818115_wp, 4.32413996565151449_wp,  &
+      4.33729786038835659_wp, 4.35028487337536958_wp, 4.36310538619588240_wp,  &
+      4.37576361404398366_wp, 4.38826361404398366_wp, 4.40060929305632934_wp,  &
+      4.41280441500754886_wp, 4.42485260777863319_wp, 4.43675736968339510_wp,  &
+      4.44852207556574804_wp, 4.46014998254249223_wp, 4.47164423541605544_wp,  &
+      4.48300787177969181_wp, 4.49424382683587158_wp, 4.50535493794698269_wp,  &
+      4.51634394893599368_wp, 4.52721351415338499_wp, 4.53796620232542800_wp,  &
+      4.54860450019776842_wp, 4.55913081598724211_wp, 4.56954748265390877_wp,  &
+      4.57985676100442424_wp, 4.59006084263707730_wp, 4.60016185273808740_wp /)
     !-----------------------------------------------------------------------
     ! COEFFICIENTS OF ASYMPTOTIC EXPANSION
     !-----------------------------------------------------------------------
-    REAL(dp), PARAMETER  :: b(6) =  &
-      (/ 8.33333333333333333D-02, -8.33333333333333333D-03, 3.96825396825396825D-03, &
-        -4.16666666666666666D-03, 7.57575757575757576D-03, -2.10927960927960928D-02 /)
+    REAL(wp), PARAMETER :: b(6) = (/ &
+      8.33333333333333333e-2_wp, -8.33333333333333333e-3_wp, &
+      3.96825396825396825e-3_wp, -4.16666666666666666e-3_wp, &
+      7.57575757575757576e-3_wp, -2.10927960927960928e-2_wp &
+    /)
 
     IF (n <= 100) THEN
       fn_val = c(n)
       RETURN
     END IF
-    wdtol = MAX(EPSILON(0.0_dp), 1.0D-18)
+    wdtol = MAX(EPSILON(0.0_wp), 1.0e-18_wp)
     fn = n
-    ax = 1.0_dp
-    s = -0.5_dp / fn
+    ax = 1.0_wp
+    s = -0.5_wp / fn
     IF (ABS(s) > wdtol) THEN
-      rfn2 = 1.0_dp / (fn*fn)
+      rfn2 = 1.0_wp / (fn*fn)
       DO k = 1, 6
         ax = ax * rfn2
         trm = -b(k) * ax
