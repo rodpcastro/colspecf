@@ -11,7 +11,7 @@ module csf_exponential_integral
 ! - `ei`: Exponential integral \(\mathrm{Ei}(x)\)
 ! - `e1`: Exponential integral \(\mathrm{E}_1(x)\) or \(\mathrm{E}_1(z)\)
 !
-! Untested procedures kept private:  
+! Untested procedures:  
 !
 ! - `enz`: Exponential integral \(\mathrm{E}_n(z)\), untested for \(n \neq 1\)
 !
@@ -31,7 +31,7 @@ module csf_exponential_integral
 
   implicit none
   private
-  public :: ei, e1
+  public :: ei, e1, enz
 
   interface e1
     !! Exponential integral \(\mathrm{E}_1(x)\) or \(\mathrm{E}_1(z)\).
@@ -124,7 +124,7 @@ contains
 
     select case (ierr)
       case (1)
-        error stop 'CALGO_683 IERR = 1: An input error. No computation.'
+        error stop 'CALGO 683 IERR = 1: An input error. No computation.'
       case (2)
         if (n == 1) then
           ! Original behavior has been overwritten for E1(z).
@@ -132,33 +132,33 @@ contains
           call cexint(z, n, 2, tol, m, cy, ierr)
           enz = exp(-z) * cy(1)
         else
-          write(stderr, '(a)') 'CALGO_683 IERR = 2: Underflow. ' // &
+          write(stderr, '(a)') 'CALGO 683 IERR = 2: Underflow. ' // &
                                'En(z) = (0.0, 0.0). Real(z) > 0.0 ' // &
                                'too large on KODE = 1.'
         end if
       case (3)
-        error stop 'CALGO_683 IERR = 3: Overflow. No computation. ' // &
+        error stop 'CALGO 683 IERR = 3: Overflow. No computation. ' // &
                    'Real(z) < 0.0 too small on KODE = 1.'
       case (4)
-        write(stderr, '(a)') 'CALGO_683 IERR = 4: |z| or n large. '  // &
+        write(stderr, '(a)') 'CALGO 683 IERR = 4: |z| or n large. '  // &
                              'Computation done but losses of significance by ' // &
                              'argument reduction may exceed half precision.'
       case (5)
         if (n == 1) then
           ! Original behavior has been overwritten for E1(z).
-          write(stderr, '(a)') 'CALGO_683 IERR = 5: |z| large. All loss of ' // &
+          write(stderr, '(a)') 'CALGO 683 IERR = 5: |z| large. All loss of ' // &
                                'significance by argument reduction has ' // &
                                'occurred. Returning E1(z) = (0.0, 0.0).'
           enz = (0.0_wp, 0.0_wp)
         else
-          error stop 'CALGO_683 IERR = 5: |z| or n large. No computation. ' // &
+          error stop 'CALGO 683 IERR = 5: |z| or n large. No computation. ' // &
                      'All loss of significance by argument reduction has occurred.'
         end if
       case (6)
-        error stop 'CALGO_683 IERR = 6: Convergence error. No computation. ' // &
+        error stop 'CALGO 683 IERR = 6: Convergence error. No computation. ' // &
                    'Algorithm termination condition not met'
       case (7)
-        error stop 'CALGO_683 IERR = 7: Discrimination error. No computation. ' // &
+        error stop 'CALGO 683 IERR = 7: Discrimination error. No computation. ' // &
                    'This condition should never occur.'
     end select
   end function enz
