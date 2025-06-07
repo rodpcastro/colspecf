@@ -3,11 +3,11 @@ module example_exponential_integral
 
   use csf_kinds, only: wp
   use csf_constants, only: ninf, pinf
-  use csf_exponential_integral, only: ei, e1
+  use csf_exponential_integral, only: ei, e1, enz
 
   implicit none
   private
-  public :: example_ei, example_e1x, example_e1z
+  public :: example_ei, example_e1x, example_e1z, example_enz
  
 contains
 
@@ -101,5 +101,25 @@ contains
     print '(a, 2(es22.15, 1x))', 'e1z((+1.0e15, -1.0e15)) = ', e1((1.0e15_wp, -1.0e15_wp))
     print '(a, 2(es22.15, 1x))', 'e1z((+1.0e16, -1.0e16)) = ', e1((1.0e16_wp, -1.0e16_wp))
   end subroutine example_e1z
+
+  subroutine example_enz()
+    real(wp) :: e2zt, e3zt, e4zt
+    complex(wp) :: z, e2z, e3z, e4z
+
+    z = (7.8_wp, -4.1_wp)
+    e2z = enz(2, z)
+    e3z = enz(3, z)
+    e4z = enz(4, z)
+    e2zt = abs((-7.957699432525390302e-6, -0.00003818901915888152331) - e2z)
+    e3zt = abs((-8.440221762387431442e-6, -0.00003501448656784751492) - e3z)
+    e4zt = abs((-8.710784325030124611e-6, -0.00003225622296606488706) - e4z)
+
+    print '(a)', '--------------------------'
+    print '(a)', 'Exponential Integral En(x)'
+    print '(a)', '--------------------------'
+    print '(a, es22.15)', 'e2zt = ', e2zt
+    print '(a, es22.15)', 'e3zt = ', e3zt
+    print '(a, es22.15)', 'e4zt = ', e4zt
+  end subroutine example_enz
 
 end module example_exponential_integral
