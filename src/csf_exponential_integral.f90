@@ -156,7 +156,7 @@ contains
         end if
       case (6)
         error stop 'CALGO 683 IERR = 6: Convergence error. No computation. ' // &
-                   'Algorithm termination condition not met'
+                   'Algorithm termination condition not met.'
       case (7)
         error stop 'CALGO 683 IERR = 7: Discrimination error. No computation. ' // &
                    'This condition should never occur.'
