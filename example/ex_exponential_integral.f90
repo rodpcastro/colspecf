@@ -107,8 +107,6 @@ contains
 
     print '(a, sp, g0, es22.15)', 'e1z((+Inf, +Inf)) = ', e1(z_ppinf)
     print '(a, sp, g0, es22.15)', 'e1z((+Inf, -Inf)) = ', e1(z_pninf)
-
-    print '(a, 2(es22.15, 1x))', 'e1z((0.0, -1.0e15)) = ', e1((-10.0_wp, -1.0e-6_wp))
   end subroutine example_e1z
 
   subroutine example_enz()

@@ -122,8 +122,9 @@ contains
     integer(i4), parameter :: m = 1
     complex(wp) :: cy(m)
     integer(i4) :: ierr
+    logical :: show_warning_
 
-    logical :: show_warning_ = .true.
+    show_warning_ = .true.
     
     if (present(show_warning)) then
       show_warning_ = show_warning
@@ -138,11 +139,11 @@ contains
         error stop 'CALGO 683 IERR = 1: An input error. No computation.'
       case (2)
         ! Computing E1(z) with scaling (KODE = 2).
-        call cexint(z, n, 2, tol, m, cy, ierr)
+        call cexint(z, n, 1, tol, m, cy, ierr)
         enz = exp(-z) * cy(1)
 
         if (show_warning_) then
-          write(stderr, '(l, a)') show_warning_, 'CALGO 683 IERR = 2: Underflow. ' // &
+          write(stderr, '(a)') 'CALGO 683 IERR = 2: Underflow. ' // &
                                'En(z) = (0.0, 0.0). Real(z) > 0.0 ' // &
                                'too large on KODE = 1. Recomputed with KODE = 2.'
         end if
