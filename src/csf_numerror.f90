@@ -41,10 +41,10 @@ module csf_numerror
 contains
 
   pure logical function ismall(x, ref)
-    !! Evaluates the smallness of a variable compared to a reference value.
+    !* Evaluates the smallness of a variable compared to a reference value.
     !
-    ! .true. if x is small compared to ref according to eps_wp, and
-    ! .false. otherwise.
+    ! `.true.` if `x` is small compared to `ref` according to `eps_wp`, and
+    !* `.false.` otherwise.
 
     real(wp), intent(in) :: x
     real(wp), intent(in), optional :: ref  !! Reference value, default=1.0
@@ -61,10 +61,11 @@ contains
   end function ismall
 
   pure logical function isclose_real(a, b, rel_tol, abs_tol) 
-    !! Evaluates the closeness between two real numbers.
+    !* Evaluates the closeness between two real variables.
     ! 
-    ! .true. if a and b are close to each other according to a tolerance, and
-    ! .false. otherwise.
+    ! `.true.` if `a` and `b` are close to each other according to a tolerance, and
+    ! `.false.` otherwise. Tolerance is defined by `rel_tol` and `abs_tol`, where
+    !* `abs_tol` is used for comparing values close no zero.
 
     real(wp), intent(in) :: a, b
     real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
@@ -88,10 +89,11 @@ contains
   end function isclose_real
 
   pure logical function isclose_complex(a, b, rel_tol, abs_tol) 
-    !! Evaluates the closeness between two complex numbers.
+    !* Evaluates the closeness between two complex variables.
     ! 
-    ! .true. if a and b are close to each other according to a tolerance, and
-    ! .false. otherwise.
+    ! `.true.` if `a` and `b` are close to each other according to a tolerance, and
+    ! `.false.` otherwise. Tolerance is defined by `rel_tol` and `abs_tol`, where
+    !* `abs_tol` is used for comparing values close no zero.
 
     complex(wp), intent(in) :: a, b
     real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
