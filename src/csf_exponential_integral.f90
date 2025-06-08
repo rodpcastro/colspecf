@@ -70,7 +70,7 @@ contains
       e1x = pinf()
     else if (x <= 738.0_wp) then
       z = cmplx(x, 0.0_wp, kind=wp)
-      e1z = enz(1, z)
+      e1z = enz(1, z, .false.)
       e1x = e1z%re
     else
       e1x = 0.0_wp
@@ -123,17 +123,11 @@ contains
     complex(wp) :: cy(m)
     integer(i4) :: ierr
 
-    logical :: show_warning_
+    logical :: show_warning_ = .true.
     
-    ! write(stderr, *) 'show_warning = ', show_warning
-
     if (present(show_warning)) then
       show_warning_ = show_warning
-    else
-      show_warning_ = .true.
     end if
-
-    ! write(stderr, *) 'show_warning = ', show_warning_
 
     ! Computing En(z) with no scaling (KODE = 1).
     call cexint(z, n, 1, tol, m, cy, ierr)
@@ -156,7 +150,7 @@ contains
         error stop 'CALGO 683 IERR = 3: Overflow. No computation. ' // &
                    'Real(z) < 0.0 too small on KODE = 1.'
       case (4)
-        if (show_warning_ .eqv. .true.) then
+        if (show_warning_) then
           write(stderr, '(a)') 'CALGO 683 IERR = 4: |z| or n large. '  // &
                                'Computation done but losses of significance by ' // &
                                'argument reduction may exceed half precision.'
@@ -172,62 +166,5 @@ contains
                    'This condition should never occur.'
     end select
   end function enz
-
-  ! complex(wp) function enz(n, z)
-  !   !! Exponential integral \(\mathrm{E}_n(z)\).
-  !   ! 
-  !   !! \(n \geq 1,\thinspace z \in \mathbb{C},\thinspace -\pi \lt \arg(z) \leq \pi \)
-  !
-  !   integer(i4), intent(in) :: n
-  !   complex(wp), intent(in) :: z
-  !   real(wp), parameter :: tol = eps_wp
-  !   integer(i4), parameter :: m = 1
-  !   complex(wp) :: cy(m)
-  !   integer(i4) :: ierr
-  !
-  !   ! Computing En(z) with no scaling (KODE = 1).
-  !   call cexint(z, n, 1, tol, m, cy, ierr)
-  !   enz = cy(1)
-  !
-  !   select case (ierr)
-  !     case (1)
-  !       error stop 'CALGO 683 IERR = 1: An input error. No computation.'
-  !     case (2)
-  !       if (n == 1) then
-  !         ! Original behavior has been overwritten for E1(z).
-  !         ! Computing E1(z) with scaling (KODE = 2).
-  !         call cexint(z, n, 2, tol, m, cy, ierr)
-  !         enz = exp(-z) * cy(1)
-  !       else
-  !         write(stderr, '(a)') 'CALGO 683 IERR = 2: Underflow. ' // &
-  !                              'En(z) = (0.0, 0.0). Real(z) > 0.0 ' // &
-  !                              'too large on KODE = 1.'
-  !       end if
-  !     case (3)
-  !       error stop 'CALGO 683 IERR = 3: Overflow. No computation. ' // &
-  !                  'Real(z) < 0.0 too small on KODE = 1.'
-  !     case (4)
-  !       write(stderr, '(a)') 'CALGO 683 IERR = 4: |z| or n large. '  // &
-  !                            'Computation done but losses of significance by ' // &
-  !                            'argument reduction may exceed half precision.'
-  !     case (5)
-  !       if (n == 1) then
-  !         ! Original behavior has been overwritten for E1(z).
-  !         write(stderr, '(a)') 'CALGO 683 IERR = 5: |z| large. All loss of ' // &
-  !                              'significance by argument reduction has ' // &
-  !                              'occurred. Returning E1(z) = (0.0, 0.0).'
-  !         enz = (0.0_wp, 0.0_wp)
-  !       else
-  !         error stop 'CALGO 683 IERR = 5: |z| or n large. No computation. ' // &
-  !                    'All loss of significance by argument reduction has occurred.'
-  !       end if
-  !     case (6)
-  !       error stop 'CALGO 683 IERR = 6: Convergence error. No computation. ' // &
-  !                  'Algorithm termination condition not met.'
-  !     case (7)
-  !       error stop 'CALGO 683 IERR = 7: Discrimination error. No computation. ' // &
-  !                  'This condition should never occur.'
-  !   end select
-  ! end function enz
 
 end module csf_exponential_integral
