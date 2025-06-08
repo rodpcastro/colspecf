@@ -32,6 +32,7 @@ contains
     print '(a, sp, g0)', 'ei(+Inf) - ei(710.0) = ', ei(pinf()) - ei(710.0_wp)
     print '(a, sp, g0)', 'ei(709.0) = ', ei(709.0_wp)
     print '(a, sp, g0)', 'ei(710.0) = ', ei(710.0_wp)
+    print '(a, sp, g0)', 'ei(710.0) = ', ei(711.0_wp)
     print '(a, sp, g0)', 'ei(-Inf) = ', ei(ninf())
     print '(a, es22.15)', 'ei(-738.0) = ', ei(-738.0_wp)
     print '(a, es22.15)', 'ei(-739.0) = ', ei(-739.0_wp)
@@ -59,13 +60,6 @@ contains
     real(wp) :: e1z_t1, e1z_t2, e1z_t3
     complex(wp) :: zre_ninf, zre_pinf, zim_ninf, zim_pinf, z_ppinf, z_pninf
 
-    zre_ninf = cmplx(ninf(), 0.0_wp, kind=wp)
-    zre_pinf = cmplx(pinf(), 0.0_wp, kind=wp)
-    zim_ninf = cmplx(0.0_wp, ninf(), kind=wp)
-    zim_pinf = cmplx(0.0_wp, pinf(), kind=wp)
-    z_ppinf = cmplx(pinf(), pinf(), kind=wp)
-    z_pninf = cmplx(pinf(), ninf(), kind=wp)
-
     e1z_t1 = abs((-0.014529959529202443_wp, -0.015866824826503003_wp) - e1((2.5_wp, 1.8_wp))) / &
              abs((-0.014529959529202443_wp, -0.015866824826503003_wp))
     e1z_t2 = abs((0.75128638206377318_wp, -57.45565336638456_wp) - e1((-6.4_wp, -8.9_wp))) / &
@@ -81,25 +75,40 @@ contains
     print '(a, es22.15)', 'e1z_t3 = ', e1z_t3
     print '(a, 2(es22.15, 1x))', 'e1z((-1.0, 0.0)) = ', e1((-1.0_wp, 0.0_wp))
     print '(a, sp, g0, es22.15)', 'e1z((0.0, 0.0)) = ', e1((0.0_wp, 0.0_wp))
-    print '(a, sp, g0, es22.15)', 'e1z((-Inf, 0.0) = ', e1(zre_ninf)
-    print '(a, sp, g0, es22.15)', 'e1z((+Inf, 0.0)) = ', e1(zre_pinf)
-    print '(a, sp, g0, es22.15)', 'e1z((0.0, -Inf)) = ', e1(zim_ninf)
-    print '(a, sp, g0, es22.15)', 'e1z((0.0, +Inf)) = ', e1(zim_pinf)
-    print '(a, sp, g0, es22.15)', 'e1z((+Inf, +Inf)) = ', e1(z_ppinf)
-    print '(a, sp, g0, es22.15)', 'e1z((+Inf, -Inf)) = ', e1(z_pninf)
-    print *, '------------------------------'
+    ! print '(a, sp, g0, es22.15)', 'e1z((-Inf, 0.0) = ', e1(zre_ninf)
+    ! print '(a, sp, g0, es22.15)', 'e1z((+Inf, 0.0)) = ', e1(zre_pinf)
+    ! print '(a, sp, g0, es22.15)', 'e1z((0.0, -Inf)) = ', e1(zim_ninf)
+    ! print '(a, sp, g0, es22.15)', 'e1z((0.0, +Inf)) = ', e1(zim_pinf)
+    ! print '(a, sp, g0, es22.15)', 'e1z((+Inf, +Inf)) = ', e1(z_ppinf)
+    ! print '(a, sp, g0, es22.15)', 'e1z((+Inf, -Inf)) = ', e1(z_pninf)
     print '(a, 2(es22.15, 1x))', 'e1z((-700.0, 0.0)) = ', e1((-700.0_wp, 0.0_wp))
     print '(a, 2(es22.15, 1x))', 'e1z((-701.0, 0.0)) = ', e1((-701.0_wp, 0.0_wp))
     print '(a, 2(es22.15, 1x))', 'e1z((738.0, 0.0)) = ', e1((738.0_wp, 0.0_wp))
     print '(a, 2(es22.15, 1x))', 'e1z((739.0, 0.0)) = ', e1((739.0_wp, 0.0_wp))
+    print '(a)', '---------------------------------------------------------------------'
+
+    zre_ninf = cmplx(ninf(), 0.0_wp, kind=wp)
+    zre_pinf = cmplx(pinf(), 0.0_wp, kind=wp)
+    zim_ninf = cmplx(0.0_wp, ninf(), kind=wp)
+    zim_pinf = cmplx(0.0_wp, pinf(), kind=wp)
+    z_ppinf = cmplx(pinf(), pinf(), kind=wp)
+    z_pninf = cmplx(pinf(), ninf(), kind=wp)
+
+    print '(a, sp, g0, es22.15)', 'e1z((-Inf, 0.0) = ', e1(zre_ninf)
+    print '(a, sp, g0, es22.15)', 'e1z((+Inf, 0.0)) = ', e1(zre_pinf)
+
+    print '(a, 2(es22.15, 1x))', 'e1z((0.0, +1.0e15)) = ', e1((0.0_wp, 1.0e15_wp))
+    print '(a, 2(es22.15, 1x))', 'e1z((0.0, +1.0e16)) = ', e1((0.0_wp, 1.0e16_wp))
+    print '(a, 2(es22.15, 1x))', 'e1z((0.0, +Inf)) = ', e1(zim_pinf)
+
     print '(a, 2(es22.15, 1x))', 'e1z((0.0, -1.0e15)) = ', e1((0.0_wp, -1.0e15_wp))
     print '(a, 2(es22.15, 1x))', 'e1z((0.0, -1.0e16)) = ', e1((0.0_wp, -1.0e16_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((0.0, +1.0e15)) = ', e1((0.0_wp, +1.0e15_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((0.0, +1.0e16)) = ', e1((0.0_wp, +1.0e16_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((+1.0e15, +1.0e15)) = ', e1((1.0e15_wp, 1.0e15_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((+1.0e16, +1.0e16)) = ', e1((1.0e16_wp, 1.0e16_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((+1.0e15, -1.0e15)) = ', e1((1.0e15_wp, -1.0e15_wp))
-    print '(a, 2(es22.15, 1x))', 'e1z((+1.0e16, -1.0e16)) = ', e1((1.0e16_wp, -1.0e16_wp))
+    print '(a, 2(es22.15, 1x))', 'e1z((0.0, -Inf)) = ', e1(zim_ninf)
+
+    print '(a, sp, g0, es22.15)', 'e1z((+Inf, +Inf)) = ', e1(z_ppinf)
+    print '(a, sp, g0, es22.15)', 'e1z((+Inf, -Inf)) = ', e1(z_pninf)
+
+    print '(a, 2(es22.15, 1x))', 'e1z((0.0, -1.0e15)) = ', e1((-10.0_wp, -1.0e-5_wp))
   end subroutine example_e1z
 
   subroutine example_enz()
