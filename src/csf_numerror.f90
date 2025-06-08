@@ -48,13 +48,12 @@ contains
 
     real(wp), intent(in) :: x
     real(wp), intent(in), optional :: ref  !! Reference value, default=1.0
-
     real(wp) :: ref_
+
+    ref_ = 1.0_wp
 
     if (present(ref)) then
       ref_ = ref
-    else
-      ref_ = 1.0_wp
     end if
 
     ismall = abs(x) < eps_wp * abs(ref_)
@@ -70,19 +69,17 @@ contains
     real(wp), intent(in) :: a, b
     real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
     real(wp), intent(in), optional :: abs_tol  !! Absolute tolerace, default=tol_wp
-
     real(wp) :: rel_tol_, abs_tol_
+
+    rel_tol_ = tol_wp
+    abs_tol_ = tol_wp
 
     if (present(rel_tol)) then
       rel_tol_ = rel_tol
-    else
-      rel_tol_ = tol_wp
     end if
 
     if (present(abs_tol)) then
       abs_tol_ = abs_tol
-    else
-      abs_tol_ = tol_wp
     end if
 
     isclose_real = abs(a - b) <= max(rel_tol_ * max(abs(a), abs(b)), abs_tol_)
@@ -98,20 +95,18 @@ contains
     complex(wp), intent(in) :: a, b
     real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
     real(wp), intent(in), optional :: abs_tol  !! Absolute tolerance, default=tol_wp
-
     real(wp) :: are, aim, bre, bim
     real(wp) :: rel_tol_, abs_tol_
 
+    rel_tol_ = tol_wp
+    abs_tol_ = tol_wp
+
     if (present(rel_tol)) then
       rel_tol_ = rel_tol
-    else
-      rel_tol_ = tol_wp
     end if
 
     if (present(abs_tol)) then
       abs_tol_ = abs_tol
-    else
-      abs_tol_ = tol_wp
     end if
 
     are = a%re
