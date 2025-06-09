@@ -1,10 +1,14 @@
-# ColSpecF
+<p align="center">
+    <img src="https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/media/colspecf_logo.svg", alt="ColSpecF Logo">
+</p>
+
 [![Fortran][Fortran Badge]][Fortran Website]
 [![Docs][Docs Badge]][Docs Website]
 [![Test][Test Badge]][Test Workflow]
 [![Coverage][Coverage Badge]][Coverage Website]
 [![License][License Badge]][License File]
 
+# ColSpecF
 ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions], built around adaptations of [Collected Algorithms][calgo] from [ACM] to modern Fortran.
 
 ## Functions

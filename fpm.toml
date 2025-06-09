@@ -21,6 +21,7 @@ project = "ColSpecF"
 summary = "ColSpecF is a Fortran library for evaluating mathematical Special Functions."
 project_github = "https://github.com/rodpcastro/colspecf/"
 project_download = "https://github.com/rodpcastro/colspecf/archive/refs/heads/main.zip"
+favicon = "media/favicon.png"
 
 src_dir = "./src"
 output_dir = "./docs"
