@@ -47,7 +47,7 @@ contains
     !* `.false.` otherwise.
 
     real(wp), intent(in) :: x
-    real(wp), intent(in), optional :: ref  !! Reference value, default=1.0
+    real(wp), intent(in), optional :: ref  !! Reference value, default=`1.0`
     real(wp) :: ref_
 
     ref_ = 1.0_wp
@@ -67,8 +67,8 @@ contains
     !* `abs_tol` is used for comparing values close no zero.
 
     real(wp), intent(in) :: a, b
-    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
-    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerace, default=tol_wp
+    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=`tol_wp`
+    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerace, default=`tol_wp`
     real(wp) :: rel_tol_, abs_tol_
 
     rel_tol_ = tol_wp
@@ -93,8 +93,8 @@ contains
     !* `abs_tol` is used for comparing values close no zero.
 
     complex(wp), intent(in) :: a, b
-    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=tol_wp
-    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerance, default=tol_wp
+    real(wp), intent(in), optional :: rel_tol  !! Relative tolerance, default=`tol_wp`
+    real(wp), intent(in), optional :: abs_tol  !! Absolute tolerace, default=`tol_wp`
     real(wp) :: are, aim, bre, bim
     real(wp) :: rel_tol_, abs_tol_
 
