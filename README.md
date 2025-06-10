@@ -39,9 +39,9 @@ The [API documentation][Docs Website] for this library is generated using [FORD]
 ## References
 Fortran code for evaluating special functions is sourced from the following websites:
 
-* Association for Computing Machinery. 2012. [Collected Algorithms][calgo].
-* Jason Blevins. 2004. [Alan Miller's Fortran Software][jblevins].
-* Commonwealth Scientific and Industrial Research Organisation. 2004. [Software from Alan J. Miller][csiro].
+* Association for Computing Machinery. 2012. [Collected Algorithms][calgo]
+* Jason Blevins. 2004. [Alan Miller's Fortran Software][jblevins]
+* Commonwealth Scientific and Industrial Research Organisation. 2004. [Software from Alan J. Miller][csiro]
 
 ACM publications presenting the original algorithms are listed below:
 
