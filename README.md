@@ -47,6 +47,7 @@ ACM publications presenting the original algorithms are listed below:
 
 1. Kathleen A. Paciorek. 1970. Algorithm 385: Exponential integral Ei(x). Commun. ACM 13, 7 (July 1970), 446–447. <https://doi.org/10.1145/362686.362696>
 2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
+3. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special function routines and test drivers. ACM Trans. Math. Softw. 19, 1 (March 1993), 22–30. <https://doi.org/10.1145/151271.151273>
 
 ## License
 ColSpecF is distributed under two licenses based on code origin:
