@@ -8,10 +8,10 @@ module csf_bessel
 !
 ! Procedures:
 !
-! - `j0x`: Bessel function of the first kind of order 0 \(J_0(x)\)
-! - `j1x`: Bessel function of the first kind of order 1 \(J_1(x)\)
-! - `y0x`: Bessel function of the second kind of order 0 \(Y_0(x)\)
-! - `y1x`: Bessel function of the second kind of order 1 \(Y_0(x)\)
+! - `j0x`: Bessel function of the first kind of order zero \(J_0(x)\)
+! - `j1x`: Bessel function of the first kind of order one \(J_1(x)\)
+! - `y0x`: Bessel function of the second kind of order zero \(Y_0(x)\)
+! - `y1x`: Bessel function of the second kind of order one \(Y_0(x)\)
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
@@ -28,22 +28,34 @@ module csf_bessel
 contains
 
   real(wp) function j0x(x)
+    !! Bessel function of the first kind of order zero \(J_0(x)\).
+
     real(wp), intent(in) :: x
+
     call caljy0(x, j0x, 0)
   end function j0x
 
   real(wp) function j1x(x)
+    !! Bessel function of the first kind of order one \(J_1(x)\).
+
     real(wp), intent(in) :: x
+
     call caljy1(x, j1x, 0)
   end function j1x
 
   real(wp) function y0x(x)
+    !! Bessel function of the second kind of order zero \(Y_0(x)\).
+
     real(wp), intent(in) :: x
+
     call caljy0(x, y0x, 1)
   end function y0x
 
   real(wp) function y1x(x)
+    !! Bessel function of the second kind of order one \(Y_1(x)\).
+
     real(wp), intent(in) :: x
+
     call caljy1(x, y1x, 1)
   end function y1x
 

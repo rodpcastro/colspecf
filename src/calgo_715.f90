@@ -42,7 +42,7 @@ module calgo_715
 contains
 
   SUBROUTINE caljy0(arg, result, jint)
-    !* Bessel functions \(J_0(x)\) and \(Y_0(x)\).
+    !* CALGO 715 Bessel functions \(J_0(x)\) and \(Y_0(x)\).
     !
     ! To obtain:
     ! 
@@ -405,7 +405,7 @@ contains
   END SUBROUTINE caljy0
 
   SUBROUTINE caljy1(arg, result, jint)
-    !* Bessel functions \(J_1(x)\) and \(Y_1(x)\).
+    !* CALGO 715 Bessel functions \(J_1(x)\) and \(Y_1(x)\).
     !
     ! To obtain:
     ! 
