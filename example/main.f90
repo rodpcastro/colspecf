@@ -4,6 +4,7 @@ program examples
   use example_gauss_quadrature
   use example_polygamma
   use example_exponential_integral
+  use example_bessel
 
   implicit none
   
@@ -14,5 +15,9 @@ program examples
   call example_e1x()
   call example_e1z()
   ! call example_enz()
+  call example_j0x()
+  call example_j1x()
+  call example_y0x()
+  call example_y1x()
 
 end program examples

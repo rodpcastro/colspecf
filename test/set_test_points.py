@@ -68,8 +68,46 @@ def set_test_points_exponential_integral_e1z():
     filepath = test_points_dir / 'exponential_integral_e1z.csv'
     np.savetxt(filepath, uv, fmt='% .15e %+.15e   % .15e %+.15e')
 
+def set_test_points_bessel_j0x():
+    # J0(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
+    xp = np.logspace(-8, 32, 100, dtype=np.float64)
+    xv = np.concatenate(([0.0], xp), dtype=np.float64)
+    yv = np.array([mpmath.besselj(0, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'bessel_j0x.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+def set_test_points_bessel_j1x():
+    # J1(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
+    xp = np.logspace(-8, 32, 100, dtype=np.float64)
+    xv = np.concatenate(([0.0], xp), dtype=np.float64)
+    yv = np.array([mpmath.besselj(1, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'bessel_j1x.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+def set_test_points_bessel_y0x():
+    # Y0(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
+    xv = np.logspace(-17, 32, 100, dtype=np.float64)
+    yv = np.array([mpmath.bessely(0, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'bessel_y0x.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+def set_test_points_bessel_y1x():
+    # Y1(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
+    xv = np.logspace(-17, 32, 100, dtype=np.float64)
+    yv = np.array([mpmath.bessely(1, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'bessel_y1x.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
 if __name__ == '__main__':
     set_test_points_exponential_integral_ei()
     set_test_points_exponential_integral_e1x()
     set_test_points_exponential_integral_e1z()
-
+    set_test_points_bessel_j0x()
+    set_test_points_bessel_j1x()
+    set_test_points_bessel_y0x()
+    set_test_points_bessel_y1x()
