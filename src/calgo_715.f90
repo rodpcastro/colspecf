@@ -11,6 +11,23 @@ module calgo_715
 ! - `caljy0`: Bessel functions \(J_0(x)\) and \(Y_0(x)\)
 ! - `caljy1`: Bessel functions \(J_1(x)\) and \(Y_1(x)\)
 !
+! Other CALGO 715 procedures not yet included in this module:
+!
+! - `gamma`: Gamma function \(\Gamma(x)\)
+! - `algama`: Log Gamma function \(\ln\Gamma(x)\)
+! - `psi`:  Digamma function \(\psi(x)\)
+! - `calerf`: Error function \(\mathrm{erf}(x)\)
+! - `daw`: Dawson's integral
+! - `anorm`: Normal distribution
+! - `rjbesl`: Bessel function \(J_{\nu}(x)\)
+! - `rybesl`: Bessel function \(Y_{\nu}(x)\)
+! - `calci0`: Bessel function \(I_0(x)\)
+! - `calci1`: Bessel function \(I_1(x)\)
+! - `ribesl`: Bessel function \(I_{\nu}(x)\)
+! - `calck0`: Bessel function \(K_0(x)\)
+! - `calck1`: Bessel function \(K_1(x)\)
+! - `rkbesl`: Bessel function \(K_{\nu}(x)\)
+!
 ! ## Author
 ! W. J. Cody
 !
@@ -27,6 +44,8 @@ module calgo_715
 !       be included as required.
 !     - Replaced `dp` (double precision) by `wp` (working precision)
 !     - Replaced array constructor `(/.../)` by the less verbose `[...]`
+!     - `xmax` is set such that `xmax` \( > \frac{2}{\pi \epsilon^2}\) , where
+!       \(\epsilon\) is the machine epsilon
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
@@ -149,8 +168,10 @@ contains
                            twopi1 = 6.28125_wp, twopi2 = 1.9353071795864769253e-3_wp
     !-------------------------------------------------------------------
     ! Machine-dependent constants
+    ! Default values:
+    ! XMAX = 2.68e+8_wp, XSMALL = 3.72e-9_wp, XINF = 1.79e+308_wp
     !-------------------------------------------------------------------
-    real(wp), PARAMETER :: XMAX = 2.68e+8_wp, XSMALL = 3.72e-9_wp, XINF = 1.79e+308_wp
+    real(wp), PARAMETER :: XMAX = 1.0e+32_wp, XSMALL = 3.72e-9_wp, XINF = huge(0.0_wp)
     !-------------------------------------------------------------------
     ! Zeroes of Bessel functions
     !-------------------------------------------------------------------
@@ -428,9 +449,9 @@ contains
     ! Y = BESY1(X),
     !
     ! where the entry points correspond to the functions J1(X) and Y1(X),
-    ! respectively.  The routine  CALJY1  is intended for internal packet
+    ! respectively. The routine CALJY1 is intended for internal packet
     ! use only, all computations within the packet being concentrated in
-    ! this one routine.  The function subprograms invoke  CALJY1  with
+    ! this one routine. The function subprograms invoke CALJY1  with
     ! the statement
     !
     ! CALL CALJY1(ARG, RESULT, JINT),
@@ -509,8 +530,10 @@ contains
                            rtpi2 = 7.9788456080286535588e-1_wp
     !-------------------------------------------------------------------
     ! Machine-dependent constants
+    ! Default values:
+    ! XMAX = 2.68e+8_wp, XSMALL = 3.72e-9_wp, XINF = 1.79e+308_wp
     !-------------------------------------------------------------------
-    real(wp), PARAMETER :: XMAX = 2.68e+8_wp, XSMALL = 3.72e-9_wp, XINF = 1.79e+308_wp
+    real(wp), PARAMETER :: XMAX = 1.0e+32_wp, XSMALL = 3.72e-9_wp, XINF = huge(0.0_wp)
     !-------------------------------------------------------------------
     ! Zeroes of Bessel functions
     !-------------------------------------------------------------------

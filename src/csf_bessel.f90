@@ -19,6 +19,7 @@ module csf_bessel
 !*   22–30. <https://doi.org/10.1145/151271.151273>
 
   use csf_kinds, only: wp
+  use csf_constants, only: nan, ninf, pinf
   use calgo_715, only: caljy0, caljy1
 
   implicit none
@@ -32,7 +33,13 @@ contains
 
     real(wp), intent(in) :: x
 
-    call caljy0(x, j0x, 0)
+    if (abs(x) <= 1.0e-8_wp) then
+      j0x = 1.0_wp
+    else if (abs(x) >= 1.0e32_wp) then
+      j0x = 0.0_wp
+    else
+      call caljy0(x, j0x, 0)
+    end if
   end function j0x
 
   real(wp) function j1x(x)
@@ -40,7 +47,13 @@ contains
 
     real(wp), intent(in) :: x
 
-    call caljy1(x, j1x, 0)
+    if (abs(x) < 1.0e-323_wp) then
+      j1x = 0.0_wp
+    else if (abs(x) >= 1.0e32_wp) then
+      j1x = 0.0_wp
+    else
+      call caljy1(x, j1x, 0)
+    end if
   end function j1x
 
   real(wp) function y0x(x)
@@ -48,7 +61,15 @@ contains
 
     real(wp), intent(in) :: x
 
-    call caljy0(x, y0x, 1)
+    if (x < 0) then
+      y0x = nan()
+    else if (x < 1.0e-323_wp) then
+      y0x = ninf()
+    else if (x >= 1.0e32_wp) then
+      y0x = 0.0_wp
+    else
+      call caljy0(x, y0x, 1)
+    end if
   end function y0x
 
   real(wp) function y1x(x)
@@ -56,7 +77,15 @@ contains
 
     real(wp), intent(in) :: x
 
-    call caljy1(x, y1x, 1)
+    if (x < 0) then
+      y1x = nan()
+    else if (x < 1.0e-308_wp) then
+      y1x = ninf()
+    else if (x >= 1.0e32_wp) then
+      y1x = 0.0_wp
+    else
+      call caljy1(x, y1x, 1)
+    end if
   end function y1x
 
 end module csf_bessel

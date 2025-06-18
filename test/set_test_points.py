@@ -68,8 +68,23 @@ def set_test_points_exponential_integral_e1z():
     filepath = test_points_dir / 'exponential_integral_e1z.csv'
     np.savetxt(filepath, uv, fmt='% .15e %+.15e   % .15e %+.15e')
 
+def set_test_points_bessel_j0x():
+    # J0(x)
+    xc = np.logspace(-100, -1, 100, dtype=np.float64)
+    xf = np.linspace(1.0, 709.0, 1000, dtype=np.float64)
+    xv = np.concatenate((xc, xf))
+    yv = np.array([mpmath.ei(x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'exponential_integral_ei.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
 if __name__ == '__main__':
     set_test_points_exponential_integral_ei()
     set_test_points_exponential_integral_e1x()
     set_test_points_exponential_integral_e1z()
+    set_test_points_bessel_j0x()
+    # set_test_points_bessel_j1x()
+    # set_test_points_bessel_y0x()
+    # set_test_points_bessel_y1x()
 
