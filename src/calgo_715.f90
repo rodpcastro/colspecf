@@ -11,14 +11,16 @@ module calgo_715
 ! - `caljy0`: Bessel functions \(J_0(x)\) and \(Y_0(x)\)
 ! - `caljy1`: Bessel functions \(J_1(x)\) and \(Y_1(x)\)
 !
-! Other CALGO 715 procedures not yet included in this module:
+! Other CALGO 715 procedures **not** yet included in this module:
 !
+! - `calcei`: Exponential integrals \(\mathrm{Ei}(x)\) and \(\mathrm{E}_1(x)\)
 ! - `gamma`: Gamma function \(\Gamma(x)\)
 ! - `algama`: Log Gamma function \(\ln\Gamma(x)\)
 ! - `psi`:  Digamma function \(\psi(x)\)
 ! - `calerf`: Error function \(\mathrm{erf}(x)\)
-! - `daw`: Dawson's integral
+! - `daw`: Dawson's integral \(e^{-x^2} \int_{0}^{x} e^{t^2} dt\)
 ! - `anorm`: Normal distribution
+!    \(\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} e^{\frac{-t^2}{2}} dt\)
 ! - `rjbesl`: Bessel function \(J_{\nu}(x)\)
 ! - `rybesl`: Bessel function \(Y_{\nu}(x)\)
 ! - `calci0`: Bessel function \(I_0(x)\)
