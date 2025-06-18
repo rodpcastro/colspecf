@@ -30,6 +30,8 @@ contains
 
   real(wp) function j0x(x)
     !! Bessel function of the first kind of order zero \(J_0(x)\).
+    !
+    !! \(x \in \mathbb{R}\)
 
     real(wp), intent(in) :: x
 
@@ -38,6 +40,8 @@ contains
 
   real(wp) function j1x(x)
     !! Bessel function of the first kind of order one \(J_1(x)\).
+    !
+    !! \(x \in \mathbb{R}\)
 
     real(wp), intent(in) :: x
 
@@ -46,6 +50,8 @@ contains
 
   real(wp) function y0x(x)
     !! Bessel function of the second kind of order zero \(Y_0(x)\).
+    !
+    !! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\)
 
     real(wp), intent(in) :: x
 
@@ -61,6 +67,8 @@ contains
 
   real(wp) function y1x(x)
     !! Bessel function of the second kind of order one \(Y_1(x)\).
+    !
+    !! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\)
 
     real(wp), intent(in) :: x
 
