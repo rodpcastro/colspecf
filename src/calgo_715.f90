@@ -48,6 +48,7 @@ module calgo_715
 !     - Replaced array constructor `(/.../)` by the less verbose `[...]`
 !     - `xmax` is set such that `xmax` \( > \frac{2}{\pi \epsilon^2}\) , where
 !       \(\epsilon\) is the machine epsilon
+!     - `xinf` is set to `huge(0.0_wp)`
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
@@ -64,6 +65,10 @@ contains
 
   SUBROUTINE caljy0(arg, result, jint)
     !* CALGO 715 Bessel functions \(J_0(x)\) and \(Y_0(x)\).
+    !
+    ! \(x \in \mathbb{R}\) for \(J_0(x)\)
+    ! 
+    ! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\) for \(Y_0(x)\)
     !
     ! To obtain:
     ! 
@@ -429,6 +434,10 @@ contains
 
   SUBROUTINE caljy1(arg, result, jint)
     !* CALGO 715 Bessel functions \(J_1(x)\) and \(Y_1(x)\).
+    !
+    ! \(x \in \mathbb{R}\) for \(J_1(x)\)
+    ! 
+    ! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\) for \(Y_1(x)\)
     !
     ! To obtain:
     ! 
