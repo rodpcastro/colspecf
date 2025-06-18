@@ -13,6 +13,7 @@ module csf_constants
 !
 ! Procedures:
 !
+! - `nan`: Not a Number NaN
 ! - `ninf`: Negative infinity \(-\infty\)
 ! - `pinf`: Positive infinity \(+\infty\)
 !
@@ -23,11 +24,12 @@ module csf_constants
   use csf_kinds, only: wp
   use, intrinsic :: ieee_arithmetic, only: ieee_value, &
                                            ieee_positive_inf, &
-                                           ieee_negative_inf
+                                           ieee_negative_inf, &
+                                           ieee_quiet_nan
 
   implicit none
   private
-  public :: pi, gm, ninf, pinf
+  public :: pi, gm, nan, ninf, pinf
   
   !> \(\pi\)
   real(wp), parameter :: pi = 3.14159265358979323846264338327950288e+0_wp
@@ -35,6 +37,11 @@ module csf_constants
   real(wp), parameter :: gm = 5.77215664901532860606512090082402431e-1_wp
 
 contains
+
+  pure real(wp) function nan()
+    !! Not a Number NaN
+    nan = ieee_value(0.0_wp, ieee_quiet_nan)
+  end function nan
 
   pure real(wp) function ninf()
     !! Negative infinity \(-\infty\)
