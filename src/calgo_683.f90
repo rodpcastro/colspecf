@@ -14,7 +14,7 @@ MODULE calgo_683
 !
 ! - `g8`: Gauss-Legendre quadrature with 8 points
 ! - `gaus8`: Adaptive Gauss-Legendre quadrature with 8 points
-! - `psixn`: Digamma function \(\psi_0(n)\) for a positive integer \(n\)
+! - `psixn`: Digamma function \(\psi(n)\) for a positive integer \(n\)
 !
 ! ## Author
 ! Donald E. Amos
