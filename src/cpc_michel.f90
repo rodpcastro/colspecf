@@ -3,6 +3,13 @@
 ! See ColSpecF LICENSE file for details.
 
 module cpc_michel
+!* # CPC Michel
+! Gauss hypergeometric function.
+!
+! Procedures:
+!
+! - `hyp_2f1`: Gauss hypergeometric function \({}_2F_1(a, b; c; z)\)
+!
 ! ## Author
 ! N. Michel
 !
