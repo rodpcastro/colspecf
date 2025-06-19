@@ -20,6 +20,7 @@ module csf
 !*
 
   use csf_exponential_integral
+  use csf_bessel
 
   implicit none
   public
