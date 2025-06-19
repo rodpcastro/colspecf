@@ -6,7 +6,6 @@
 [![Docs][Docs Badge]][Docs Website]
 [![Test][Test Badge]][Test Workflow]
 [![Coverage][Coverage Badge]][Coverage Website]
-[![License][License Badge]][License File]
 
 # ColSpecF
 ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions], built around adaptations of [Collected Algorithms][calgo] from [ACM] to modern Fortran.
@@ -68,7 +67,6 @@ Users must comply with the applicable license for each portion of the code. See 
 [Coverage Website]: https://app.codecov.io/gh/rodpcastro/colspecf
 [Coverage Badge]: https://codecov.io/github/rodpcastro/colspecf/badge.svg
 [License File]: https://github.com/rodpcastro/colspecf/blob/main/LICENSE
-[License Badge]: https://img.shields.io/badge/License-orange
 <!-- Introduction -->
 [Special Functions]: https://www.britannica.com/science/special-function
 <!-- Tests -->
