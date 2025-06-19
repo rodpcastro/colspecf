@@ -44,11 +44,11 @@ module calgo_715
 ! - 2025-06-17 - Rodrigo Castro (GitHub: rodpcastro)
 !     - Retained only subroutines `caljy0` and `caljy1`; additional subroutines will
 !       be included as required.
-!     - Replaced `dp` (double precision) by `wp` (working precision)
-!     - Replaced array constructor `(/.../)` by the less verbose `[...]`
+!     - Replaced `dp` (double precision) by `wp` (working precision).
+!     - Replaced array constructor `(/.../)` by the less verbose `[...]`.
 !     - `xmax` is set such that `xmax` \( > \frac{2}{\pi \epsilon^2}\) , where
-!       \(\epsilon\) is the machine epsilon
-!     - `xinf` is set to `huge(0.0_wp)`
+!       \(\epsilon\) is the machine epsilon.
+!     - `xinf` is set to `huge(0.0_wp)`.
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
