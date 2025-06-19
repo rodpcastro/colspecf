@@ -2,7 +2,7 @@
 ! Copyright © 2018 N. Michel
 ! See ColSpecF LICENSE file for details.
 
-
+module cpc_michel
 ! ## Author
 ! N. Michel
 !
@@ -18,3 +18,5 @@
 !    function with all its parameters complex with application to the Pöschl-Teller-
 !    Ginocchio potential wave functions. Computer Physics Communications 178, 7 (April
 !    2008), 535–551. <https://doi.org/10.1016/J.CPC.2007.11.007>
+
+end module cpc_michel
