@@ -1,6 +1,6 @@
 ! Licensed under the ACM Software License Agreement
-! Copyright © 1970–2012 Association for Computing Machinery (ACM).
-! https://www.acm.org/publications/policies/software-copyright-notice
+! Copyright © 1970–2012 Association for Computing Machinery (ACM)
+! See ColSpecF LICENSE file for details.
 
 module calgo_715
 !* # CALGO 715
