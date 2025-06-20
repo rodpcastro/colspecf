@@ -1,26 +1,32 @@
-ColSpecF is a Fortran library distributed under two licenses based on code
-origin:
+ColSpecF is a Fortran library distributed under multiple licenses or permissions
+based on code origin:
 
 - Code comprising original contributions by Rodrigo Castro is licensed under the
   MIT License.
 - Code adapted from Collected Algorithms (CALGO), published by the Association
   for Computing Machinery (ACM), is subject to the ACM Software License
   Agreement.
+- Code adapted from Computer Physics Communications (CPC) is subject to the CPC
+  User License.
+- Code from other sources may be licensed under standard open-source licenses
+  (e.g., Apache, BSD, GPL) or used under explicit permission from the copyright
+  holder, as indicated in the source file comments or below.
 
-Users must comply with the applicable license for each portion of the code.
-See Notes below for additional guidance.
+Users must comply with the applicable license or permission for each portion of
+the code. See Notes below for additional guidance.
 
 Notes:
-- Individual source files in ColSpecF contain comments indicating whether
-  they are governed by the MIT License or the ACM Software License Agreement.
-- The MIT License applies only to Rodrigo Castro’s original contributions and
-  permits broader use, including commercial use, subject to its terms.
-- Users of CALGO-derived code must adhere to the ACM Software License Agreement,
-  including restrictions on commercial use, requirements to acknowledge ACM’s
-  copyright, and notifying ACM and the original authors when distributing
-  modified code.
-- For commercial use of CALGO-derived code, contact ACM at permissions@acm.org
-  to obtain a separate license.
+- Individual source files in ColSpecF contain comments specifying their
+  applicable license or permission.
+- The MIT License applies to Rodrigo Castro’s original contributions and
+  permits broad use, including commercial use, subject to its terms.
+- Code from other sources may be subject to licenses or permissions that
+  restrict commercial use, require attribution, or impose other conditions.
+  Users must consult the relevant license or permission statement below or
+  contact the copyright holder for commercial use inquiries.
+- This license file may be updated to include new licenses or permissions as
+  the library evolves. Always refer to the latest version of this file and
+  source file comments for complete licensing information.
 
 --------------------------------------------------------------------------------
 
@@ -118,3 +124,59 @@ distribution of the binary or source code to third parties for use with a
 commercial product sold or licensed by, or on behalf of, User.
 
 Revised 6/98
+
+--------------------------------------------------------------------------------
+
+Computer Physics Communications (CPC) User License
+
+Disclaimer and non-profit use license agreement
+
+The CPC non-profit use license agreement is an agreement between the author(s)
+of a program distributed by the CPC Program Library and the person who acquires
+it. By acquiring the program the person is agreeing to be bound by the terms of
+this agreement.
+
+1. This license entitles the licensee (one person) and the licensee's
+   research group to obtain a copy of the source or executable code and to use
+   the acquired program for academic or non-profit use within a research group;
+   or, it entitles the licensee (one company, organization or computing center)
+   to install the program and allow access to the executable code to members of
+   the licensee's organization for academic or non-profit use. No user or site
+   will re-distribute the source code or executable code to a third party in
+   original or modified form without the written permission of the author.
+
+2. Publications which result from using the acquired program will reference
+   the article in Computer Physics Communications which describes the program.
+
+3. This license does not permit any commercial (profit-making or proprietary)
+   use or re-licensing or re-distributions. Persons interested in for-profit
+   use should contact the author.
+
+4. To the extent permissible under applicable laws, no responsibility is
+   assumed and is hereby disclaimed by Elsevier for any injury and/or damage
+   to persons or property as a result of any actual or alleged libelous
+   statements, infringement of intellectual property or privacy rights,
+   or products liability, whether resulting from negligence or otherwise,
+   including without limitation from any use or operation of any ideas,
+   instructions, procedures, products or methods contained in the material
+   therein. Access to this site is provided on an "as is" basis, and Elsevier
+   does not warrant that the information or software contained herein is
+   complete or accurate or free from error.
+
+This information or software is provided by its creators or authors as a 
+service to Elsevier subscribers on an "as is" basis, and if downloaded by
+the subscriber should be checked for defects or viruses before being used.
+Unless noted otherwise, the creators or authors retain copyright and other
+proprietary rights.
+
+--------------------------------------------------------------------------------
+
+Additional Licenses and Permissions
+
+Code from sources other than Rodrigo Castro, ACM, and CPC may be included under
+standard open-source licenses (e.g., Apache License, Version 2.0; BSD; GPL) or
+custom permissions from copyright holders. Each such license or permission is
+documented in the relevant source file comments and, where applicable, in a
+dedicated section here.
+
+--------------------------------------------------------------------------------

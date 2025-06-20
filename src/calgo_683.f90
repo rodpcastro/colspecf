@@ -1,6 +1,6 @@
 ! Licensed under the ACM Software License Agreement
-! Copyright © 1970–2012 Association for Computing Machinery (ACM).
-! https://www.acm.org/publications/policies/software-copyright-notice
+! Copyright © 1970–2012 Association for Computing Machinery (ACM)
+! See ColSpecF LICENSE file for details.
 
 MODULE calgo_683
 !* # CALGO 683
@@ -33,10 +33,10 @@ MODULE calgo_683
 ! - 2025-06-06 - Rodrigo Castro (GitHub: rodpcastro)
 !     - Created abstract interface for single-variable function, which is used by `g8`
 !       and `gaus8`.
-!     - Replaced `dp` (double precision) by `wp` (working precision)
+!     - Replaced `dp` (double precision) by `wp` (working precision).
 !     - Fixed typo at `gaus8`:
 !         - `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30102000_wp`
-!         - to `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp`
+!         - to `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp`.
 !
 ! ## References
 ! 1. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for

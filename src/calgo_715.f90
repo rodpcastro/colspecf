@@ -1,6 +1,6 @@
 ! Licensed under the ACM Software License Agreement
-! Copyright © 1970–2012 Association for Computing Machinery (ACM).
-! https://www.acm.org/publications/policies/software-copyright-notice
+! Copyright © 1970–2012 Association for Computing Machinery (ACM)
+! See ColSpecF LICENSE file for details.
 
 module calgo_715
 !* # CALGO 715
@@ -44,11 +44,11 @@ module calgo_715
 ! - 2025-06-17 - Rodrigo Castro (GitHub: rodpcastro)
 !     - Retained only subroutines `caljy0` and `caljy1`; additional subroutines will
 !       be included as required.
-!     - Replaced `dp` (double precision) by `wp` (working precision)
-!     - Replaced array constructor `(/.../)` by the less verbose `[...]`
+!     - Replaced `dp` (double precision) by `wp` (working precision).
+!     - Replaced array constructor `(/.../)` by the less verbose `[...]`.
 !     - `xmax` is set such that `xmax` \( > \frac{2}{\pi \epsilon^2}\) , where
-!       \(\epsilon\) is the machine epsilon
-!     - `xinf` is set to `huge(0.0_wp)`
+!       \(\epsilon\) is the machine epsilon.
+!     - `xinf` is set to `huge(0.0_wp)`.
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
