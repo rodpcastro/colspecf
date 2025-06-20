@@ -4,7 +4,7 @@
 
 module cpc_michel
 !* # CPC Michel
-! Gauss hypergeometric function.
+! CPC Algorithm AEAE_v1_0.
 !
 ! Procedures:
 !
