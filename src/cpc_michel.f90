@@ -20,41 +20,43 @@ module cpc_michel
 !     - F90 code distributed by CPC:
 !       <https://elsevier.digitalcommonsdata.com/datasets/76c3pp7rzm/1>
 ! - 2025-07-12 - Rodrigo Castro (GitHub: rodpcastro)
-!     - Placed all procedures in the module `cpc_michel` and removed references to 
+!     - Placed all procedures in the module `cpc_michel` and removed references to the
 !       old module `HYP_2F1_MODULE`.
+!     - Removed unnecessary declarations of function type.
 !     - Positioned original docstrings inside their respective procedures.
+!     - Replaced `PR` (real and complex precision) by `wp` (CSF working precision).
+!     - Replaced `IPR` (integer precision) by `i4` (CSF 4-byte integer).
 !
 ! ## References
 ! 1. N. Michel and M. V. Stoitsov. 2008. Fast computation of the Gauss hypergeometric 
 !    function with all its parameters complex with application to the Pöschl-Teller-
 !    Ginocchio potential wave functions. Computer Physics Communications 178, 7 (April
-!    2008), 535–551. <https://doi.org/10.1016/J.CPC.2007.11.007>
+!*   2008), 535–551. <https://doi.org/10.1016/J.CPC.2007.11.007>
 
-  ! use csf_kinds, only: wp
+  use csf_kinds, only: wp, i4
 
   implicit none
   private
   public :: hyp_2f1
 
-  INTEGER, PARAMETER :: PR=KIND(1.0D0),IPR=KIND(1)
-  REAL(PR) :: EPS15=1.0D-15
-  REAL(PR) :: ZERO=0.0D0,ONE=1.0D0,TWO=2.0D0,HALF=0.50D0
-  REAL(PR) :: M_PI=3.14159265358979323846D0
-  REAL(PR) :: M_PI_2=1.57079632679489661923D0
-  REAL(PR) :: M_1_PI=0.31830988618379067154D0 
+  REAL(wp) :: EPS15=1.0D-15
+  REAL(wp) :: ZERO=0.0D0,ONE=1.0D0,TWO=2.0D0,HALF=0.50D0
+  REAL(wp) :: M_PI=3.14159265358979323846D0
+  REAL(wp) :: M_PI_2=1.57079632679489661923D0
+  REAL(wp) :: M_1_PI=0.31830988618379067154D0 
 
 CONTAINS
  
   FUNCTION INF_NORM(Z)
-    COMPLEX(PR),INTENT(IN) :: Z
-    REAL(PR) :: INF_NORM
-    INF_NORM=MAX(ABS(REAL(Z,PR)),ABS(AIMAG(Z)))
+    COMPLEX(wp),INTENT(IN) :: Z
+    REAL(wp) :: INF_NORM
+    INF_NORM=MAX(ABS(REAL(Z,wp)),ABS(AIMAG(Z)))
     RETURN
   END FUNCTION INF_NORM
 
   FUNCTION TANZ(Z)
-    COMPLEX(PR),INTENT(IN) :: Z
-    COMPLEX(PR) :: TANZ
+    COMPLEX(wp),INTENT(IN) :: Z
+    COMPLEX(wp) :: TANZ
     TANZ=SIN(Z)/COS(Z)
     RETURN
   END FUNCTION TANZ
@@ -67,13 +69,13 @@ CONTAINS
     ! 1. N. J. Higham. 1996. Accuracy and Stability
     !    of Numerical Algorithms. SIAM, Philadelphia.
 
-    COMPLEX(PR),INTENT(IN) :: Z
-    REAL(PR) :: X,XP1,LOG1P_X
-    REAL(PR) :: Y,YX,YX2,YX2P1,LOG1P_YX2
-    REAL(PR) :: RE_LOG1P,IM_LOG1P
-    COMPLEX(PR) :: LOG1P
+    COMPLEX(wp),INTENT(IN) :: Z
+    REAL(wp) :: X,XP1,LOG1P_X
+    REAL(wp) :: Y,YX,YX2,YX2P1,LOG1P_YX2
+    REAL(wp) :: RE_LOG1P,IM_LOG1P
+    COMPLEX(wp) :: LOG1P
     IF(INF_NORM(Z).LT.ONE) THEN
-       X = REAL(Z,PR); XP1 = X+ONE
+       X = REAL(Z,wp); XP1 = X+ONE
        IF(XP1.EQ.ONE) THEN
           LOG1P_X = X
        ELSE
@@ -88,7 +90,7 @@ CONTAINS
        ENDIF
        RE_LOG1P = LOG1P_X + HALF*LOG1P_YX2
        IM_LOG1P = ATAN2(Y,XP1)
-       LOG1P = CMPLX(RE_LOG1P,IM_LOG1P,PR)
+       LOG1P = CMPLX(RE_LOG1P,IM_LOG1P,wp)
        RETURN
     ELSE
        LOG1P=LOG(ONE+Z)
@@ -104,12 +106,12 @@ CONTAINS
     ! 1. N. J. Higham. 1996. Accuracy and Stability
     !    of Numerical Algorithms. SIAM, Philadelphia.
 
-    COMPLEX(PR),INTENT(IN) :: Z
-    REAL(PR) :: X,EXPM1_X,EXP_X,Y,SIN_HALF_Y
-    REAL(PR) :: RE_EXPM1,IM_EXPM1
-    COMPLEX(PR) :: EXPM1
+    COMPLEX(wp),INTENT(IN) :: Z
+    REAL(wp) :: X,EXPM1_X,EXP_X,Y,SIN_HALF_Y
+    REAL(wp) :: RE_EXPM1,IM_EXPM1
+    COMPLEX(wp) :: EXPM1
     IF(INF_NORM(Z).LT.ONE) THEN
-       X = REAL(Z,PR); EXP_X = EXP(X)
+       X = REAL(Z,wp); EXP_X = EXP(X)
        Y = AIMAG(Z); SIN_HALF_Y=SIN(HALF*Y)
        IF(EXP_X.EQ.ONE) THEN
           EXPM1_X = X
@@ -118,7 +120,7 @@ CONTAINS
        ENDIF
        RE_EXPM1 = EXPM1_X-TWO*EXP_X*SIN_HALF_Y*SIN_HALF_Y 
        IM_EXPM1 = EXP_X*SIN(Y)
-       EXPM1 = CMPLX(RE_EXPM1,IM_EXPM1,PR)
+       EXPM1 = CMPLX(RE_EXPM1,IM_EXPM1,wp)
        RETURN
     ELSE
        EXPM1=EXP(Z)-ONE
@@ -169,13 +171,13 @@ CONTAINS
     ! res: returned value
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: Z
-    INTEGER(IPR) :: N,I
-    REAL(PR)     :: X,Y,LOG_SQRT_2PI,G,LOG_PI,M_LN2,C(0:14)
-    COMPLEX(PR)  :: GAMMA_SUM,Z_M_0P5,Z_P_G_M0P5,ZM1
-    COMPLEX(PR)  :: LOG_CONST,I_PI,EPS,LOG_SIN_PI_Z,RES
+    COMPLEX(wp),INTENT(IN) :: Z
+    INTEGER(i4) :: N,I
+    REAL(wp)     :: X,Y,LOG_SQRT_2PI,G,LOG_PI,M_LN2,C(0:14)
+    COMPLEX(wp)  :: GAMMA_SUM,Z_M_0P5,Z_P_G_M0P5,ZM1
+    COMPLEX(wp)  :: LOG_CONST,I_PI,EPS,LOG_SIN_PI_Z,RES
     !
-    M_LN2=0.69314718055994530942D0; X=REAL(Z,PR); Y=AIMAG(Z)
+    M_LN2=0.69314718055994530942D0; X=REAL(Z,wp); Y=AIMAG(Z)
     IF((Z.EQ.NINT(X)).AND.(X.LE.ZERO)) &
          STOP 'Z IS NEGATIVE INTEGER IN LOG_GAMMA'
     IF(X.GE.HALF) THEN
@@ -204,7 +206,7 @@ CONTAINS
           N=NINT(X)
        ENDIF
        LOG_PI=1.1447298858494002D0
-       LOG_CONST=CMPLX(-M_LN2,M_PI_2,PR); I_PI=CMPLX(ZERO,M_PI,PR)
+       LOG_CONST=CMPLX(-M_LN2,M_PI_2,wp); I_PI=CMPLX(ZERO,M_PI,wp)
        EPS=Z-N
        IF(Y.GT.110.0D0) THEN
           LOG_SIN_PI_Z=-I_PI*Z+LOG_CONST
@@ -238,12 +240,12 @@ CONTAINS
     ! res: returned value
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: Z
-    INTEGER(IPR) :: N,I
-    REAL(PR)     :: X,LOG_SQRT_2PI,G,C(0:14)
-    COMPLEX(PR)  :: RES,GAMMA_SUM,Z_M_0P5,Z_P_G_M0P5,ZM1,EPS
+    COMPLEX(wp),INTENT(IN) :: Z
+    INTEGER(i4) :: N,I
+    REAL(wp)     :: X,LOG_SQRT_2PI,G,C(0:14)
+    COMPLEX(wp)  :: RES,GAMMA_SUM,Z_M_0P5,Z_P_G_M0P5,ZM1,EPS
     !
-    X=REAL(Z,PR)
+    X=REAL(Z,wp)
     IF(X.GE.HALF) THEN
        LOG_SQRT_2PI=0.91893853320467274177D0; G=4.7421875D0
        Z_M_0P5=Z-HALF; Z_P_G_M0P5=Z_M_0P5+G; ZM1=Z-ONE
@@ -264,7 +266,7 @@ CONTAINS
             /GAMMA_SUM
        RETURN
     ELSE
-       X=REAL(Z,PR); N=NINT(X)
+       X=REAL(Z,wp); N=NINT(X)
        EPS=Z-N
        IF(MOD(N,2).EQ.0) THEN
           RES=SIN(M_PI*EPS)*M_1_PI/GAMMA_INV (ONE-Z)
@@ -353,20 +355,20 @@ CONTAINS
     ! res: returned value
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: Z,EPS
-    INTEGER(IPR) :: N,M,I
-    REAL(PR)     :: G,X,EPS_PX,C(0:14)
-    COMPLEX(PR)  :: RES,SUM_NUM,SUM_DEN
-    COMPLEX(PR)  :: EPS_PZ,Z_M_0P5,Z_PG_M0P5,EPS_PZ_PG_M0P5,ZM1
-    COMPLEX(PR)  :: CI_ZM1_PI_INV,PI_EPS,TT,T1_EPS_Z,SIN_PI_2_EPS
-    COMPLEX(PR)  :: ZM1_P_EPS,T2_EPS_Z,T_EPS_Z
+    COMPLEX(wp),INTENT(IN) :: Z,EPS
+    INTEGER(i4) :: N,M,I
+    REAL(wp)     :: G,X,EPS_PX,C(0:14)
+    COMPLEX(wp)  :: RES,SUM_NUM,SUM_DEN
+    COMPLEX(wp)  :: EPS_PZ,Z_M_0P5,Z_PG_M0P5,EPS_PZ_PG_M0P5,ZM1
+    COMPLEX(wp)  :: CI_ZM1_PI_INV,PI_EPS,TT,T1_EPS_Z,SIN_PI_2_EPS
+    COMPLEX(wp)  :: ZM1_P_EPS,T2_EPS_Z,T_EPS_Z
     !
     G=4.74218750D0
     IF(INF_NORM(EPS).GT.0.1D0) &
          STOP 'ONE MUST HAVE |EPS|< 0.1 IN GAMMA_RATIO_DIFF_SMALL_EPS'
     EPS_PZ=Z+EPS; Z_M_0P5=Z-HALF; Z_PG_M0P5=Z_M_0P5+G
     EPS_PZ_PG_M0P5=Z_PG_M0P5+EPS; ZM1=Z-ONE; ZM1_P_EPS=ZM1+EPS
-    X=REAL(Z,PR); EPS_PX=REAL(EPS_PZ,PR); N=NINT(X); M=NINT(EPS_PX)
+    X=REAL(Z,wp); EPS_PX=REAL(EPS_PZ,wp); N=NINT(X); M=NINT(EPS_PX)
     IF((Z.EQ.N).AND.(N.LE.0)) THEN
        STOP 'Z IS NEGATIVE INTEGER IN GAMMA_RATIO_DIFF_SMALL_EPS'
     ENDIF
@@ -477,15 +479,15 @@ CONTAINS
     ! Same for |z + |n||oo > |z + eps + |m||oo with z <-> z+eps.
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: Z,EPS
-    INTEGER(IPR) :: M,N,K
-    REAL(PR)     :: X,EPS_PX,FACT
-    REAL(PR)     :: Z_NEG_INT_DISTANCE
-    REAL(PR)     :: EPS_PZ_NEG_INT_DISTANCE
-    COMPLEX(PR)  :: GAMMA_INV_DIFF_EPS,EPS_PZ
+    COMPLEX(wp),INTENT(IN) :: Z,EPS
+    INTEGER(i4) :: M,N,K
+    REAL(wp)     :: X,EPS_PX,FACT
+    REAL(wp)     :: Z_NEG_INT_DISTANCE
+    REAL(wp)     :: EPS_PZ_NEG_INT_DISTANCE
+    COMPLEX(wp)  :: GAMMA_INV_DIFF_EPS,EPS_PZ
     LOGICAL      :: IS_Z_NEG_INT,IS_EPS_PZ_NEG_INT
 
-    EPS_PZ=Z+EPS; X=REAL(Z,PR); EPS_PX=REAL(EPS_PZ,PR)
+    EPS_PZ=Z+EPS; X=REAL(Z,wp); EPS_PX=REAL(EPS_PZ,wp)
     N=NINT(X); M=NINT(EPS_PX)
     IS_Z_NEG_INT=(Z.EQ.N).AND.(N.LE.0)
     IS_EPS_PZ_NEG_INT=(EPS_PZ.EQ.M).AND.(M.LE.0)
@@ -567,12 +569,12 @@ CONTAINS
     ! one_meps: 1-eps
     !----------------------------------------------------------------------
 
-    INTEGER(IPR),INTENT(IN) :: M
-    COMPLEX(PR),INTENT(IN) :: EPS,GAMMA_INV_ONE_MEPS
-    INTEGER(IPR) :: N,I
-    REAL(PR)     :: FACT
-    COMPLEX(PR)  :: A_SUM_INIT,ONE_MEPS
-    COMPLEX(PR)  :: GAMMA_INV_ONE_MEPS_MM
+    INTEGER(i4),INTENT(IN) :: M
+    COMPLEX(wp),INTENT(IN) :: EPS,GAMMA_INV_ONE_MEPS
+    INTEGER(i4) :: N,I
+    REAL(wp)     :: FACT
+    COMPLEX(wp)  :: A_SUM_INIT,ONE_MEPS
+    COMPLEX(wp)  :: GAMMA_INV_ONE_MEPS_MM
     !
     ONE_MEPS = ONE - EPS
     IF(ONE_MEPS-M.NE.1-M) THEN
@@ -612,11 +614,11 @@ CONTAINS
     ! here defined as log((m-1)!) + i.Pi if m is odd.
     !----------------------------------------------------------------------
 
-    INTEGER(IPR),INTENT(IN) :: M
-    COMPLEX(PR),INTENT(IN) :: EPS
-    INTEGER(IPR) :: N
-    REAL(PR)     :: LOG_FACT
-    COMPLEX(PR)  :: ONE_MEPS_MM,LOG_A_SUM_INIT
+    INTEGER(i4),INTENT(IN) :: M
+    COMPLEX(wp),INTENT(IN) :: EPS
+    INTEGER(i4) :: N
+    REAL(wp)     :: LOG_FACT
+    COMPLEX(wp)  :: ONE_MEPS_MM,LOG_A_SUM_INIT
 
     ONE_MEPS_MM=ONE-EPS-M
     IF(ONE_MEPS_MM.NE.1-M) THEN
@@ -630,7 +632,7 @@ CONTAINS
        IF(MOD(M,2).EQ.0) THEN
           LOG_A_SUM_INIT=LOG_FACT
        ELSE
-          LOG_A_SUM_INIT=CMPLX(LOG_FACT,M_PI,PR)
+          LOG_A_SUM_INIT=CMPLX(LOG_FACT,M_PI,wp)
        ENDIF
        RETURN
     ENDIF
@@ -729,16 +731,16 @@ CONTAINS
     ! res: returned \beta_0/(1-z)^m value in all cases.
     !----------------------------------------------------------------------
 
-    INTEGER(IPR),INTENT(IN) :: M
-    COMPLEX(PR),INTENT(IN) :: A,B,GAMMA_C,GAMMA_INV_ONE_MEPS, &
+    INTEGER(i4),INTENT(IN) :: M
+    COMPLEX(wp),INTENT(IN) :: A,B,GAMMA_C,GAMMA_INV_ONE_MEPS, &
          GAMMA_INV_EPS_PA_PM,GAMMA_INV_EPS_PB_PM,MZP1,EPS
-    INTEGER(IPR) :: M_M1,N,I,PHASE
-    REAL(PR)     :: INF_NORM_EPS,GAMMA_INV_MP1
-    COMPLEX(PR)  :: A_PM,B_SUM_INIT_PS_ONE,PI_EPS,GAMMA_INV_ONE_MEPS_MM
-    COMPLEX(PR)  :: B_PM,TMP1,TMP2
-    COMPLEX(PR)  :: Z_TERM,PROD1,PROD2,PROD3,ONE_MEPS,PI_EPS_PM
-    COMPLEX(PR)  :: GAMMA_INV_A_PM,PROD_AB,GAMMA_INV_B_PM
-    COMPLEX(PR)  :: GAMMA_INV_EPS_PM_P1
+    INTEGER(i4) :: M_M1,N,I,PHASE
+    REAL(wp)     :: INF_NORM_EPS,GAMMA_INV_MP1
+    COMPLEX(wp)  :: A_PM,B_SUM_INIT_PS_ONE,PI_EPS,GAMMA_INV_ONE_MEPS_MM
+    COMPLEX(wp)  :: B_PM,TMP1,TMP2
+    COMPLEX(wp)  :: Z_TERM,PROD1,PROD2,PROD3,ONE_MEPS,PI_EPS_PM
+    COMPLEX(wp)  :: GAMMA_INV_A_PM,PROD_AB,GAMMA_INV_B_PM
+    COMPLEX(wp)  :: GAMMA_INV_EPS_PM_P1
 
     INF_NORM_EPS=INF_NORM(EPS); M_M1=M-1; A_PM=A+M; B_PM=B+M
     ONE_MEPS=ONE-EPS; PI_EPS=M_PI*EPS; PI_EPS_PM = M_PI*(EPS+M)
@@ -898,21 +900,21 @@ CONTAINS
     ! res: returned \beta_0/z^{-m} value in all cases.
     !----------------------------------------------------------------------
 
-    INTEGER(IPR),INTENT(IN) :: M
-    COMPLEX(PR),INTENT(IN) :: A,C,GAMMA_C,GAMMA_INV_CMA,Z,EPS
-    COMPLEX(PR),INTENT(IN) :: GAMMA_INV_ONE_MEPS,GAMMA_INV_EPS_PA_PM
-    INTEGER(IPR) :: M_M1,I,N,N0,PHASE
+    INTEGER(i4),INTENT(IN) :: M
+    COMPLEX(wp),INTENT(IN) :: A,C,GAMMA_C,GAMMA_INV_CMA,Z,EPS
+    COMPLEX(wp),INTENT(IN) :: GAMMA_INV_ONE_MEPS,GAMMA_INV_EPS_PA_PM
+    INTEGER(i4) :: M_M1,I,N,N0,PHASE
     LOGICAL      :: IS_N0_HERE,IS_EPS_NON_ZERO
-    REAL(PR)     :: INF_NORM_EPS,NP1,GAMMA_INV_MP1
-    COMPLEX(PR)  :: B_SUM_INIT_PS_INFINITY,TMP1
-    COMPLEX(PR)  :: CMA,A_MC_P1,A_MC_P1_PM,CMA_MEPS,EPS_PA_MC_P1,A_PM
-    COMPLEX(PR)  :: GAMMA_INV_EPS_PM_P1,GAMMA_INV_CMA_MEPS,PI_EPS
-    COMPLEX(PR)  :: PROD1,PROD2,A_PN,A_MC_P1_PN,ONE_MEPS
-    COMPLEX(PR)  :: PROD_A,PROD_A_MC_P1,PROD_EPS_PA_MC_P1_N0,PI_EPS_PM
-    COMPLEX(PR)  :: PROD_EPS_PA_MC_P1,SUM_N0,Z_TERM,SUM_TERM
-    COMPLEX(PR)  :: PROD_DIFF_EPS,GAMMA_INV_A_PM,GAMMA_PROD1
-    COMPLEX(PR)  :: PROD_2A,PROD_2B,PROD_2C
-    COMPLEX(PR)  :: EPS_PA_MC_P1_PN,GAMMA_INV_ONE_MEPS_MM
+    REAL(wp)     :: INF_NORM_EPS,NP1,GAMMA_INV_MP1
+    COMPLEX(wp)  :: B_SUM_INIT_PS_INFINITY,TMP1
+    COMPLEX(wp)  :: CMA,A_MC_P1,A_MC_P1_PM,CMA_MEPS,EPS_PA_MC_P1,A_PM
+    COMPLEX(wp)  :: GAMMA_INV_EPS_PM_P1,GAMMA_INV_CMA_MEPS,PI_EPS
+    COMPLEX(wp)  :: PROD1,PROD2,A_PN,A_MC_P1_PN,ONE_MEPS
+    COMPLEX(wp)  :: PROD_A,PROD_A_MC_P1,PROD_EPS_PA_MC_P1_N0,PI_EPS_PM
+    COMPLEX(wp)  :: PROD_EPS_PA_MC_P1,SUM_N0,Z_TERM,SUM_TERM
+    COMPLEX(wp)  :: PROD_DIFF_EPS,GAMMA_INV_A_PM,GAMMA_PROD1
+    COMPLEX(wp)  :: PROD_2A,PROD_2B,PROD_2C
+    COMPLEX(wp)  :: EPS_PA_MC_P1_PN,GAMMA_INV_ONE_MEPS_MM
     !
     INF_NORM_EPS=INF_NORM(EPS); CMA=C-A; A_MC_P1=A-C+ONE
     A_MC_P1_PM=A_MC_P1+M; CMA_MEPS=CMA-EPS; EPS_PA_MC_P1=EPS+A_MC_P1
@@ -942,7 +944,7 @@ CONTAINS
        B_SUM_INIT_PS_INFINITY = GAMMA_C*(PROD1-PROD2)/EPS
        RETURN
     ELSE
-       N0=-NINT(REAL(A_MC_P1,PR))
+       N0=-NINT(REAL(A_MC_P1,wp))
        IS_EPS_NON_ZERO=ONE_MEPS-M.NE.1-M
        IS_N0_HERE=(N0.GE.0).AND.(N0.LT.M)     
        GAMMA_INV_MP1=ONE; PROD_A=ONE; PROD_A_MC_P1=ONE
@@ -1025,15 +1027,15 @@ CONTAINS
     ! |z|^2, Re(a), Re(b), Re(c), with which P(X) can be expressed.
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    REAL(PR),INTENT(OUT) :: CV_POLY_DER_TAB(0:3)
-    REAL(PR)     :: MOD_A2,MOD_B2,MOD_C2,MOD_Z2
-    REAL(PR)     :: RE_A,RE_B,RE_C,IM_A,IM_B,IM_C,RE_Z,IM_Z
+    COMPLEX(wp),INTENT(IN) :: A,B,C,Z
+    REAL(wp),INTENT(OUT) :: CV_POLY_DER_TAB(0:3)
+    REAL(wp)     :: MOD_A2,MOD_B2,MOD_C2,MOD_Z2
+    REAL(wp)     :: RE_A,RE_B,RE_C,IM_A,IM_B,IM_C,RE_Z,IM_Z
     !
-    RE_A=REAL(A,PR); IM_A=AIMAG(A); MOD_A2=RE_A*RE_A+IM_A*IM_A
-    RE_B=REAL(B,PR); IM_B=AIMAG(B); MOD_B2=RE_B*RE_B+IM_B*IM_B
-    RE_C=REAL(C,PR); IM_C=AIMAG(C); MOD_C2=RE_C*RE_C+IM_C*IM_C
-    RE_Z=REAL(Z,PR); IM_Z=AIMAG(Z); MOD_Z2=RE_Z*RE_Z+IM_Z*IM_Z
+    RE_A=REAL(A,wp); IM_A=AIMAG(A); MOD_A2=RE_A*RE_A+IM_A*IM_A
+    RE_B=REAL(B,wp); IM_B=AIMAG(B); MOD_B2=RE_B*RE_B+IM_B*IM_B
+    RE_C=REAL(C,wp); IM_C=AIMAG(C); MOD_C2=RE_C*RE_C+IM_C*IM_C
+    RE_Z=REAL(Z,wp); IM_Z=AIMAG(Z); MOD_Z2=RE_Z*RE_Z+IM_Z*IM_Z
     CV_POLY_DER_TAB(0)=TWO*((RE_A*MOD_B2+RE_B*MOD_A2)*MOD_Z2-RE_C-MOD_C2)
     CV_POLY_DER_TAB(1)=TWO*((MOD_A2+MOD_B2+4.0D0*RE_A*RE_B)*MOD_Z2 &
          -ONE-4.0D0*RE_C-MOD_C2)
@@ -1050,9 +1052,9 @@ CONTAINS
     ! See P'(X) components calculation routine for definitions.
     !----------------------------------------------------------------------
 
-    REAL(PR),INTENT(IN) :: X
-    REAL(PR),INTENT(IN) :: CV_POLY_DER_TAB(0:3)
-    REAL(PR) :: CV_POLY_DER_CALC
+    REAL(wp),INTENT(IN) :: X
+    REAL(wp),INTENT(IN) :: CV_POLY_DER_TAB(0:3)
+    REAL(wp) :: CV_POLY_DER_CALC
     !
     CV_POLY_DER_CALC=CV_POLY_DER_TAB(0)+X*(CV_POLY_DER_TAB(1) &
          +X*(CV_POLY_DER_TAB(2)+X*CV_POLY_DER_TAB(3)))
@@ -1094,9 +1096,9 @@ CONTAINS
     ! P''(X) largest real root equal to -(C2 + sqrt(Delta))/(3 C3).
     !----------------------------------------------------------------------
 
-    REAL(PR),INTENT(IN) :: CV_POLY_DER_TAB(0:3)
-    INTEGER(IPR) :: MIN_N_CALC
-    REAL(PR)     :: C1,C2,THREE_C3,DELTA,LARGEST_ROOT
+    REAL(wp),INTENT(IN) :: CV_POLY_DER_TAB(0:3)
+    INTEGER(i4) :: MIN_N_CALC
+    REAL(wp)     :: C1,C2,THREE_C3,DELTA,LARGEST_ROOT
     !
     C1=CV_POLY_DER_TAB(1); C2=CV_POLY_DER_TAB(2)
     THREE_C3=3.0D0*CV_POLY_DER_TAB(3); DELTA = C2*C2 - THREE_C3*C1
@@ -1142,14 +1144,14 @@ CONTAINS
     ! One can then check if |t[n] z^n|oo < 1E-15 to truncate the series.
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    INTEGER(IPR) :: N,NA,NB,MIN_N
-    COMPLEX(PR)  :: HYP_PS_ZERO,TERM
+    COMPLEX(wp),INTENT(IN) :: A,B,C,Z
+    INTEGER(i4) :: N,NA,NB,MIN_N
+    COMPLEX(wp)  :: HYP_PS_ZERO,TERM
     LOGICAL :: POSSIBLE_FALSE_CV
-    REAL(PR) :: CV_POLY_DER_TAB(0:3)
+    REAL(wp) :: CV_POLY_DER_TAB(0:3)
 
-    NA = ABS(NINT(REAL(A,PR)))
-    NB = ABS(NINT(REAL(B,PR)))
+    NA = ABS(NINT(REAL(A,wp)))
+    NB = ABS(NINT(REAL(B,wp)))
     TERM=ONE; HYP_PS_ZERO=ONE  
     IF(A.EQ.(-NA)) THEN
        DO N=0,NA-1
@@ -1252,23 +1254,23 @@ CONTAINS
     ! (eps+m+1+n)(n+1), (a+m+n)(b+m+n)
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,MZP1
-    INTEGER(IPR) :: N,M,PHASE,M_M2,MIN_N,M_P1
-    REAL(PR)     :: B_PREC,N_P1,N_PM_P1
-    COMPLEX(PR)  :: HYP_PS_ONE,EPS,EPS_PM,EPS_PM_P1,A_PM
-    COMPLEX(PR)  :: B_PM,ONE_MEPS_MM,EPS_PA,EPS_PB,PI_EPS,GAMMA_PROD
-    COMPLEX(PR)  :: EPS_PA_PM,EPS_PB_PM
-    COMPLEX(PR)  :: A_SUM,A_TERM,ONE_MEPS
-    COMPLEX(PR)  :: B_EXTRA_TERM,B_TERM,B_SUM,GAMMA_C,RATIO
-    COMPLEX(PR)  :: A_PM_PN,B_PM_PN,EPS_PM_P1_PN,N_P1_MEPS
-    COMPLEX(PR)  :: PROD1,PROD2,PROD3
-    COMPLEX(PR)  :: EPS_PA_PM_PN,EPS_PB_PM_PN,EPS_PM_PN,PROD_B,POW_MZP1_M
-    COMPLEX(PR)  :: GAMMA_INV_EPS_PA_PM,GAMMA_INV_EPS_PB_PM
-    COMPLEX(PR)  :: GAMMA_INV_ONE_MEPS
+    COMPLEX(wp),INTENT(IN) :: A,B,C,MZP1
+    INTEGER(i4) :: N,M,PHASE,M_M2,MIN_N,M_P1
+    REAL(wp)     :: B_PREC,N_P1,N_PM_P1
+    COMPLEX(wp)  :: HYP_PS_ONE,EPS,EPS_PM,EPS_PM_P1,A_PM
+    COMPLEX(wp)  :: B_PM,ONE_MEPS_MM,EPS_PA,EPS_PB,PI_EPS,GAMMA_PROD
+    COMPLEX(wp)  :: EPS_PA_PM,EPS_PB_PM
+    COMPLEX(wp)  :: A_SUM,A_TERM,ONE_MEPS
+    COMPLEX(wp)  :: B_EXTRA_TERM,B_TERM,B_SUM,GAMMA_C,RATIO
+    COMPLEX(wp)  :: A_PM_PN,B_PM_PN,EPS_PM_P1_PN,N_P1_MEPS
+    COMPLEX(wp)  :: PROD1,PROD2,PROD3
+    COMPLEX(wp)  :: EPS_PA_PM_PN,EPS_PB_PM_PN,EPS_PM_PN,PROD_B,POW_MZP1_M
+    COMPLEX(wp)  :: GAMMA_INV_EPS_PA_PM,GAMMA_INV_EPS_PB_PM
+    COMPLEX(wp)  :: GAMMA_INV_ONE_MEPS
     LOGICAL :: POSSIBLE_FALSE_CV
-    REAL(PR) :: CV_POLY1_DER_TAB(0:3),CV_POLY2_DER_TAB(0:3)
+    REAL(wp) :: CV_POLY1_DER_TAB(0:3),CV_POLY2_DER_TAB(0:3)
 
-    M=NINT(REAL(C-A-B,PR)); M_M2=M-2; M_P1=M+1
+    M=NINT(REAL(C-A-B,wp)); M_M2=M-2; M_P1=M+1
     IF(MOD(M,2).EQ.0) THEN
        PHASE=1
     ELSE
@@ -1292,7 +1294,7 @@ CONTAINS
             -LOG_GAMMA(EPS_PB_PM)+LOG_A_SUM_INIT(M,EPS))
        IF((AIMAG(A).EQ.ZERO).AND.(AIMAG(B).EQ.ZERO)&
             .AND.(AIMAG(C).EQ.ZERO)) THEN
-          A_TERM=REAL(A_TERM,PR)
+          A_TERM=REAL(A_TERM,wp)
        ENDIF
     ENDIF
     A_SUM=A_TERM
@@ -1417,24 +1419,24 @@ CONTAINS
     ! (eps+m+1+n)(n+1), (a+m+n)(1-c+a+m+n)
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    INTEGER(IPR) :: N,M,PHASE,M_M2,MIN_N,M_P1
-    REAL(PR)     :: B_PREC,N_P1,N_PM_P1
-    COMPLEX(PR)  :: POW_Z_INV_M
-    COMPLEX(PR)  :: HYP_PS_INFINITY,Z_INV,RATIO
-    COMPLEX(PR)  :: EPS,A_MC_P1,ONE_MEPS,ONE_MEPS_MM,A_PM,A_MC_P1_PM
-    COMPLEX(PR)  :: CMA,EPS_PA,EPS_PM_P1,EPS_PA_MC_P1_PM,PI_EPS
-    COMPLEX(PR)  :: EPS_PA_PM,EPS_PM,GAMMA_C,GAMMA_INV_CMA,POW_MZ_MA
-    COMPLEX(PR)  :: A_SUM,A_TERM
-    COMPLEX(PR)  :: GAMMA_INV_EPS_PA_PM,GAMMA_INV_ONE_MEPS
-    COMPLEX(PR)  :: PROD_B,B_EXTRA_TERM,B_TERM,B_SUM,PROD1
-    COMPLEX(PR)  :: A_PM_PN,A_MC_P1_PM_PN,EPS_PM_P1_PN,N_P1_MEPS
-    COMPLEX(PR)  :: PROD2,PROD3,GAMMA_PROD
-    COMPLEX(PR)  :: EPS_PA_PM_PN,EPS_PA_MC_P1_PM_PN,EPS_PM_PN
+    COMPLEX(wp),INTENT(IN) :: A,B,C,Z
+    INTEGER(i4) :: N,M,PHASE,M_M2,MIN_N,M_P1
+    REAL(wp)     :: B_PREC,N_P1,N_PM_P1
+    COMPLEX(wp)  :: POW_Z_INV_M
+    COMPLEX(wp)  :: HYP_PS_INFINITY,Z_INV,RATIO
+    COMPLEX(wp)  :: EPS,A_MC_P1,ONE_MEPS,ONE_MEPS_MM,A_PM,A_MC_P1_PM
+    COMPLEX(wp)  :: CMA,EPS_PA,EPS_PM_P1,EPS_PA_MC_P1_PM,PI_EPS
+    COMPLEX(wp)  :: EPS_PA_PM,EPS_PM,GAMMA_C,GAMMA_INV_CMA,POW_MZ_MA
+    COMPLEX(wp)  :: A_SUM,A_TERM
+    COMPLEX(wp)  :: GAMMA_INV_EPS_PA_PM,GAMMA_INV_ONE_MEPS
+    COMPLEX(wp)  :: PROD_B,B_EXTRA_TERM,B_TERM,B_SUM,PROD1
+    COMPLEX(wp)  :: A_PM_PN,A_MC_P1_PM_PN,EPS_PM_P1_PN,N_P1_MEPS
+    COMPLEX(wp)  :: PROD2,PROD3,GAMMA_PROD
+    COMPLEX(wp)  :: EPS_PA_PM_PN,EPS_PA_MC_P1_PM_PN,EPS_PM_PN
     LOGICAL :: POSSIBLE_FALSE_CV
-    REAL(PR) :: CV_POLY1_DER_TAB(0:3),CV_POLY2_DER_TAB(0:3)
+    REAL(wp) :: CV_POLY1_DER_TAB(0:3),CV_POLY2_DER_TAB(0:3)
 
-    M=NINT(REAL(B-A,PR)); M_M2=M-2;M_P1=M+1
+    M=NINT(REAL(B-A,wp)); M_M2=M-2;M_P1=M+1
     IF(MOD(M,2).EQ.0) THEN
        PHASE=1
     ELSE
@@ -1458,7 +1460,7 @@ CONTAINS
             + LOG_A_SUM_INIT(M,EPS))
        IF((AIMAG(A).EQ.ZERO).AND.(AIMAG(B).EQ.ZERO).AND.     &
             (AIMAG(C).EQ.ZERO)) THEN
-          A_TERM=REAL(A_TERM,PR)
+          A_TERM=REAL(A_TERM,wp)
        ENDIF
     ENDIF
     A_SUM=A_TERM
@@ -1559,12 +1561,12 @@ CONTAINS
     ! truncated sum of the power series.
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    INTEGER(IPR) :: N
-    REAL(PR)     :: ABS_Z,PREC
-    COMPLEX(PR)  :: HYP_PS_COMPLEX_PLANE_REST
-    COMPLEX(PR)  :: Z0,ZC,ZC_Z0_RATIO,Z0_TERM1,Z0_TERM2
-    COMPLEX(PR)  :: HYP_PS_Z0,DHYP_PS_Z0,AN,ANP1,ANP2
+    COMPLEX(wp),INTENT(IN) :: A,B,C,Z
+    INTEGER(i4) :: N
+    REAL(wp)     :: ABS_Z,PREC
+    COMPLEX(wp)  :: HYP_PS_COMPLEX_PLANE_REST
+    COMPLEX(wp)  :: Z0,ZC,ZC_Z0_RATIO,Z0_TERM1,Z0_TERM2
+    COMPLEX(wp)  :: HYP_PS_Z0,DHYP_PS_Z0,AN,ANP1,ANP2
 
     ABS_Z=ABS(Z)
     IF(ABS_Z.LT.ONE) THEN
@@ -1664,17 +1666,17 @@ CONTAINS
     ! res: returned result
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    INTEGER(IPR) :: NA,NB,NC,I
-    REAL(PR)     :: RE_A,RE_B,RE_C,ABS_Z,ABS_ZM1,ABS_Z_OVER_ZM1
-    REAL(PR)     :: ABS_ZM1_OVER_Z,ABS_ZM1_INV,R_TABLE(1:5),R,ABS_Z_INV
-    COMPLEX(PR)  :: RES,Z_SHIFT
-    COMPLEX(PR)  :: Z_OVER_ZM1,ZM1
+    COMPLEX(wp),INTENT(IN) :: A,B,C,Z
+    INTEGER(i4) :: NA,NB,NC,I
+    REAL(wp)     :: RE_A,RE_B,RE_C,ABS_Z,ABS_ZM1,ABS_Z_OVER_ZM1
+    REAL(wp)     :: ABS_ZM1_OVER_Z,ABS_ZM1_INV,R_TABLE(1:5),R,ABS_Z_INV
+    COMPLEX(wp)  :: RES,Z_SHIFT
+    COMPLEX(wp)  :: Z_OVER_ZM1,ZM1
     LOGICAL      :: IS_A_NEG_INT,IS_B_NEG_INT,IS_C_NEG_INT
     LOGICAL      :: AB_CONDITION,CAB_CONDITION,ARE_A_CMB_C_SMALL
     LOGICAL      :: IS_CMB_SMALL,ARE_AC_SMALL,ARE_ABC_SMALL
     !
-    RE_A=REAL(A,PR); RE_B=REAL(B,PR); RE_C=REAL(C,PR);
+    RE_A=REAL(A,wp); RE_B=REAL(B,wp); RE_C=REAL(C,wp);
     NA=NINT(RE_A); NB=NINT(RE_B); NC=NINT(RE_C);
     IS_A_NEG_INT=A.EQ.NA.AND.NA.LE.0
     IS_B_NEG_INT=B.EQ.NB.AND.NB.LE.0
@@ -1724,8 +1726,8 @@ CONTAINS
           RETURN
        ENDIF
     ENDIF
-    IF((REAL(Z,PR).GE.ONE).AND.(AIMAG(Z).EQ.ZERO)) THEN
-       Z_SHIFT=CMPLX(REAL(Z,PR),-1.0D-307,PR)
+    IF((REAL(Z,wp).GE.ONE).AND.(AIMAG(Z).EQ.ZERO)) THEN
+       Z_SHIFT=CMPLX(REAL(Z,wp),-1.0D-307,wp)
        RES=HYP_2F1(A,B,C,Z_SHIFT)
        RETURN
     ENDIF
@@ -1814,9 +1816,9 @@ CONTAINS
     ! and F'(z) = ((a+1)(b+1)/(c+1)) (a b/c) 2F1(a+2,b+2,c+2,z).
     !----------------------------------------------------------------------
 
-    COMPLEX(PR),INTENT(IN) :: A,B,C,Z
-    REAL(PR)    :: TEST_2F1
-    COMPLEX(PR) :: F,DF,D2F!,HYP_2F1  ! FIXME
+    COMPLEX(wp), INTENT(IN) :: A,B,C,Z
+    REAL(wp)    :: TEST_2F1
+    COMPLEX(wp) :: F,DF,D2F
 
     IF(Z.EQ.ZERO) THEN
        TEST_2F1=INF_NORM(F-ONE)
