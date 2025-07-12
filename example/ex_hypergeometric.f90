@@ -1,10 +1,10 @@
-module example_gauss_hypergeometric
-! Simple tests for Gauss hypergeometric function.
+module example_hypergeometric
+! Simple tests for hypergeometric functions.
 
   use csf_kinds, only: wp
   use csf_constants, only: nan, ninf, pinf
   use csf_numerror, only: isclose, eps_wp
-  use cpc_michel, only: hyp2f1 => hyp_2f1
+  use csf_hypergeometric, only: hyp2f1
 
   implicit none
   private
@@ -45,4 +45,4 @@ contains
     print '(a, es22.15)', 'err_hyp2f1(0.5, -5.0, 1.5, 1.5) = ', err
   end subroutine example_hyp2f1
 
-end module example_gauss_hypergeometric
+end module example_hypergeometric

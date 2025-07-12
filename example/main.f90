@@ -5,7 +5,7 @@ program examples
   use example_polygamma
   use example_exponential_integral
   use example_bessel
-  use example_gauss_hypergeometric
+  use example_hypergeometric
 
   implicit none
   
