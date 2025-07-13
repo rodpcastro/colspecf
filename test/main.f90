@@ -12,6 +12,7 @@ program tester
   use test_numerror, only: collect_numerror_tests
   use test_exponential_integral, only : collect_exponential_integral_tests
   use test_bessel, only: collect_bessel_tests
+  use test_hypergeometric, only: collect_hypergeometric_tests
 
   implicit none
   integer :: stat, is
@@ -23,7 +24,8 @@ program tester
   testsuites = [ &
     new_testsuite("numerror_suite", collect_numerror_tests), &
     new_testsuite("exponential_integral_suite", collect_exponential_integral_tests), &
-    new_testsuite("bessel_suite", collect_bessel_tests) &
+    new_testsuite("bessel_suite", collect_bessel_tests), &
+    new_testsuite("hypergeometric_suite", collect_hypergeometric_tests) &
   ]
 
   do is = 1, size(testsuites)

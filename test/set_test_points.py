@@ -102,6 +102,32 @@ def set_test_points_bessel_y1x():
     filepath = test_points_dir / 'bessel_y1x.csv'
     np.savetxt(filepath, zv, fmt='% .15e')
 
+def set_test_points_hypergeometric_hyp2f1():
+    # In the test for hyp2f1(a,b,c,z), all parameters are of type complex with zero
+    # imaginary part. Parameters a anc c are fixed. Parameter b ranges through
+    # multiples of -n/2, where n is a non-negative integer. Parameter z ranges through
+    # values larger or equal to 1.0.
+    a = 0.5 + 0.0j
+    c = 1.5 + 0.0j
+    
+    n = np.arange(0, 42, dtype=np.complex128)
+    b = -0.5 * n[::-1]
+
+    z = np.linspace(1.0, 5.0, 100, dtype=np.complex128)
+
+    B, Z = np.meshgrid(b, z)
+
+    bv = B.ravel()
+    zv = Z.ravel()
+    hv = np.empty_like(bv)
+    for i, (bi, zi) in enumerate(zip(bv, zv)):
+        hv[i] = mpmath.hyp2f1(a, bi, c, zi)
+
+    xv = bv + 1j * zv  # A subterfuge to allow fortran test routines to read this data.
+    dv = np.column_stack((xv, hv))
+    filepath = test_points_dir / 'hypergeometric_hyp2f1.csv'
+    np.savetxt(filepath, dv, fmt='% .15e %+.15e   % .15e %+.15e')
+
 
 if __name__ == '__main__':
     set_test_points_exponential_integral_ei()
@@ -111,3 +137,4 @@ if __name__ == '__main__':
     set_test_points_bessel_j1x()
     set_test_points_bessel_y0x()
     set_test_points_bessel_y1x()
+    set_test_points_hypergeometric_hyp2f1()
