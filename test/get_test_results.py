@@ -11,6 +11,8 @@ os.makedirs('test/test_plots', exist_ok=True)
 test_specfun_dir = Path(__file__).parent / 'test_specfun/'
 test_plots_dir = Path(__file__).parent / 'test_plots/'
 
+raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/gauss/test/test_plots/'
+
 eps = np.finfo(np.float64).eps
 
 
@@ -46,7 +48,7 @@ def write_results(f, results_title, get_error, fname, latex):
     f.write(f'| Maximum Error | Average Error  |\n')
     f.write(f'| ------------- | -------------- |\n')
     f.write(f'|{err.max():.2e}|{err.mean():.2e}|\n\n')
-    f.write(f'![{fname}]({fname+'.svg'})\n\n')
+    f.write(f'![{fname}]({raw_url + fname + '.svg'})\n\n')
 
 
 def get_error_fx(filename, latex=''):
