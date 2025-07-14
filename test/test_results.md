@@ -56,7 +56,7 @@
 
 ![bessel_y1x](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/gauss/test/test_plots/bessel_y1x.svg)
 
-## Gauss hypergeometric function ${}_2F_1(a, b; c; z)$
+## Gauss hypergeometric function ${}_2F_1(0.5, b; 1.5; z)$
 
 | Maximum Error | Average Error  |
 | ------------- | -------------- |

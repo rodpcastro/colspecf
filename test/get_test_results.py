@@ -12,6 +12,7 @@ test_specfun_dir = Path(__file__).parent / 'test_specfun/'
 test_plots_dir = Path(__file__).parent / 'test_plots/'
 
 raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/gauss/test/test_plots/'
+# raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/'
 
 eps = np.finfo(np.float64).eps
 
@@ -186,7 +187,7 @@ if __name__ == '__main__':
         fname = 'bessel_y1x'
         write_results(f, title, get_error_fx, fname, latex)
     
-        latex = '${}_2F_1(a, b; c; z)$'
+        latex = '${}_2F_1(0.5, b; 1.5; z)$'
         title = rf'Gauss hypergeometric function {latex}'
         fname = 'hypergeometric_hyp2f1'
         write_results(f, title, get_error_hypergeometric_hyp2f1, fname, latex)
