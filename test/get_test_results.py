@@ -47,7 +47,7 @@ def write_results(f, results_title, get_error, fname, latex):
     err = get_error(fname, latex)
     f.write(r'## ' + results_title + '\n\n')
     f.write(f'| Maximum Error | Average Error  |\n')
-    f.write(f'| ------------- | -------------- |\n')
+    f.write(f'| :-----------: | :------------: |\n')
     f.write(f'|{err.max():.2e}|{err.mean():.2e}|\n\n')
     f.write(f'![{fname}]({raw_url + fname + '.svg'})\n\n')
 
