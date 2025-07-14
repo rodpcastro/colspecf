@@ -11,26 +11,29 @@
 ColSpecF (Collected Special Functions) is a [Fortran][Fortran Website] library for evaluating mathematical [Special Functions], built around adaptations of algorithms collected from [several sources](#references).
 
 ## Functions
-The following list describes the implemented functions, each validated to at least 8 digits of precision within the specified domains. Outside these domains, the same precision is not guaranteed.
+The following list describes the implemented functions and their domains.
 
 * Exponential integrals $\mathrm{Ei}(x)$ and $\mathrm{E}_1(x)$
     * $\lbrace x \in \mathbb{R} \mid x \neq 0 \rbrace$
 * Exponential integral $\mathrm{E}_1(z)$
-    * $z \in \mathbb{C} \setminus \left( \lbrace z \in \mathbb{C} \mid \Re(z) \lt 0,\thinspace 0 \lt |\Im(z)| \lt 10^{-6} \rbrace \cup \lbrace 0 \rbrace \right)$
+    * $\lbrace z \in \mathbb{C} \mid x \neq 0 \rbrace$
 * Bessel functions of the first kind $J_0(x)$ and $J_1(x)$
     * $x \in \mathbb{R}$
 * Bessel functions of the second kind $Y_0(x)$ and $Y_1(x)$
     * $\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace$
+* Hypergeometric function ${}_2F_1(a, b; c; z)$
+    * $a, b, c, z \in \mathbb{C}$
 
 The list above will be updated as new functions are added and tested. Next in line are:
 
 * Struve functions $\mathbf{H}_0(x)$ and $\mathbf{H}_1(x)$
-* Hypergeometric function ${}_2F_1(a, b; c; x)$
 
 ## Tests
-Tests are conducted by comparing the ColSpecF results with those of [mpmath], an arbitrary-precision numerical library. These tests ensure at least 8 digits of precision within the specified domains.
+Tests are conducted by comparing the ColSpecF results with those of [mpmath], an arbitrary-precision numerical library.
 
 Testing routines are built using [test-drive], a standard Fortran unit testing framework.
+
+Test results can be found [here][test_results].
 
 ## Documentation
 The [API documentation][Docs Website] for this library is generated using [FORD] and is deployed and hosted on [ReadTheDocs].
@@ -71,6 +74,7 @@ ColSpecF is a Fortran library distributed under multiple licenses or permissions
 <!-- Tests -->
 [mpmath]: https://mpmath.org/
 [test-drive]: https://github.com/fortran-lang/test-drive
+[test_results]: https://github.com/rodpcastro/colspecf/blob/gauss/test/test_results.md
 <!-- Documentation -->
 [FORD]: https://forddocs.readthedocs.io/
 [ReadTheDocs]: https://about.readthedocs.com/
