@@ -26,6 +26,8 @@ module cpc_michel
 !     - Positioned original docstrings inside their respective procedures.
 !     - Replaced `PR` (real and complex precision) by `wp` (CSF working precision).
 !     - Replaced `IPR` (integer precision) by `i4` (CSF 4-byte integer).
+! - 2025-07-14 - Rodrigo Castro (GitHub: rodpcastro)
+!     - Replaced `EPS15` by `eps_wp` (CSF working precision machine epsilon).
 !
 ! ## References
 ! 1. N. Michel and M. V. Stoitsov. 2008. Fast computation of the Gauss hypergeometric 
@@ -33,15 +35,13 @@ module cpc_michel
 !    Ginocchio potential wave functions. Computer Physics Communications 178, 7 (April
 !*   2008), 535–551. <https://doi.org/10.1016/J.CPC.2007.11.007>
 
-  ! TODO: After tests, replace eps15 by eps_wp.
-
   use csf_kinds, only: wp, i4
+  use csf_numerror, only: eps_wp
 
   implicit none
   private
   public :: hyp_2f1
 
-  REAL(wp) :: EPS15=1.0e-15_wp
   REAL(wp) :: ZERO=0.0_wp,ONE=1.0_wp,TWO=2.0_wp,HALF=0.50_wp
   REAL(wp) :: M_PI=3.14159265358979323846_wp
   REAL(wp) :: M_PI_2=1.57079632679489661923_wp
@@ -1171,7 +1171,7 @@ CONTAINS
        CALL CV_POLY_DER_TAB_CALC(A,B,C,Z,CV_POLY_DER_TAB)
        POSSIBLE_FALSE_CV=.TRUE.
        MIN_N=MIN_N_CALC(CV_POLY_DER_TAB);N=0
-       DO WHILE(POSSIBLE_FALSE_CV.OR.(INF_NORM(TERM).GT.EPS15))
+       DO WHILE(POSSIBLE_FALSE_CV.OR.(INF_NORM(TERM).GT.eps_wp))
           TERM = TERM*Z*(A+N)*(B+N)/((N+ONE)*(C+N))
           HYP_PS_ZERO = HYP_PS_ZERO + TERM
           IF(POSSIBLE_FALSE_CV.AND.(N.GT.MIN_N)) THEN
@@ -1314,7 +1314,7 @@ CONTAINS
        PROD_B = PROD_B*(A+M-ONE)*(B+M-ONE)/DBLE(M)
     ENDIF
     B_EXTRA_TERM = PROD_B*GAMMA_PROD*GAMMA_INV_ONE_MEPS; B_SUM=B_TERM
-    B_PREC=EPS15*INF_NORM(B_TERM)
+    B_PREC=eps_wp*INF_NORM(B_TERM)
     CALL CV_POLY_DER_TAB_CALC(A,B,ONE_MEPS_MM,MZP1,CV_POLY1_DER_TAB)
     CALL CV_POLY_DER_TAB_CALC(EPS_PB_PM,EPS_PA_PM,EPS_PM_P1,MZP1, &
          CV_POLY2_DER_TAB)
@@ -1481,7 +1481,7 @@ CONTAINS
     ENDIF
     B_EXTRA_TERM = PROD_B*GAMMA_PROD*GAMMA_INV_ONE_MEPS
     B_SUM=B_TERM
-    B_PREC=EPS15*INF_NORM(B_TERM)
+    B_PREC=eps_wp*INF_NORM(B_TERM)
     CALL CV_POLY_DER_TAB_CALC(A,A_MC_P1,ONE_MEPS_MM,Z_INV, &
          CV_POLY1_DER_TAB)
     CALL CV_POLY_DER_TAB_CALC(B,EPS_PA_MC_P1_PM,EPS_PM_P1, &
@@ -1583,7 +1583,7 @@ CONTAINS
        DHYP_PS_Z0=HYP_PS_INFINITY(A+ONE,B+ONE,C+ONE,Z0)*A*B/C 
     ENDIF
     AN=HYP_PS_Z0;ANP1=ZC*DHYP_PS_Z0;HYP_PS_COMPLEX_PLANE_REST=AN+ANP1
-    PREC=EPS15*(INF_NORM(AN)+INF_NORM(ANP1)); N=0
+    PREC=eps_wp*(INF_NORM(AN)+INF_NORM(ANP1)); N=0
     DO WHILE(INF_NORM(AN).GT.PREC)
        ANP2=ZC_Z0_RATIO*(ANP1*(N*Z0_TERM1-Z0_TERM2)+AN*ZC*(A+N)*(B+N) &
             /(N+ONE))/(N+TWO)
