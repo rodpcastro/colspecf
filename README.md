@@ -21,8 +21,8 @@ The following list describes the implemented functions and their domains.
     * $x \in \mathbb{R}$
 * Bessel functions of the second kind $Y_0(x)$ and $Y_1(x)$
     * $\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace$
-* Hypergeometric function ${}_2F_1(a, b; c; z)$
-    * $a, b, c, z \in \mathbb{C}$
+* Gauss hypergeometric function ${}_2F_1(a, b; c; z)$
+    * $a,\thinspace b,\thinspace c,\thinspace z \in \mathbb{C}$
 
 The list above will be updated as new functions are added and tested. Next in line are:
 
