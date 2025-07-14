@@ -11,8 +11,7 @@ os.makedirs('test/test_plots', exist_ok=True)
 test_specfun_dir = Path(__file__).parent / 'test_specfun/'
 test_plots_dir = Path(__file__).parent / 'test_plots/'
 
-raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/gauss/test/test_plots/'
-# raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/'
+raw_url = 'https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/'
 
 eps = np.finfo(np.float64).eps
 
