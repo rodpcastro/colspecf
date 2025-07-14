@@ -5,6 +5,7 @@ program examples
   use example_polygamma
   use example_exponential_integral
   use example_bessel
+  use example_hypergeometric
 
   implicit none
   
@@ -19,5 +20,6 @@ program examples
   call example_j1x()
   call example_y0x()
   call example_y1x()
+  call example_hyp2f1()
 
 end program examples

@@ -17,10 +17,12 @@ module csf
 ! - `j1x`: Bessel function of the first kind of order one \(J_1(x)\)
 ! - `y0x`: Bessel function of the second kind of order zero \(Y_0(x)\)
 ! - `y1x`: Bessel function of the second kind of order one \(Y_0(x)\)
+! - `hyp2f1`: Gauss hypergeometric function \({}_2F_1(a, b; c; z)\)
 !*
 
   use csf_exponential_integral
   use csf_bessel
+  use csf_hypergeometric
 
   implicit none
   public
