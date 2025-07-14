@@ -75,6 +75,7 @@ ColSpecF is a Fortran library distributed under multiple licenses or permissions
 [mpmath]: https://mpmath.org/
 [test-drive]: https://github.com/fortran-lang/test-drive
 [test_results]: https://github.com/rodpcastro/colspecf/blob/gauss/test/test_results.md
+<!-- [test_results]: https://github.com/rodpcastro/colspecf/blob/main/test/test_results.md -->
 <!-- Documentation -->
 [FORD]: https://forddocs.readthedocs.io/
 [ReadTheDocs]: https://about.readthedocs.com/
