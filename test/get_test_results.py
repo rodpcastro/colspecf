@@ -4,6 +4,8 @@
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
+from matplotlib.ticker import LogFormatterMathtext
 import os
 
 os.makedirs('test/test_plots', exist_ok=True)
@@ -64,12 +66,15 @@ def get_error_fx(filename, latex=''):
     yc = data[:, 2]
     
     err = compute_error(ym, yc)
+
+    # Set zero error to mininum value to avoid problems with log plot.
+    err[err == 0] = np.min(err[err > 0])
     
     fig, ax = plt.subplots(figsize=(5, 3))
     
     ax.set_title(rf'Error - {latex}')
     ax.set_xlabel('x')
-    ax.plot(x, err, 'k')
+    ax.semilogy(x, err, 'k')
 
     imgpath = test_plots_dir / (filename + '.svg')
     plt.savefig(imgpath, bbox_inches='tight')
@@ -97,14 +102,17 @@ def get_error_fz(filename, latex=''):
     
     err = compute_error(ym, yc)
     
+    # Set zero error to mininum value to avoid problems with log plot.
+    err[err == 0] = np.min(err[err > 0])
+
     fig, ax = plt.subplots(figsize=(5, 3))
     
     ax.set_title(rf'Error - {latex}')
     ax.set_xlabel(r'$\Re(z)$')
     ax.set_ylabel(r'$\Im(z)$', rotation='horizontal', labelpad=10.0)
-    ec = ax.contourf(zre, zim, err)
+    ec = ax.contourf(zre, zim, err, norm=LogNorm())
     
-    fig.colorbar(ec, format='%.2e')
+    fig.colorbar(ec, format=LogFormatterMathtext())
     
     imgpath = test_plots_dir / (filename + '.svg')
     plt.savefig(imgpath, bbox_inches='tight')
@@ -132,14 +140,17 @@ def get_error_hypergeometric_hyp2f1(filename, latex):
 
     err = compute_error(hm, hc)
 
+    # Set zero error to mininum value to avoid problems with log plot.
+    err[err == 0] = np.min(err[err > 0])
+
     fig, ax = plt.subplots(figsize=(5, 3))
 
     ax.set_title(rf'Error - {latex}')
     ax.set_xlabel('b')
     ax.set_ylabel('z', rotation='horizontal', labelpad=10.0)
-    ec = ax.contourf(b, z, err)
+    ec = ax.contourf(b, z, err, norm=LogNorm())
     
-    fig.colorbar(ec, format='%.2e')
+    fig.colorbar(ec, format=LogFormatterMathtext())
     
     imgpath = test_plots_dir / (filename + '.svg')
     plt.savefig(imgpath, bbox_inches='tight')
@@ -190,4 +201,14 @@ if __name__ == '__main__':
         title = rf'Gauss hypergeometric function {latex}'
         fname = 'hypergeometric_hyp2f1'
         write_results(f, title, get_error_hypergeometric_hyp2f1, fname, latex)
+
+        latex = r'$\mathbf{H}_0(x)$'
+        title = rf'Struve function {latex}'
+        fname = 'struve_h0'
+        write_results(f, title, get_error_fx, fname, latex)
+        
+        latex = r'$\mathbf{H}_1(x)$'
+        title = rf'Struve function {latex}'
+        fname = 'struve_h1'
+        write_results(f, title, get_error_fx, fname, latex)
 
