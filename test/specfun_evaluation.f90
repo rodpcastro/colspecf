@@ -58,6 +58,7 @@ contains
     call write_test_points(filename, ref_x, ref_y, specfun_y, specfun_ic)
   end subroutine evalx_write
 
+
   subroutine evalz_write(fz, file, specfun_ic)
     ! Evaluates complex function for test points and write results.
 
@@ -81,5 +82,6 @@ contains
     filename = 'test/test_specfun/' // file
     call write_test_points(filename, ref_x, ref_y, specfun_y, specfun_ic)
   end subroutine evalz_write
+
 
 end module specfun_evaluation

@@ -58,6 +58,7 @@ contains
     end if
   end function ei
 
+
   real(wp) function e1x(x)
     !! Exponential integral \(\mathrm{E}_1(x)\).
     !
@@ -76,6 +77,7 @@ contains
       e1x = 0.0_wp
     end if
   end function e1x
+
 
   complex(wp) function e1z(z)
     !! Exponential integral \(\mathrm{E}_1(z)\).
@@ -106,6 +108,7 @@ contains
       e1z = cmplx(e1z%re, -pi, kind=wp)
     end if
   end function e1z
+
 
   complex(wp) function enz(n, z, show_warning)
     !* Exponential integral \(\mathrm{E}_n(z)\).

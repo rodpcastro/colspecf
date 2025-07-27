@@ -43,38 +43,41 @@ def set_test_points_exponential_integral_e1z():
     np.savetxt(filepath, uv, fmt='% .15e %+.15e   % .15e %+.15e')
 
 
-def set_test_points_bessel_j0x():
+def set_test_points_bessel_j0():
     # J0(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
     xv = np.linspace(0.0, 100.0, 100)
     yv = np.array([mpmath.besselj(0, x) for x in xv])
     zv = np.column_stack((xv, yv))
-    filepath = test_points_dir / 'bessel_j0x.csv'
+    filepath = test_points_dir / 'bessel_j0.csv'
     np.savetxt(filepath, zv, fmt='% .15e')
 
 
-def set_test_points_bessel_j1x():
+def set_test_points_bessel_j1():
     # J1(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
     xv = np.linspace(0.0, 100.0, 100)
     yv = np.array([mpmath.besselj(1, x) for x in xv])
     zv = np.column_stack((xv, yv))
-    filepath = test_points_dir / 'bessel_j1x.csv'
+    filepath = test_points_dir / 'bessel_j1.csv'
     np.savetxt(filepath, zv, fmt='% .15e')
 
-def set_test_points_bessel_y0x():
+
+def set_test_points_bessel_y0():
     # Y0(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
     xv = np.linspace(1.0e-8, 100.0, 100)
     yv = np.array([mpmath.bessely(0, x) for x in xv])
     zv = np.column_stack((xv, yv))
-    filepath = test_points_dir / 'bessel_y0x.csv'
+    filepath = test_points_dir / 'bessel_y0.csv'
     np.savetxt(filepath, zv, fmt='% .15e')
 
-def set_test_points_bessel_y1x():
+
+def set_test_points_bessel_y1():
     # Y1(x) goes to 0 as x goes to infinity. No need to test for x > 1e32.
     xv = np.linspace(1.0e-8, 100.0, 100)
     yv = np.array([mpmath.bessely(1, x) for x in xv])
     zv = np.column_stack((xv, yv))
-    filepath = test_points_dir / 'bessel_y1x.csv'
+    filepath = test_points_dir / 'bessel_y1.csv'
     np.savetxt(filepath, zv, fmt='% .15e')
+
 
 def set_test_points_hypergeometric_hyp2f1():
     # In the test for hyp2f1(a,b,c,z), all parameters are of type complex with zero
@@ -103,12 +106,33 @@ def set_test_points_hypergeometric_hyp2f1():
     np.savetxt(filepath, dv, fmt='% .15e %+.15e   % .15e %+.15e')
 
 
+def set_test_points_struve_h0():
+    # H0(x) goes to 0 as x goes to ±infinity.
+    xv = np.linspace(0.0, 100.0, 100)
+    yv = np.array([mpmath.struveh(0, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'struve_h0.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
+def set_test_points_struve_h1():
+    # H1(x) goes to 0 as x goes to ±infinity.
+    xv = np.linspace(0.0, 100.0, 100)
+    yv = np.array([mpmath.struveh(1, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'struve_h1.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
 if __name__ == '__main__':
     set_test_points_exponential_integral_ei()
     set_test_points_exponential_integral_e1x()
     set_test_points_exponential_integral_e1z()
-    set_test_points_bessel_j0x()
-    set_test_points_bessel_j1x()
-    set_test_points_bessel_y0x()
-    set_test_points_bessel_y1x()
+    set_test_points_bessel_j0()
+    set_test_points_bessel_j1()
+    set_test_points_bessel_y0()
+    set_test_points_bessel_y1()
     set_test_points_hypergeometric_hyp2f1()
+    set_test_points_struve_h0()
+    set_test_points_struve_h1()
+

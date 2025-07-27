@@ -26,7 +26,7 @@ module csf_hypergeometric
 contains
 
   complex(wp) function hyp2f1(a, b, c, z)
-    !! Gauss hypergeometric function \({}_2F_1(a, b; c; z)\)
+    !! Gauss hypergeometric function \({}_2F_1(a, b; c; z)\).
 
     complex(wp), intent(in) :: a, b, c, z
 

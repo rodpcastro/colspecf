@@ -4,86 +4,95 @@ module example_bessel
   use csf_kinds, only: wp
   use csf_constants, only: nan, ninf, pinf
   use csf_numerror, only: isclose, eps_wp
-  use csf_bessel, only: j0x, j1x, y0x, y1x
+  use csf_bessel, only: besselj0, besselj1, bessely0, bessely1
 
   implicit none
   private
-  public :: example_j0x, example_j1x, example_y0x, example_y1x
+  public :: example_besselj0, example_besselj1, example_bessely0, example_bessely1
  
 contains
 
-  subroutine example_j0x()
-    real(wp) :: j0x_m
+  subroutine example_besselj0()
+    real(wp) :: besselj0_ref
 
-    j0x_m = 0.7651976865579665514_wp
-    if (.not. isclose(j0x(1.0_wp), j0x_m)) error stop 'error: example j0x'
+    besselj0_ref = 0.7651976865579665514_wp
+    if (.not. isclose(besselj0(1.0_wp), besselj0_ref)) then
+      error stop 'error: example besselj0'
+    end if
 
     print '(a)', '---------------------'
     print '(a)', 'Bessel function J0(x)'
     print '(a)', '---------------------'
-    print '(a, es22.15)', 'j0x(0.0) = ', j0x(0.0_wp)
-    print '(a, es22.15)', 'j0x(1.0) = ', j0x(1.0_wp)
-    print '(a, es22.15)', 'j0x(-1.0) = ', j0x(-1.0_wp)
-    print '(a, es22.15)', 'j0x(1.0e32) = ', j0x(1.0e31_wp)
-    print '(a, es22.15)', 'j0x(1.0e33) = ', j0x(1.0e32_wp)
-    print '(a, es22.15)', 'j0x(1.0e-7) = ', j0x(1.0e-7_wp)
-    print '(a, es22.15)', 'j0x(1.0e-8) = ', j0x(1.0e-8_wp)
-    print '(a, sp, g0)', 'j0x(+Inf) = ', j0x(pinf())
-    print '(a, sp, g0)', 'j0x(-Inf) = ', j0x(ninf())
-  end subroutine example_j0x
+    print '(a, es22.15)', 'besselj0(0.0) = ', besselj0(0.0_wp)
+    print '(a, es22.15)', 'besselj0(1.0) = ', besselj0(1.0_wp)
+    print '(a, es22.15)', 'besselj0(-1.0) = ', besselj0(-1.0_wp)
+    print '(a, es22.15)', 'besselj0(1.0e32) = ', besselj0(1.0e31_wp)
+    print '(a, es22.15)', 'besselj0(1.0e33) = ', besselj0(1.0e32_wp)
+    print '(a, es22.15)', 'besselj0(1.0e-7) = ', besselj0(1.0e-7_wp)
+    print '(a, es22.15)', 'besselj0(1.0e-8) = ', besselj0(1.0e-8_wp)
+    print '(a, sp, g0)', 'besselj0(+Inf) = ', besselj0(pinf())
+    print '(a, sp, g0)', 'besselj0(-Inf) = ', besselj0(ninf())
+  end subroutine example_besselj0
 
-  subroutine example_j1x()
-    real(wp) :: j1x_m
+  subroutine example_besselj1()
+    real(wp) :: besselj1_ref
 
-    j1x_m = 0.440050585744933516_wp
-    if (.not. isclose(j1x(1.0_wp), j1x_m)) error stop 'error: example j1x'
+    besselj1_ref = 0.440050585744933516_wp
+    if (.not. isclose(besselj1(1.0_wp), besselj1_ref)) then
+      error stop 'error: example besselj1'
+    end if
 
     print '(a)', '---------------------'
     print '(a)', 'Bessel function J1(x)'
     print '(a)', '---------------------'
-    print '(a, es22.15)', 'j1x(0.0) = ', j1x(0.0_wp)
-    print '(a, es22.15)', 'j1x(1.0) = ', j1x(1.0_wp)
-    print '(a, es22.15)', 'j1x(-1.0) = ', j1x(-1.0_wp)
-    print '(a, es22.15)', 'j1x(1.0e32) = ', j1x(1.0e31_wp)
-    print '(a, es22.15)', 'j1x(1.0e33) = ', j1x(1.0e32_wp)
-    print '(a, es22.15)', 'j1x(1.0e-who) = ', j1x(1.0e-323_wp)
-    print '(a, es22.15)', 'j1x(1.0e-who) = ', j1x(1.0e-324_wp)
-  end subroutine example_j1x
+    print '(a, es22.15)', 'besselj1(0.0) = ', besselj1(0.0_wp)
+    print '(a, es22.15)', 'besselj1(1.0) = ', besselj1(1.0_wp)
+    print '(a, es22.15)', 'besselj1(-1.0) = ', besselj1(-1.0_wp)
+    print '(a, es22.15)', 'besselj1(1.0e32) = ', besselj1(1.0e31_wp)
+    print '(a, es22.15)', 'besselj1(1.0e33) = ', besselj1(1.0e32_wp)
+    print '(a, es22.15)', 'besselj1(1.0e-who) = ', besselj1(1.0e-323_wp)
+    print '(a, es22.15)', 'besselj1(1.0e-who) = ', besselj1(1.0e-324_wp)
+  end subroutine example_besselj1
 
-  subroutine example_y0x()
-    real(wp) :: y0x_m
+  subroutine example_bessely0()
+    real(wp) :: bessely0_ref
 
-    y0x_m = 0.08825696421567695744_wp
-    if (.not. isclose(y0x(1.0_wp), y0x_m)) error stop 'error: example y0x'
+    bessely0_ref = 0.08825696421567695744_wp
+    if (.not. isclose(bessely0(1.0_wp), bessely0_ref)) then
+      error stop 'error: example bessely0'
+    end if
 
     print '(a)', '---------------------'
     print '(a)', 'Bessel function Y0(x)'
     print '(a)', '---------------------'
-    print '(a, es22.15)', 'y0x(0.0) = ', y0x(0.0_wp)
-    print '(a, es22.15)', 'y0x(1.0) = ', y0x(1.0_wp)
-    print '(a, es22.15)', 'y0x(-1.0) = ', y0x(-1.0_wp)
-    print '(a, es22.15)', 'y0x(1.0e32) = ', y0x(1.0e31_wp)
-    print '(a, es22.15)', 'y0x(1.0e33) = ', y0x(1.0e32_wp)
-    print '(a, es22.15)', 'y0x(1.0e-323_wp) = ', y0x(1.0e-323_wp)
-    print '(a, es22.15)', 'y0x(1.0e-324_wp) = ', y0x(1.0e-324_wp)
-  end subroutine example_y0x
+    print '(a, es22.15)', 'bessely0(0.0) = ', bessely0(0.0_wp)
+    print '(a, es22.15)', 'bessely0(1.0) = ', bessely0(1.0_wp)
+    print '(a, es22.15)', 'bessely0(-1.0) = ', bessely0(-1.0_wp)
+    print '(a, es22.15)', 'bessely0(1.0e32) = ', bessely0(1.0e31_wp)
+    print '(a, es22.15)', 'bessely0(1.0e33) = ', bessely0(1.0e32_wp)
+    print '(a, es22.15)', 'bessely0(1.0e-323_wp) = ', bessely0(1.0e-323_wp)
+    print '(a, es22.15)', 'bessely0(1.0e-324_wp) = ', bessely0(1.0e-324_wp)
+  end subroutine example_bessely0
 
-  subroutine example_y1x()
-    real(wp) :: y1x_m
+  subroutine example_bessely1()
+    real(wp) :: bessely1_ref
 
-    y1x_m = -0.7812128213002887123_wp
-    if (.not. isclose(y1x(1.0_wp), y1x_m)) error stop 'error: example y1x'
+    bessely1_ref = -0.7812128213002887123_wp
+
+    if (.not. isclose(bessely1(1.0_wp), bessely1_ref)) then
+      error stop 'error: example bessely1'
+    end if
 
     print '(a)', '---------------------'
     print '(a)', 'Bessel function Y1(x)'
     print '(a)', '---------------------'
-    print '(a, es22.15)', 'y1x(0.0) = ', y1x(0.0_wp)
-    print '(a, es22.15)', 'y1x(1.0) = ', y1x(1.0_wp)
-    print '(a, es22.15)', 'y1x(-1.0) = ', y1x(-1.0_wp)
-    print '(a, es22.15)', 'y1x(1.0e32) = ', y1x(1.0e31_wp)
-    print '(a, es22.15)', 'y1x(1.0e33) = ', y1x(1.0e32_wp)
-    print '(a, es22.15)', 'y1x(1.0e-308_wp) = ', y1x(1.0e-308_wp)
-    print '(a, es22.15)', 'y1x(1.0e-309_wp) = ', y1x(1.0e-309_wp)
-  end subroutine example_y1x
+    print '(a, es22.15)', 'bessely1(0.0) = ', bessely1(0.0_wp)
+    print '(a, es22.15)', 'bessely1(1.0) = ', bessely1(1.0_wp)
+    print '(a, es22.15)', 'bessely1(-1.0) = ', bessely1(-1.0_wp)
+    print '(a, es22.15)', 'bessely1(1.0e32) = ', bessely1(1.0e31_wp)
+    print '(a, es22.15)', 'bessely1(1.0e33) = ', bessely1(1.0e32_wp)
+    print '(a, es22.15)', 'bessely1(1.0e-308_wp) = ', bessely1(1.0e-308_wp)
+    print '(a, es22.15)', 'bessely1(1.0e-309_wp) = ', bessely1(1.0e-309_wp)
+  end subroutine example_bessely1
 
 end module example_bessel

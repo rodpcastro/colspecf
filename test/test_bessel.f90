@@ -5,7 +5,7 @@ module test_bessel
   use csf_kinds, only: wp
   use csf_constants, only: nan, ninf, pinf
   use, intrinsic :: ieee_arithmetic, only: ieee_is_nan
-  use csf_bessel, only: j0x, j1x, y0x, y1x
+  use csf_bessel, only: besselj0, besselj1, bessely0, bessely1
   use specfun_evaluation, only: eval_write
 
   implicit none
@@ -18,123 +18,131 @@ contains
     type(unittest_type), allocatable, intent(out) :: testsuite(:)
 
     testsuite = [ &
-      new_unittest("test_j0x", test_j0x), &
-      new_unittest("test_j0x_extremes", test_j0x_extremes), &
-      new_unittest("test_j1x", test_j1x), &
-      new_unittest("test_j1x_extremes", test_j1x_extremes), &
-      new_unittest("test_y0x", test_y0x), &
-      new_unittest("test_y0x_extremes", test_y0x_extremes), &
-      new_unittest("test_y1x", test_y1x), &
-      new_unittest("test_y1x_extremes", test_y1x_extremes) &
+      new_unittest("test_besselj0", test_besselj0), &
+      new_unittest("test_besselj0_extremes", test_besselj0_extremes), &
+      new_unittest("test_besselj1", test_besselj1), &
+      new_unittest("test_besselj1_extremes", test_besselj1_extremes), &
+      new_unittest("test_bessely0", test_bessely0), &
+      new_unittest("test_bessely0_extremes", test_bessely0_extremes), &
+      new_unittest("test_bessely1", test_bessely1), &
+      new_unittest("test_bessely1_extremes", test_bessely1_extremes) &
     ]
   end subroutine collect_bessel_tests
 
-  subroutine test_j0x(error)
+
+  subroutine test_besselj0(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
     character(len=100) :: file
     
-    file = 'bessel_j0x.csv'
-    call eval_write(j0x, file, specfun_ic)
+    file = 'bessel_j0.csv'
+    call eval_write(besselj0, file, specfun_ic)
 
     call check(error, all(specfun_ic))
     if (allocated(error)) return
-  end subroutine test_j0x
+  end subroutine test_besselj0
 
-  subroutine test_j0x_extremes(error)
+
+  subroutine test_besselj0_extremes(error)
     type(error_type), allocatable, intent(out) :: error
-    real(wp) :: j0xw
+    real(wp) :: besselj0w
 
-    j0xw = j0x(ninf())
-    call check(error, j0xw, 0.0_wp)
+    besselj0w = besselj0(ninf())
+    call check(error, besselj0w, 0.0_wp)
     if (allocated(error)) return
 
-    j0xw = j0x(pinf())
-    call check(error, j0xw, 0.0_wp)
+    besselj0w = besselj0(pinf())
+    call check(error, besselj0w, 0.0_wp)
     if (allocated(error)) return
-  end subroutine test_j0x_extremes
+  end subroutine test_besselj0_extremes
 
-  subroutine test_j1x(error)
+
+  subroutine test_besselj1(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
     character(len=100) :: file
     
-    file = 'bessel_j1x.csv'
-    call eval_write(j1x, file, specfun_ic)
+    file = 'bessel_j1.csv'
+    call eval_write(besselj1, file, specfun_ic)
 
     call check(error, all(specfun_ic))
     if (allocated(error)) return
-  end subroutine test_j1x
+  end subroutine test_besselj1
 
-  subroutine test_j1x_extremes(error)
+
+  subroutine test_besselj1_extremes(error)
     type(error_type), allocatable, intent(out) :: error
-    real(wp) :: j1xw
+    real(wp) :: besselj1w
 
-    j1xw = j1x(ninf())
-    call check(error, j1xw, 0.0_wp)
+    besselj1w = besselj1(ninf())
+    call check(error, besselj1w, 0.0_wp)
     if (allocated(error)) return
 
-    j1xw = j1x(pinf())
-    call check(error, j1xw, 0.0_wp)
+    besselj1w = besselj1(pinf())
+    call check(error, besselj1w, 0.0_wp)
     if (allocated(error)) return
-  end subroutine test_j1x_extremes
+  end subroutine test_besselj1_extremes
 
-  subroutine test_y0x(error)
+
+  subroutine test_bessely0(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
     character(len=100) :: file
     
-    file = 'bessel_y0x.csv'
-    call eval_write(y0x, file, specfun_ic)
+    file = 'bessel_y0.csv'
+    call eval_write(bessely0, file, specfun_ic)
 
     call check(error, all(specfun_ic))
     if (allocated(error)) return
-  end subroutine test_y0x
+  end subroutine test_bessely0
 
-  subroutine test_y0x_extremes(error)
+
+  subroutine test_bessely0_extremes(error)
     type(error_type), allocatable, intent(out) :: error
-    real(wp) :: y0xw
+    real(wp) :: bessely0w
 
-    y0xw = y0x(-1.0_wp)
-    call check(error, ieee_is_nan(y0xw))
+    bessely0w = bessely0(-1.0_wp)
+    call check(error, ieee_is_nan(bessely0w))
     if (allocated(error)) return
 
-    y0xw = y0x(0.0_wp)
-    call check(error, y0xw, ninf())
+    bessely0w = bessely0(0.0_wp)
+    call check(error, bessely0w, ninf())
     if (allocated(error)) return
 
-    y0xw = y0x(pinf())
-    call check(error, y0xw, 0.0_wp)
+    bessely0w = bessely0(pinf())
+    call check(error, bessely0w, 0.0_wp)
     if (allocated(error)) return
-  end subroutine test_y0x_extremes
+  end subroutine test_bessely0_extremes
 
-  subroutine test_y1x(error)
+
+  subroutine test_bessely1(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
     character(len=100) :: file
     
-    file = 'bessel_y1x.csv'
-    call eval_write(y1x, file, specfun_ic)
+    file = 'bessel_y1.csv'
+    call eval_write(bessely1, file, specfun_ic)
 
     call check(error, all(specfun_ic))
     if (allocated(error)) return
-  end subroutine test_y1x
+  end subroutine test_bessely1
 
-  subroutine test_y1x_extremes(error)
+
+  subroutine test_bessely1_extremes(error)
     type(error_type), allocatable, intent(out) :: error
-    real(wp) :: y1xw
+    real(wp) :: bessely1w
 
-    y1xw = y1x(-1.0_wp)
-    call check(error, ieee_is_nan(y1xw))
+    bessely1w = bessely1(-1.0_wp)
+    call check(error, ieee_is_nan(bessely1w))
     if (allocated(error)) return
 
-    y1xw = y1x(0.0_wp)
-    call check(error, y1xw, ninf())
+    bessely1w = bessely1(0.0_wp)
+    call check(error, bessely1w, ninf())
     if (allocated(error)) return
 
-    y1xw = y1x(pinf())
-    call check(error, y1xw, 0.0_wp)
+    bessely1w = bessely1(pinf())
+    call check(error, bessely1w, 0.0_wp)
     if (allocated(error)) return
-  end subroutine test_y1x_extremes
+  end subroutine test_bessely1_extremes
 
 end module test_bessel
