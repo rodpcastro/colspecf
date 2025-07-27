@@ -35,6 +35,7 @@ contains
     struveh0 = strvh0(x)
   end function struveh0
 
+
   real(wp) function struveh1(x)
     !! Struve function \(\mathbf{H}_1(x)\).
     !

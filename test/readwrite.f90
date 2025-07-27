@@ -32,6 +32,7 @@ contains
     close(unit=fileunit)
   end function number_of_lines
 
+
   subroutine read_real_test_points(filename, x, y, npts)
     ! Reads real test points from file.
 
@@ -49,6 +50,7 @@ contains
     end do
     1 close(fileunit)
   end subroutine read_real_test_points
+
 
   subroutine read_complex_test_points(filename, x, y, npts)
     ! Reads complex test points from file.
@@ -71,6 +73,7 @@ contains
     1 close(fileunit)
   end subroutine read_complex_test_points
 
+
   subroutine write_real_test_points(filename, x, y, z, ic)
     ! Write real test points data.
 
@@ -87,6 +90,7 @@ contains
     end do
     close(fileunit)
   end subroutine write_real_test_points
+
 
   subroutine write_complex_test_points(filename, x, y, z, ic)
     ! Write complex test points data.

@@ -29,6 +29,7 @@ contains
     ]
   end subroutine collect_bessel_tests
 
+
   subroutine test_besselj0(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
@@ -40,6 +41,7 @@ contains
     call check(error, all(specfun_ic))
     if (allocated(error)) return
   end subroutine test_besselj0
+
 
   subroutine test_besselj0_extremes(error)
     type(error_type), allocatable, intent(out) :: error
@@ -54,6 +56,7 @@ contains
     if (allocated(error)) return
   end subroutine test_besselj0_extremes
 
+
   subroutine test_besselj1(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
@@ -65,6 +68,7 @@ contains
     call check(error, all(specfun_ic))
     if (allocated(error)) return
   end subroutine test_besselj1
+
 
   subroutine test_besselj1_extremes(error)
     type(error_type), allocatable, intent(out) :: error
@@ -79,6 +83,7 @@ contains
     if (allocated(error)) return
   end subroutine test_besselj1_extremes
 
+
   subroutine test_bessely0(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
@@ -90,6 +95,7 @@ contains
     call check(error, all(specfun_ic))
     if (allocated(error)) return
   end subroutine test_bessely0
+
 
   subroutine test_bessely0_extremes(error)
     type(error_type), allocatable, intent(out) :: error
@@ -108,6 +114,7 @@ contains
     if (allocated(error)) return
   end subroutine test_bessely0_extremes
 
+
   subroutine test_bessely1(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
@@ -119,6 +126,7 @@ contains
     call check(error, all(specfun_ic))
     if (allocated(error)) return
   end subroutine test_bessely1
+
 
   subroutine test_bessely1_extremes(error)
     type(error_type), allocatable, intent(out) :: error

@@ -20,6 +20,7 @@ contains
     ]
   end subroutine collect_numerror_tests
 
+
   subroutine test_ismall(error)
     type(error_type), allocatable, intent(out) :: error
     real(wp) :: a, b 
@@ -33,6 +34,7 @@ contains
     call check(error, .not. ismall(a, b))
     if (allocated(error)) return
   end subroutine test_ismall
+
 
   subroutine test_isclose(error)
     type(error_type), allocatable, intent(out) :: error

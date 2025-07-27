@@ -43,10 +43,12 @@ contains
     nan = ieee_value(0.0_wp, ieee_quiet_nan)
   end function nan
 
+
   pure real(wp) function ninf()
     !! Negative infinity \(-\infty\)
     ninf = ieee_value(1.0_wp, ieee_negative_inf)
   end function ninf
+
 
   pure real(wp) function pinf()
     !! Positive infinity \(+\infty\)
