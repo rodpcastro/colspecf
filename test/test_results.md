@@ -30,7 +30,7 @@
 | :-----------: | :------------: |
 |8.81e-16|1.44e-16|
 
-![bessel_j0x](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_j0x.svg)
+![bessel_j0](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_j0.svg)
 
 ## Bessel function $J_1(x)$
 
@@ -38,7 +38,7 @@
 | :-----------: | :------------: |
 |9.89e-16|1.33e-16|
 
-![bessel_j1x](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_j1x.svg)
+![bessel_j1](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_j1.svg)
 
 ## Bessel function $Y_0(x)$
 
@@ -46,7 +46,7 @@
 | :-----------: | :------------: |
 |8.05e-16|1.06e-16|
 
-![bessel_y0x](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_y0x.svg)
+![bessel_y0](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_y0.svg)
 
 ## Bessel function $Y_1(x)$
 
@@ -54,7 +54,7 @@
 | :-----------: | :------------: |
 |8.19e-16|1.13e-16|
 
-![bessel_y1x](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_y1x.svg)
+![bessel_y1](https://raw.githubusercontent.com/rodpcastro/colspecf/refs/heads/main/test/test_plots/bessel_y1.svg)
 
 ## Gauss hypergeometric function ${}_2F_1(0.5, b; 1.5; z)$
 

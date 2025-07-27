@@ -168,22 +168,22 @@ if __name__ == '__main__':
         
         latex = '$J_0(x)$'
         title = rf'Bessel function {latex}'
-        fname = 'bessel_j0x'
+        fname = 'bessel_j0'
         write_results(f, title, get_error_fx, fname, latex)
         
         latex = '$J_1(x)$'
         title = rf'Bessel function {latex}'
-        fname = 'bessel_j1x'
+        fname = 'bessel_j1'
         write_results(f, title, get_error_fx, fname, latex)
         
         latex = '$Y_0(x)$'
         title = rf'Bessel function {latex}'
-        fname = 'bessel_y0x'
+        fname = 'bessel_y0'
         write_results(f, title, get_error_fx, fname, latex)
         
         latex = '$Y_1(x)$'
         title = rf'Bessel function {latex}'
-        fname = 'bessel_y1x'
+        fname = 'bessel_y1'
         write_results(f, title, get_error_fx, fname, latex)
     
         latex = '${}_2F_1(0.5, b; 1.5; z)$'
