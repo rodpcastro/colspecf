@@ -1612,6 +1612,8 @@ CONTAINS
 
 
   RECURSIVE FUNCTION HYP_2F1(A,B,C,Z) RESULT(RES)
+    !! CPC Michel Gauss hypergeometric function \({}_2F_1(a, b; c; z)\).
+    !
     ! Calculation of F(z) for arbitrary z using previous routines
     !
     ! Firstly, it is checked if a,b and c are negative integers.
