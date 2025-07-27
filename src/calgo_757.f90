@@ -66,12 +66,13 @@ module calgo_757
 !     - Replaced array constructor `(/.../)` by the less verbose `[...]`.
 !     - Replaced `dp` (double precision) by `wp` (working precision).
 !     - Replaced `EPSILON(0.0_dp)` by `eps_wp` (CSF working precision machine epsilon).
+!     - Removed subroutine `errprn` that prints error messages, which are unnecessary
+!       for `strvh0` and `strvh1`.
 !
 ! ## References
 ! 1. Allan J. MacLeod. 1996. Algorithm 757: MISCFUN, a software package to compute
 !    uncommon special functions. ACM Trans. Math. Softw. 22, 3 (Sept. 1996), 288–301.
 !*   <https://doi.org/10.1145/232826.232846>
-
 
   use csf_kinds, only: wp
   use csf_numerror, only: eps_wp
@@ -131,8 +132,6 @@ contains
 
     INTEGER  :: indsgn, nterm1, nterm2, nterm3, nterm4
     REAL(wp) :: h0as, t, x, xhigh, xlow, xmp4, xsq, y0p, y0q, y0val
-    CHARACTER(LEN=26) :: errmsg = 'ARGUMENT TOO LARGE IN SIZE'
-    CHARACTER(LEN= 6) :: fnname = 'STRVH0'
 
     REAL(wp), PARAMETER :: zero = 0.0_wp, half = 0.5_wp, one = 1.0_wp, &
                            eight = 8.0_wp, eleven = 11.0_wp, twenty = 20.0_wp, &
@@ -200,7 +199,6 @@ contains
 
     ! Error test
     IF (ABS(xvalue) > xhigh) THEN
-      CALL errprn(fnname,errmsg)
       fn_val = zero
       RETURN
     END IF
@@ -304,8 +302,6 @@ contains
 
     INTEGER  :: nterm1, nterm2, nterm3, nterm4
     REAL(wp) :: h1as, t, x, xhigh, xlow1, xlow2, xm3p4, xsq, y1p, y1q, y1val
-    CHARACTER(LEN=26) :: errmsg = 'ARGUMENT TOO LARGE IN SIZE'
-    CHARACTER(LEN= 6) :: fnname = 'STRVH1'
 
     REAL(wp), PARAMETER :: zero = 0.0_wp, half = 0.5_wp, eight = 8.0_wp, &
                            nine = 9.0_wp, fiften = 15.0_wp, twenty = 20.0_wp, &
@@ -368,7 +364,6 @@ contains
 
     ! Error test
     IF (x > xhigh) THEN
-      CALL errprn(fnname,errmsg)
       fn_val = zero
       RETURN
     END IF
@@ -490,34 +485,5 @@ contains
     END IF
     RETURN
   END FUNCTION cheval
-
-
-  SUBROUTINE errprn(fnname, errmsg)
-    ! DESCRIPTION:
-    !    This subroutine prints out an error message if
-    !    an error has occurred in one of the MISCFUN functions.
-    !
-    ! INPUT PARAMETERS:
-    !    FNNAME - CHARACTER - The name of the function with the error.
-    !    ERRMSG - CHARACTER - The message to be printed out.
-    !
-    ! MACHINE-DEPENDENT PARAMETER:
-    !    OUTSTR - INTEGER - The numerical value of the output stream to be used
-    !                       for printing the error message.
-    !                       The subroutine has the default value OUTSTR = 6.
-
-    CHARACTER(LEN = 6), INTENT(IN) :: fnname
-    CHARACTER(LEN = *), INTENT(IN) :: errmsg
-
-    INTEGER :: outstr = 6
-
-    WRITE(outstr, 5000) fnname
-    WRITE(outstr, 5100) errmsg
-    RETURN
-
-  5000 FORMAT(/t6, 'ERROR IN MISCFUN FUNCTION  ', a6)
-  5100 FORMAT(/t6, a50)
-
-  END SUBROUTINE errprn
 
 end module calgo_757
