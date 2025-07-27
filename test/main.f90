@@ -1,5 +1,5 @@
 program tester
-! Test of ColSpecF results against mpmath, assuring at least 8 digits of precision.
+! Test of ColSpecF results against mpmath.
 !
 ! ## References
 ! 1. The Fortran Programming Language. 2024. test-drive: The simple 
@@ -13,6 +13,7 @@ program tester
   use test_exponential_integral, only : collect_exponential_integral_tests
   use test_bessel, only: collect_bessel_tests
   use test_hypergeometric, only: collect_hypergeometric_tests
+  use test_struve, only: collect_struve_tests
 
   implicit none
   integer :: stat, is
@@ -25,7 +26,8 @@ program tester
     new_testsuite("numerror_suite", collect_numerror_tests), &
     new_testsuite("exponential_integral_suite", collect_exponential_integral_tests), &
     new_testsuite("bessel_suite", collect_bessel_tests), &
-    new_testsuite("hypergeometric_suite", collect_hypergeometric_tests) &
+    new_testsuite("hypergeometric_suite", collect_hypergeometric_tests), &
+    new_testsuite("struve_suite", collect_struve_tests) &
   ]
 
   do is = 1, size(testsuites)

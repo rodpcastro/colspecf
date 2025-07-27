@@ -106,6 +106,24 @@ def set_test_points_hypergeometric_hyp2f1():
     np.savetxt(filepath, dv, fmt='% .15e %+.15e   % .15e %+.15e')
 
 
+def set_test_points_struve_h0():
+    # H0(x) goes to 0 as x goes to ±infinity.
+    xv = np.linspace(0.0, 100.0, 100)
+    yv = np.array([mpmath.struveh(0, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'struve_h0.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
+def set_test_points_struve_h1():
+    # H1(x) goes to 0 as x goes to ±infinity.
+    xv = np.linspace(0.0, 100.0, 100)
+    yv = np.array([mpmath.struveh(1, x) for x in xv])
+    zv = np.column_stack((xv, yv))
+    filepath = test_points_dir / 'struve_h1.csv'
+    np.savetxt(filepath, zv, fmt='% .15e')
+
+
 if __name__ == '__main__':
     set_test_points_exponential_integral_ei()
     set_test_points_exponential_integral_e1x()
@@ -115,3 +133,6 @@ if __name__ == '__main__':
     set_test_points_bessel_y0()
     set_test_points_bessel_y1()
     set_test_points_hypergeometric_hyp2f1()
+    set_test_points_struve_h0()
+    set_test_points_struve_h1()
+
