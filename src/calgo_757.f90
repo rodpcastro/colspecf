@@ -61,8 +61,8 @@ module calgo_757
 !     - F90 code adaptation by Alan Miller:
 !       <https://jblevins.org/mirror/amiller/toms757.zip>
 ! - 2025-07-27 - Rodrigo Castro (GitHub: rodpcastro)
-!     - Retained only subroutines `strvh0` and `strvh1`; additional subroutines will
-!       be included as required.
+!     - Retained only the subroutines `strvh0` and `strvh1`; additional subroutines
+!       will be included as required.
 !     - Replaced array constructor `(/.../)` by the less verbose `[...]`.
 !     - Replaced `dp` (double precision) by `wp` (working precision).
 !     - Replaced `EPSILON(0.0_dp)` by `eps_wp` (CSF working precision machine epsilon).
