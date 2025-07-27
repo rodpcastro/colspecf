@@ -72,12 +72,13 @@ module calgo_757
 !    uncommon special functions. ACM Trans. Math. Softw. 22, 3 (Sept. 1996), 288–301.
 !*   <https://doi.org/10.1145/232826.232846>
 
-  implicit none
-  private
-  public :: strvh0, strvh1
 
   use csf_kinds, only: wp
   use csf_numerror, only: eps_wp
+
+  implicit none
+  private
+  public :: strvh0, strvh1
 
 contains
 
