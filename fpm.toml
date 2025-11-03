@@ -1,10 +1,11 @@
-name = "ColSpecF"
+name = "colspecf"
 description = "ColSpecF is a Fortran library for evaluating mathematical Special Functions."
 author = "Rodrigo Castro"
 version = "0.1.0"
 license = "LICENSE"
 maintainer = "rodpcastro18@gmail.com"
 categories = ["mathematics", "special-functions", "numerical-computing", "scientific-computing"]
+homepage = "https://colspecf.readthedocs.io/"
 
 [install]
 library = true
