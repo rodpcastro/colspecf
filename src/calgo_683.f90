@@ -10,10 +10,8 @@ MODULE calgo_683
 !
 ! - `cexint`: Exponential integral \(\mathrm{E}_n(z)\)
 !
-! Untested procedures:  
+! Private procedures:  
 !
-! - `g8`: Gauss-Legendre quadrature with 8 points
-! - `gaus8`: Adaptive Gauss-Legendre quadrature with 8 points
 ! - `psixn`: Digamma function \(\psi(n)\) for a positive integer \(n\)
 !
 ! ## Author
@@ -37,6 +35,9 @@ MODULE calgo_683
 !     - Fixed typo at `gaus8`:
 !         - `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30102000_wp`
 !         - to `anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp`.
+! - 2025-07-27 - Rodrigo Castro (GitHub: rodpcastro)
+!     - Removed procedures `g8` and `gaus8`, which were originally used for testing.
+!     - Turned `psixn` into a private function.
 !
 ! ## References
 ! 1. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for
@@ -47,243 +48,12 @@ MODULE calgo_683
 
   IMPLICIT NONE
   PRIVATE
-  PUBLIC :: cexint, g8, gaus8, psixn
+  PUBLIC :: cexint
 
   REAL(wp), SAVE :: fnm, gln, x, y
   INTEGER, SAVE  :: iflag
 
-  ! Signature of single-variable function.
-  abstract interface
-    function funx(x) result(y)
-      import :: wp
-      real(wp), intent(in) :: x
-      real(wp) :: y
-    end function funx
-  end interface
-
 CONTAINS
-
-  FUNCTION g8(fun, x, h) RESULT(fn_val)
-    !! CALGO 683 Gauss-Legendre quadrature with 8 points.
-    !
-    ! Reference: https://en.wikipedia.org/wiki/Gaussian_quadrature#Change_of_interval
-    !
-    !* To evaluate \(\int_{a}^{b} f(x) dx\), the user must provide:
-    !
-    ! - `fun`: Single-variable function \(f(x)\)
-    ! - `x = (a + b) / 2.0_wp`
-    ! - `h = (b - a) / 2.0_wp`
-    !*
-
-    procedure(funx)      :: fun
-    REAL(wp), INTENT(IN) :: x, h
-    REAL(wp)             :: fn_val
-
-    REAL(wp), PARAMETER :: x1 = 1.83434642495649805e-1_wp, &
-                           x2 = 5.25532409916328986e-1_wp, &
-                           x3 = 7.96666477413626740e-1_wp, &
-                           x4 = 9.60289856497536232e-1_wp
-    REAL(wp), PARAMETER :: w1 = 3.62683783378361983e-1_wp, &
-                           w2 = 3.13706645877887287e-1_wp, &
-                           w3 = 2.22381034453374471e-1_wp, &
-                           w4 = 1.01228536290376259e-1_wp
-
-    fn_val = h * ( &
-        w1*(fun(x-x1*h) + fun(x+x1*h)) &
-      + w2*(fun(x-x2*h) + fun(x+x2*h)) &
-      + w3*(fun(x-x3*h) + fun(x+x3*h)) &
-      + w4*(fun(x-x4*h) + fun(x+x4*h)) &
-    )
-    RETURN
-  END FUNCTION g8
-
-  SUBROUTINE gaus8(fun, a, b, ERR, ans, ierr)
-    !! CALGO 683 Adaptive Gauss-Legendre quadrature with 8 points.
-    !
-    !! The description of all parameters and outputs can be found in the source code
-    !! docstring.
-    !
-    ! WRITTEN BY R.E. JONES
-    !
-    ! ABSTRACT
-    !    GAUS8 INTEGRATES REAL FUNCTIONS OF ONE VARIABLE OVER FINITE INTERVALS
-    !    USING AN ADAPTIVE 8-POINT LEGENDRE-GAUSS ALGORITHM.
-    !    GAUS8 IS INTENDED PRIMARILY FOR HIGH ACCURACY INTEGRATION OR
-    !    INTEGRATION OF SMOOTH FUNCTIONS.
-    !
-    ! DESCRIPTION OF ARGUMENTS
-    !
-    !    INPUT--
-    !    FUN - NAME OF EXTERNAL FUNCTION TO BE INTEGRATED.  THIS NAME MUST BE
-    !          IN AN EXTERNAL STATEMENT IN THE CALLING PROGRAM.
-    !          FUN MUST BE A FUNCTION OF ONE REAL ARGUMENT.  THE VALUE OF THE
-    !          ARGUMENT TO FUN IS THE VARIABLE OF INTEGRATION WHICH RANGES
-    !          FROM A TO B.
-    !    A   - LOWER LIMIT OF INTEGRAL
-    !    B   - UPPER LIMIT OF INTEGRAL (MAY BE LESS THAN A)
-    !    ERR - IS A REQUESTED PSEUDORELATIVE ERROR TOLERANCE.  NORMALLY PICK A
-    !          VALUE OF ABS(ERR) SO THAT STOL < ABS(ERR) <= 1.0E-3 WHERE STOL
-    !          IS THE DOUBLE PRECISION UNIT ROUNDOFF = EPSILON(0.0_wp).
-    !          ANS WILL NORMALLY HAVE NO MORE ERROR THAN ABS(ERR) TIMES THE
-    !          INTEGRAL OF THE ABSOLUTE VALUE OF FUN(X).
-    !          USUALLY, SMALLER VALUES FOR ERR YIELD MORE ACCURACY AND
-    !          REQUIRE MORE FUNCTION EVALUATIONS.
-    !   
-    !          A NEGATIVE VALUE FOR ERR CAUSES AN ESTIMATE OF THE
-    !          ABSOLUTE ERROR IN ANS TO BE RETURNED IN ERR.  NOTE THAT
-    !          ERR MUST BE A VARIABLE (NOT A CONSTANT) IN THIS CASE.
-    !          NOTE ALSO THAT THE USER MUST RESET THE VALUE OF ERR
-    !          BEFORE MAKING ANY MORE CALLS THAT USE THE VARIABLE ERR.
-    !
-    !    OUTPUT--
-    !    ERR - WILL BE AN ESTIMATE OF THE ABSOLUTE ERROR IN ANS IF THE
-    !          INPUT VALUE OF ERR WAS NEGATIVE.  (ERR IS UNCHANGED IF
-    !          THE INPUT VALUE OF ERR WAS NONNEGATIVE.)  THE ESTIMATED
-    !          ERROR IS SOLELY FOR INFORMATION TO THE USER AND SHOULD
-    !          NOT BE USED AS A CORRECTION TO THE COMPUTED INTEGRAL.
-    !    ANS - COMPUTED VALUE OF INTEGRAL
-    !    IERR- A STATUS CODE
-    !        --NORMAL CODES
-    !           1 ANS MOST LIKELY MEETS REQUESTED ERROR TOLERANCE, OR A=B.
-    !          -1 A AND B ARE TOO NEARLY EQUAL TO ALLOW NORMAL INTEGRATION.
-    !             ANS IS SET TO ZERO.
-    !        --ABNORMAL CODE
-    !           2 ANS PROBABLY DOES NOT MEET REQUESTED ERROR TOLERANCE.
-
-    procedure(funx)          :: fun
-    REAL(wp), INTENT(IN)     :: a
-    REAL(wp), INTENT(IN)     :: b
-    REAL(wp), INTENT(IN OUT) :: ERR
-    REAL(wp), INTENT(OUT)    :: ans
-    INTEGER, INTENT(OUT)     :: ierr
-
-    INTEGER  :: k, l, lmn, lmx, lr(30), mxl, nbits, nib, nlmx
-    REAL(wp) :: aa(30), ae, anib, area, c, ce, ee, ef, eps, &
-                est, gl, glr, gr(30), hh(30), tol, vl(30), vr
-    INTEGER, PARAMETER  :: nlmn = 1, kmx = 5000, kml = 6
-    INTEGER, SAVE       :: icall = 0
-    real(wp), parameter :: sq2 = 1.41421356_wp
-
-    ! INITIALIZE
-
-    IF (icall /= 0) THEN
-      WRITE(*, *) 'GAUS8- GAUS8 CALLED RECURSIVELY; NOT ALLOWED HERE'
-      RETURN
-    END IF
-
-    icall = 1
-    k = DIGITS(0.0_wp)
-    anib = LOG10(DBLE(RADIX(0.0_wp))) * k / 0.30103000_wp
-    nbits = INT(anib)
-    nlmx = (nbits*5) / 8
-    ans = 0.0_wp
-    ierr = 1
-    ce = 0.0_wp
-    IF (a /= b) THEN
-      lmx = nlmx
-      lmn = nlmn
-      IF (b /= 0.0_wp) THEN
-        IF (SIGN(1.0_wp,b)*a > 0.0_wp) THEN
-          c = ABS(1.0_wp-a/b)
-          IF (c <= 0.1_wp) THEN
-            IF (c <= 0.0_wp) GO TO 100
-            anib = 0.5_wp - LOG(c) / 0.69314718_wp
-            nib = anib
-            lmx = MIN(nlmx, nbits-nib-7)
-            IF (lmx < 1) GO TO 90
-            lmn = MIN(lmn,lmx)
-          END IF
-        END IF
-      END IF
-      tol = MAX(ABS(ERR), 2.0_wp**(5-nbits)) / 2.0_wp
-      IF (ERR == 0.0_wp) tol = SQRT(EPSILON(0.0_wp))
-      eps = tol
-      hh(1) = (b-a) / 4.0_wp
-      aa(1) = a
-      lr(1) = 1
-      l = 1
-      est = g8(fun, aa(l)+2.0_wp*hh(l), 2.0_wp*hh(l))
-      k = 8
-      area = ABS(est)
-      ef = 0.5_wp
-      mxl = 0
-      
-    ! COMPUTE REFINED ESTIMATES, ESTIMATE THE ERROR, ETC.
-      
-  10  gl = g8(fun, aa(l)+hh(l), hh(l))
-      gr(l) = g8(fun, aa(l)+3.0_wp*hh(l), hh(l))
-      k = k + 16
-      area = area + (ABS(gl) + ABS(gr(l)) - ABS(est))
-    ! IF (L < LMN) GO TO 11
-      glr = gl + gr(l)
-      ee = ABS(est-glr) * ef
-      ae = MAX(eps*area, tol*ABS(glr))
-      IF (ee-ae > 0.0) THEN
-        GO TO 40
-      ELSE
-        GO TO 30
-      END IF
-  20  mxl = 1
-  30  ce = ce + (est-glr)
-      IF (lr(l) > 0) THEN
-        GO TO 70
-      ELSE
-        GO TO 50
-      END IF
-      
-    ! CONSIDER THE LEFT HALF OF THIS LEVEL
-      
-  40  IF (k > kmx) lmx = kml
-      IF (l >= lmx) GO TO 20
-      l = l + 1
-      eps = eps * 0.5_wp
-      ef = ef / sq2
-      hh(l) = hh(l-1) * 0.5_wp
-      lr(l) = -1
-      aa(l) = aa(l-1)
-      est = gl
-      GO TO 10
-      
-    ! PROCEED TO RIGHT HALF AT THIS LEVEL
-      
-  50  vl(l) = glr
-  60  est = gr(l-1)
-      lr(l) = 1
-      aa(l) = aa(l) + 4.0_wp * hh(l)
-      GO TO 10
-      
-    ! RETURN ONE LEVEL
-      
-  70    vr = glr
-  80    IF (l > 1) THEN
-          l = l - 1
-          eps = eps * 2.0_wp
-          ef = ef * sq2
-        IF (lr(l) <= 0) THEN
-          vl(l) = vl(l+1) + vr
-          GO TO 60
-        END IF
-        vr = vl(l+1) + vr
-        GO TO 80
-      END IF
-      
-    ! EXIT
-      
-      ans = vr
-      IF (mxl == 0 .OR. ABS(ce) <= 2.0_wp*tol*area) GO TO 100
-      ierr = 2
-      WRITE(*, *) 'GAUS8- ANS IS PROBABLY INSUFFICIENTLY ACCURATE.'
-      GO TO 100
-
-  90  ierr = -1
-      WRITE(*, *) 'GAUS8- THE FOLLOWING TEMPORARY DIAGNOSTIC WILL APPEAR ONLY ONCE.'
-      WRITE(*, *) 'A AND B ARE TOO NEARLY EQUAL TO ALLOW NORMAL INTEGRATION.'
-      WRITE(*, *) 'ANS IS SET TO ZERO, AND IERR=-1.'
-    END IF
-  100 icall = 0
-    IF (ERR < 0.0_wp) ERR = ce
-    RETURN
-  END SUBROUTINE gaus8
 
   SUBROUTINE cexint(z, n, kode, tol, m, cy, ierr)
     !! CALGO 683 Exponential integral \(\mathrm{E}_n(z)\).
@@ -561,6 +331,7 @@ CONTAINS
   20 ierr = 5
     RETURN
   END SUBROUTINE cexint
+
 
   SUBROUTINE cexenz(z, n, kode, m, cy, ierr, rbry, tol, elim, alim, icdim, ca, cb)
     ! REFER TO CEXINT
@@ -915,6 +686,7 @@ CONTAINS
     RETURN
   END SUBROUTINE cexenz
 
+
   SUBROUTINE cacexi(z, nu, kode, n, y, ierr, yb, rbry, tol, elim, alim, icdim, ca, cb)
     ! REFER TO  CEXINT
     !
@@ -1133,6 +905,7 @@ CONTAINS
   130 ierr = 3
     RETURN
   END SUBROUTINE cacexi
+
 
   FUNCTION psixn(n) RESULT(fn_val)
     !! CALGO 683 Digamma function \(\psi_0(n)\).

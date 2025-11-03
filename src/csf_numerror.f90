@@ -59,6 +59,7 @@ contains
     ismall = abs(x) < eps_wp * abs(ref_)
   end function ismall
 
+
   pure logical function isclose_real(a, b, rel_tol, abs_tol) 
     !* Evaluates the closeness between two real variables.
     ! 
@@ -84,6 +85,7 @@ contains
 
     isclose_real = abs(a - b) <= max(rel_tol_ * max(abs(a), abs(b)), abs_tol_)
   end function isclose_real
+
 
   pure logical function isclose_complex(a, b, rel_tol, abs_tol) 
     !* Evaluates the closeness between two complex variables.

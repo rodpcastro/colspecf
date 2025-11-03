@@ -56,12 +56,14 @@ CONTAINS
     RETURN
   END FUNCTION INF_NORM
 
+
   FUNCTION TANZ(Z)
     COMPLEX(wp),INTENT(IN) :: Z
     COMPLEX(wp) :: TANZ
     TANZ=SIN(Z)/COS(Z)
     RETURN
   END FUNCTION TANZ
+
 
   FUNCTION LOG1P(Z)
     ! log1p(z) = log(1.0 + z)
@@ -100,6 +102,7 @@ CONTAINS
     ENDIF
   END FUNCTION LOG1P
 
+
   FUNCTION EXPM1(Z)
     ! expm1(z) = exp(z) - 1.0
     !
@@ -129,6 +132,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION EXPM1
+
 
   RECURSIVE FUNCTION LOG_GAMMA(Z) RESULT(RES)
     ! Logarithm of Gamma[z] and Gamma inverse function
@@ -280,6 +284,7 @@ CONTAINS
     ENDIF
   END FUNCTION GAMMA_INV
 
+
   RECURSIVE FUNCTION GAMMA_RATIO_DIFF_SMALL_EPS(Z,EPS) RESULT(RES)
     ! Calculation of H(z,eps) = [Gamma(z+eps)/Gamma(z) - 1]/eps, with e and
     ! z complex so z,z+eps are not negative integers and 0 <= |eps|oo < 0.1
@@ -421,6 +426,7 @@ CONTAINS
     ENDIF
   END FUNCTION GAMMA_RATIO_DIFF_SMALL_EPS
 
+
   FUNCTION GAMMA_INV_DIFF_EPS(Z,EPS)
     ! Calculation of G(z,eps) = [Gamma_inv(z) - Gamma_inv(z+eps)]/eps 
     ! with e and z complex
@@ -531,6 +537,7 @@ CONTAINS
     ENDIF
   END FUNCTION GAMMA_INV_DIFF_EPS
 
+
   FUNCTION A_SUM_INIT(M,EPS,GAMMA_INV_ONE_MEPS)
     ! Calculation of Gamma_inv(1-m-eps)/eps of the A(z) polynomial in 1-z
     ! and 1/z transformations
@@ -599,6 +606,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION A_SUM_INIT
+
 
   FUNCTION LOG_A_SUM_INIT(M,EPS)
     ! Calculation of the log of Gamma_inv(1-m-eps)/eps
@@ -792,6 +800,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION B_SUM_INIT_PS_ONE
+
 
   FUNCTION B_SUM_INIT_PS_INFINITY( &
     A,C,GAMMA_C,GAMMA_INV_CMA,GAMMA_INV_ONE_MEPS,GAMMA_INV_EPS_PA_PM,Z,M,EPS &
@@ -1003,6 +1012,7 @@ CONTAINS
     ENDIF
   END FUNCTION B_SUM_INIT_PS_INFINITY
 
+
   SUBROUTINE CV_POLY_DER_TAB_CALC(A,B,C,Z,CV_POLY_DER_TAB)
     ! Calculation of the derivative of the polynomial P(X) 
     !
@@ -1063,6 +1073,7 @@ CONTAINS
     RETURN
   END FUNCTION CV_POLY_DER_CALC
 
+
   FUNCTION MIN_N_CALC(CV_POLY_DER_TAB)
     ! Calculation of an integer after which false convergence cannot occur
     !
@@ -1113,6 +1124,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION MIN_N_CALC
+
 
   FUNCTION HYP_PS_ZERO(A,B,C,Z)
     ! Calculation of the 2F1 power series converging for |z| < 1
@@ -1183,6 +1195,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION HYP_PS_ZERO
+
 
   FUNCTION HYP_PS_ONE(A,B,C,MZP1)
     ! Calculation of the 2F1 power series 
@@ -1347,6 +1360,7 @@ CONTAINS
        RETURN
     ENDIF
   END FUNCTION HYP_PS_ONE
+
 
   FUNCTION HYP_PS_INFINITY(A,B,C,Z)
     ! Calculation of the 2F1 power series 
@@ -1517,6 +1531,7 @@ CONTAINS
     ENDIF
   END FUNCTION HYP_PS_INFINITY
 
+
   FUNCTION HYP_PS_COMPLEX_PLANE_REST(A,B,C,Z)
     ! Calculation of F(z) in transformation theory missing zones 
     ! of the complex plane with a Taylor series
@@ -1595,7 +1610,10 @@ CONTAINS
     RETURN
   END FUNCTION HYP_PS_COMPLEX_PLANE_REST
 
+
   RECURSIVE FUNCTION HYP_2F1(A,B,C,Z) RESULT(RES)
+    !! CPC Michel Gauss hypergeometric function \({}_2F_1(a, b; c; z)\).
+    !
     ! Calculation of F(z) for arbitrary z using previous routines
     !
     ! Firstly, it is checked if a,b and c are negative integers.
@@ -1792,6 +1810,7 @@ CONTAINS
     RES=HYP_PS_COMPLEX_PLANE_REST (A,B,C,Z)
     RETURN
   END FUNCTION HYP_2F1
+
 
   FUNCTION TEST_2F1(A,B,C,Z,F)
     ! Test of 2F1 numerical accuracy 

@@ -8,10 +8,10 @@ module csf_bessel
 !
 ! Procedures:
 !
-! - `j0x`: Bessel function of the first kind of order zero \(J_0(x)\)
-! - `j1x`: Bessel function of the first kind of order one \(J_1(x)\)
-! - `y0x`: Bessel function of the second kind of order zero \(Y_0(x)\)
-! - `y1x`: Bessel function of the second kind of order one \(Y_0(x)\)
+! - `besselj0`: Bessel function of the first kind of order zero \(J_0(x)\)
+! - `besselj1`: Bessel function of the first kind of order one \(J_1(x)\)
+! - `bessely0`: Bessel function of the second kind of order zero \(Y_0(x)\)
+! - `bessely1`: Bessel function of the second kind of order one \(Y_0(x)\)
 !
 ! ## References
 ! 1. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special
@@ -24,31 +24,33 @@ module csf_bessel
 
   implicit none
   private
-  public :: j0x, j1x, y0x, y1x
+  public :: besselj0, besselj1, bessely0, bessely1
 
 contains
 
-  real(wp) function j0x(x)
+  real(wp) function besselj0(x)
     !! Bessel function of the first kind of order zero \(J_0(x)\).
     !
     !! \(x \in \mathbb{R}\)
 
     real(wp), intent(in) :: x
 
-    call caljy0(x, j0x, 0)
-  end function j0x
+    call caljy0(x, besselj0, 0)
+  end function besselj0
 
-  real(wp) function j1x(x)
+
+  real(wp) function besselj1(x)
     !! Bessel function of the first kind of order one \(J_1(x)\).
     !
     !! \(x \in \mathbb{R}\)
 
     real(wp), intent(in) :: x
 
-    call caljy1(x, j1x, 0)
-  end function j1x
+    call caljy1(x, besselj1, 0)
+  end function besselj1
 
-  real(wp) function y0x(x)
+
+  real(wp) function bessely0(x)
     !! Bessel function of the second kind of order zero \(Y_0(x)\).
     !
     !! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\)
@@ -56,16 +58,17 @@ contains
     real(wp), intent(in) :: x
 
     if (x < 0) then
-      y0x = nan()
+      bessely0 = nan()
     else
-      call caljy0(x, y0x, 1)
-      if (y0x <= -huge(0.0_wp)) then
-        y0x = ninf()
+      call caljy0(x, bessely0, 1)
+      if (bessely0 <= -huge(0.0_wp)) then
+        bessely0 = ninf()
       end if
     end if
-  end function y0x
+  end function bessely0
 
-  real(wp) function y1x(x)
+
+  real(wp) function bessely1(x)
     !! Bessel function of the second kind of order one \(Y_1(x)\).
     !
     !! \(\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace\)
@@ -73,13 +76,13 @@ contains
     real(wp), intent(in) :: x
 
     if (x < 0) then
-      y1x = nan()
+      bessely1 = nan()
     else
-      call caljy1(x, y1x, 1)
-      if (y1x <= -huge(0.0_wp)) then
-        y1x = ninf()
+      call caljy1(x, bessely1, 1)
+      if (bessely1 <= -huge(0.0_wp)) then
+        bessely1 = ninf()
       end if
     end if
-  end function y1x
+  end function bessely1
 
 end module csf_bessel

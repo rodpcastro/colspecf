@@ -23,10 +23,14 @@ The following list describes the implemented functions and their domains.
     * $\lbrace x \in \mathbb{R} \mid x \gt 0 \rbrace$
 * Gauss hypergeometric function ${}_2F_1(a, b; c; z)$
     * $a,\thinspace b,\thinspace c,\thinspace z \in \mathbb{C}$
+* Struve functions $\mathbf{H}_0(x)$ and $\mathbf{H}_1(x)$
+    * $x \in \mathbb{R}$
 
 The list above will be updated as new functions are added and tested. Next in line are:
 
-* Struve functions $\mathbf{H}_0(x)$ and $\mathbf{H}_1(x)$
+* Polygamma functions $\psi_0(x)$ and $\psi_1(x)$
+* Hankel functions of the first kind $H_n(x)$
+* Modified Bessel functions of the second kind $K_0(x)$ and $K_1(x)$
 
 ## Tests
 Tests are conducted by comparing the ColSpecF results with those of [mpmath], an arbitrary-precision numerical library.
@@ -54,6 +58,7 @@ Publications presenting the original algorithms are listed below:
 2. Donald E. Amos. 1990. Algorithms 683: a portable FORTRAN subroutine for exponential integrals of a complex argument. ACM Trans. Math. Softw. 16, 2 (June 1990), 178–182. <https://doi.org/10.1145/78928.78934>
 3. W. J. Cody. 1993. Algorithm 715: SPECFUN–a portable FORTRAN package of special function routines and test drivers. ACM Trans. Math. Softw. 19, 1 (March 1993), 22–30. <https://doi.org/10.1145/151271.151273>
 4. N. Michel and M. V. Stoitsov. 2008. Fast computation of the Gauss hypergeometric function with all its parameters complex with application to the Pöschl-Teller-Ginocchio potential wave functions. Computer Physics Communications 178, 7 (April 2008), 535–551. <https://doi.org/10.1016/J.CPC.2007.11.007>
+5. Allan J. MacLeod. 1996. Algorithm 757: MISCFUN, a software package to compute uncommon special functions. ACM Trans. Math. Softw. 22, 3 (Sept. 1996), 288–301. <https://doi.org/10.1145/232826.232846>
 
 ## License
 ColSpecF is a Fortran library distributed under multiple licenses or permissions based on code origin. Users must comply with the applicable license or permission for each portion of the code. See the [License][License File] for full details.

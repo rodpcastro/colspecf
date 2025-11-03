@@ -26,6 +26,7 @@ contains
     ]
   end subroutine collect_exponential_integral_tests
 
+
   subroutine test_ei(error)
     type(error_type), allocatable, intent(out) :: error
     logical, allocatable :: specfun_ic(:)
@@ -37,6 +38,7 @@ contains
     call check(error, all(specfun_ic))
     if (allocated(error)) return
   end subroutine test_ei
+
 
   subroutine test_ei_extremes(error)
     type(error_type), allocatable, intent(out) :: error
@@ -54,6 +56,7 @@ contains
     call check(error, eiw, pinf())
     if (allocated(error)) return
   end subroutine test_ei_extremes
+
 
   subroutine test_e1x(error)
     type(error_type), allocatable, intent(out) :: error
@@ -74,6 +77,7 @@ contains
     end function e1x
   end subroutine test_e1x
 
+
   subroutine test_e1x_extremes(error)
     type(error_type), allocatable, intent(out) :: error
     real(wp) :: e1xw
@@ -86,6 +90,7 @@ contains
     call check(error, e1xw, 0.0_wp)
     if (allocated(error)) return
   end subroutine test_e1x_extremes
+
 
   subroutine test_e1z(error)
     type(error_type), allocatable, intent(out) :: error
@@ -105,6 +110,7 @@ contains
       e1z = e1(z)
     end function e1z
   end subroutine test_e1z
+
 
   subroutine test_e1z_extremes(error)
     type(error_type), allocatable, intent(out) :: error
