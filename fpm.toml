@@ -3,7 +3,7 @@ description = "ColSpecF is a Fortran library for evaluating mathematical Special
 author = "Rodrigo Castro"
 version = "0.1.0"
 license = "LICENSE"
-maintainer = "rodpcastro18@gmail.com"
+maintainer = "code@rpc.aleeas.com"
 categories = ["mathematics", "special-functions", "numerical-computing", "scientific-computing"]
 homepage = "https://colspecf.readthedocs.io/"
 
